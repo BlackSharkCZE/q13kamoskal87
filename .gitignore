@@ -1,0 +1,7 @@
+.idea/
+*.iml
+target/
+.redcar/
+jozin.sql.tar.gz
+jozin_ddl.sql
+jozin_dml.sql

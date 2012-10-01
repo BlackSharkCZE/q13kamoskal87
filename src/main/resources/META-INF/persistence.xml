@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="kamoskaPU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <!--<jta-data-source>jdbc/jozin_local</jta-data-source>-->
+        <jta-data-source>jdbc/kamoska</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="eclipselink.cache.size.default" value="0"/>
+            <property name="eclipselink.cache.type.default" value="None"/>
+            <property name="eclipselink.target-database" value="PostgreSQL"/>
+            <property name="eclipselink.jdbc.uppercase-columns" value="true"/>
+            <!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>-->
+            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <!--<property name="eclipselink.ddl-generation" value="none"/>-->
+            <property name="eclipselink.cache.shared.default" value="false"/>
+            <!--<property name="eclipselink.logging.level" value="WARNING"/>-->
+            <!--<property name="eclipselink.logging.level" value="FINEST"/>-->
+            <!--<property name="eclipselink.logging.parameters" value="true"/>-->
+        </properties>
+    </persistence-unit>
+
+</persistence>

@@ -1,0 +1,27 @@
+
+PrimeFaces.locales ['cs'] = {
+	closeText: 'Zavřít',
+	prevText: 'Předchozí',
+	nextText: 'Následující',
+	monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'LIstopad', 'Prosinec' ],
+	monthNamesShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Červ', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro' ],
+	dayNames: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
+	dayNamesShort: ['Ned', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+	dayNamesMin: ['N', 'P', 'Ú', 'S ', 'Č', 'P ', 'S'],
+	weekHeader: 'Týden',
+	firstDay: 1,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix:'',
+	timeOnlyTitle: 'Pouze čas',
+	timeText: 'Čas',
+	hourText: 'Hodina',
+	minuteText: 'Minuta',
+	secondText: 'Sekunda',
+	currentText: 'Aktuální datum',
+	ampm: false,
+	month: 'Měsíc',
+	week: 'Týden',
+	day: 'Den',
+	allDayText: 'Celý týden'
+};

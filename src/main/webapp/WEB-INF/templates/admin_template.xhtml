@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+			xmlns:h="http://java.sun.com/jsf/html"
+			xmlns:p="http://primefaces.org/ui"
+			xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
+
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; chartset=UTF-8"></meta>
+	<h:outputStylesheet library="css" name="commons.css"/>
+	<h:outputScript library="js" name="primefaces-locale-cs.js" />
+	<title><h:outputText value="#{message.web_title}"/></title>
+</h:head>
+
+<h:body>
+
+	<!--div id="header">
+		<ui:insert name="header">
+			<div style="height: 64px;">
+				<div style="float: left">
+					<h:graphicImage title="logo" library="img" name="logo-dev.png"/>
+				</div>
+				<div style="float: right; padding-right: 20px; color:white; margin-top: 5px;">
+					<strong>Prihlaseny uzivatel</strong>: <h:outputText value="#{facesContext.externalContext.userPrincipal.name}"/>
+					&nbsp;/&nbsp;<a href="/j_security_logout" class="logout">odhlásit</a>
+				</div>
+			</div>
+		</ui:insert>
+	</div>
+
+	<div id="loggedInUser">
+		<ui:insert name="loggedInUser">
+
+		</ui:insert>
+	</div-->
+
+	<div id="menu">
+
+		<h:form id="main_menu_form">
+
+			<p:hotkey bind="ctrl+shift+s"  action="#{searchController.gotoSearchPage}" />
+			<p:hotkey bind="ctrl+shift+p"  action="#{partnerController.gotoPartnerList}" />
+			<p:hotkey bind="ctrl+shift+g"  action="#{serviceController.gotoServiceList}" />
+
+			<p:menubar autoSubmenuDisplay="false" styleClass="custom_menu" autoDisplay="false">
+
+				<p:submenu label="Systém">
+					<p:menuitem value="Státy" url="/admin/country/list.jspx"/>
+					<!--<p:menuitem value="Přidat" action="#{countryController.createNewCountry}" ajax="false"/>-->
+					<p:menuitem value="Operátoři" url="/admin/operator/list.jspx"/>
+					<!--<p:menuitem value="Přidat" action="#{operatorController.createNewOperator}" ajax="false"/>-->
+					<p:menuitem value="Shortcody" url="/admin/shortcode/list.jspx"/>
+					<!--<p:menuitem value="Přidat" action="#{shortcodeController.createNewShortcode}" ajax="false"/>-->
+					<p:menuitem value="Platební levely" url="/admin/levels/list.jspx"/>
+					<!--<p:menuitem value="Přidat" action="#{paymentLevelController.createPaymentLevel}" ajax="false"/>-->
+					<p:menuitem value="Zprávy systému" url="/admin/messages/list.jspx"/>
+					<!--<p:menuitem value="Přidat" action="#{systemMessageController.createNewSystemMessage}" ajax="false"/>-->
+					<p:menuitem value="Dedikovaný keyword" action="#{dedicateKeywrodController.showDedicateKeywordList}" ajax="false"/>
+					<p:menuitem value="Měny" action="#{currencyController.showCurrencyList}" ajax="false"/>
+					<p:menuitem value="Pravidla služeb" action="#{shortcodeRuleController.showRulesList}" ajax="false"/>
+					<p:menuitem value="Šablony e-mailů" action="#{emailTemplateController.showEmailTemplateList}" ajax="false"/>
+					<p:menuitem value="EULA" action="#{eulaController.gotoEulaList}" ajax="false"/>
+					<p:menuitem value="Prefixy"  url="/admin/prefix/create.jspx"  ajax="false"/>
+					<p:separator />
+					<p:menuitem value="Systemove hodnoty" url="/admin/config/show.jspx" />
+
+				</p:submenu>
+
+				<p:submenu label="Služby">
+					<p:menuitem value="Přehled partnerů" url="/admin/partner/list.jspx"/>
+					<p:menuitem value="Přehled služeb" action="#{serviceController.showServiceList}" ajax="false"/>
+					<p:menuitem value="Ceníky" action="#{priceListController.showPriceListList}" ajax="false"/>
+
+					<p:submenu label="Předplatné">
+						<p:menuitem value="Nové předplatné" action="#{subscriptionController.gotoNewSubscription}"/>
+						<p:menuitem value="Přehled" url="/admin/subscription/subscriptions/list.jspx"/>
+						<p:menuitem value="Předplatitelé" url="/admin/subscription/subscriber/list.jspx"/>
+						<p:menuitem value="Defaultní levely" url="/admin/subscription/settings/default-payment-level.jspx"/>
+						<p:menuitem value="Systémové zprávy" url="/admin/subscription/settings/system-messages.jspx"/>
+					</p:submenu>
+
+				</p:submenu>
+
+				<p:submenu label="Podpora">
+					<p:menuitem value="Sééérž!" action="#{searchController.gotoSearchPage}" ajax="false"/>
+					<p:menuitem value="Vytvořit zprávičku" url="#{facesContext.externalContext.request.contextPath}/support/news/create.jspx" />
+					<p:menuitem value="Služby ke schválení (#{serviceModel.disapprovalCount})" action="#{serviceController.showDisapproval}" ajax="false"/>
+				</p:submenu>
+
+				<p:submenu label="Vyúčtování" rendered="#{request.isUserInRole('account')}">
+					<p:menuitem value="Partneři" url="/account/partner-list.jspx" />
+				</p:submenu>
+
+
+				<p:submenu label="Statistiky">
+					<p:menuitem value="Generovani" url="#{facesContext.externalContext.request.contextPath}/admin/stats/generate.jspx" />
+					<p:submenu label="Zobrazeni">
+							<p:menuitem value="Hodinovy prehled" url="#{facesContext.externalContext.request.contextPath}/admin/stats/hourly.jspx" />
+							<p:menuitem value="Prehled dle shortcode" url="#{facesContext.externalContext.request.contextPath}/admin/stats/shortcodes.jspx" />
+							<p:menuitem value="Prehled poctu plateb" url="#{facesContext.externalContext.request.contextPath}/admin/stats/frequency.jspx" />
+					</p:submenu>
+
+				</p:submenu>
+
+				<p:submenu label="Alert" rendered="#{request.isUserInRole('developer')}">
+					<p:menuitem value="Prehled" url="#{facesContext.externalContext.request.contextPath}/developer/watchdog/list.jspx" />
+					<p:menuitem value="Nastaveni" action="#{testCaseController.createNewTestCase}" />
+				</p:submenu>
+
+
+				<p:menuitem value="Logout" url="/j_security_logout" icon="ui-icon-circle-close"/>
+
+			</p:menubar>
+
+
+
+
+		</h:form>
+
+	</div>
+
+
+	<div id="content">
+		<ui:insert name="content">
+			<h:outputText value="#{message['web_default_content']}"/>
+		</ui:insert>
+	</div>
+
+
+	<div id="footer">
+		<ui:insert name="footer">
+			<h:outputText value="#{message['web_default_footer']}"/>
+		</ui:insert>
+	</div>
+
+
+</h:body>
+
+</html>
