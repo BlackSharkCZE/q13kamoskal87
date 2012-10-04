@@ -3,17 +3,18 @@ package cz.kamoska.partner.entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: blackshark
  * Date: 3.10.12
  * Time: 20:43
- * To change this template use File | Settings | File Templates.
+ * Jedna se o prodavany balik 5ti reklam.
  */
 @Entity
-@Table(name = "advert_groups")
-public class AdvertGroupEntity {
+@Table(name = "advert_bundle")
+public class AdvertBundleEntity {
 
 	@Id
 	@Column(name = "id")
@@ -42,6 +43,13 @@ public class AdvertGroupEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expirationNotificationSent; // zda bylo odeslano upozorneni, ze bude slupina zrusena
 
-	//todo zaradit skupinu do cenove skupiny
+	@ManyToOne(fetch = FetchType.EAGER)
+	private AdvertPriceGroupEntity advertPriceGroupEntity;
+
+	@OneToMany(orphanRemoval = true)
+	private List<AdvertEntity> advertEntityList;
+
+	@ManyToOne
+	private PartnerEntity partnerEntity;
 
 }

@@ -1,0 +1,9 @@
+Po registraci noveho partnera mu musi byt nastavena role a musi mu byt vytvoren 1. bundle a musi byt zarazen do
+AdvertPriceGroup. Takze system musi umet rozhodnout sam, kterou AdvertPriceGroup pro nove vznikajici Bundle pouzit
+
+AdvertPriceGroup muze mit ORDER (o-index) a ten bude rikat kolikaty v poradi dany AdvertPriceGroup je vzhledem k poctu bundlu.
+
+Pokdu se zaklada 1. bundle pro partnera, tak se vybira AdvertPriceGroup s o-index = 1
+pokud se zaklada 2. bundle pro partnera, tak se vybira AdvertPriceGroup s o-index = 2
+
+pokud uz je index bundlu vetsi nez dostupny o-index pouzije se AdvertPriceGroup s max(o-index)

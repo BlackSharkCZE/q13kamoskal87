@@ -1,17 +1,17 @@
 package cz.kamoska.partner.entities;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: blackshark
  * Date: 3.10.12
  * Time: 20:16
- * To change this template use File | Settings | File Templates.
+ * Objekt popisujici vlastniho partnera
  */
 @Entity
 @Table(name = "partner")
@@ -61,6 +61,14 @@ public class PartnerEntity {
 	@NotNull
 	@Column(name = "phone_number")
 	private String phoneNumber;
+
+	@OneToMany(mappedBy = "partnerEntity")
+	private List<AdvertBundleEntity> advertBundleEntityList;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "roles")
+	@Column(name = "role")
+	private List<String> roles;
 
 
 

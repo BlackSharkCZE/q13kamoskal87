@@ -10,11 +10,11 @@ import java.util.Date;
  * User: blackshark
  * Date: 3.10.12
  * Time: 20:54
- * To change this template use File | Settings | File Templates.
+ * Jedna se o zpravu, kterou pise administrator danemu partnerovi
  */
 @Entity
 @Table(name = "message")
-public class Message {
+public class MessageEntity {
 
 	@Id
 	@Column(name = "id")

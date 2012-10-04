@@ -9,7 +9,7 @@ import java.util.Date;
  * User: blackshark
  * Date: 3.10.12
  * Time: 20:29
- * To change this template use File | Settings | File Templates.
+ * Sekce stranek ve kterych muze byt reklama zobrazovana
  */
 @Entity
 @Table(name  = "section")

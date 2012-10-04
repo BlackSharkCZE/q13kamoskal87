@@ -3,6 +3,7 @@ package cz.kamoska.partner.entities;
 import cz.kamoska.partner.enums.AdvertState;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -13,7 +14,7 @@ import java.util.List;
  * User: blackshark
  * Date: 3.10.12
  * Time: 20:32
- * To change this template use File | Settings | File Templates.
+ * Jedna se o vlastni reklamu. Obrazek, titulek, text, urladres a zarazeni do skupin stranek, kde se ma zobrazovat
  */
 @Entity
 @Table(name = "advert")
@@ -54,5 +55,10 @@ public class AdvertEntity {
 
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<SectionEntity> sectionEntityList;
+
+	@NotNull
+	@Min(0)
+	@Column(name = "view_count")
+	private Integer viewCount;
 
 }
