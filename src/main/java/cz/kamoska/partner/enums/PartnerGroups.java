@@ -9,6 +9,7 @@ package cz.kamoska.partner.enums;
  */
 public enum PartnerGroups {
 
-	PARTNER, ADMINISTRATOR;
+	GROUP_PARTNER,
+	GROUP_ADMIN;
 
 }

@@ -10,8 +10,16 @@
     <dependencies>
 
 
+
+		<dependency>
+			<groupId>AirtoyLib</groupId>
+			<artifactId>AirtoyLib</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+
+
         <!-- JSF2 -->
-        <dependency>
+		<dependency>
             <groupId>com.sun.faces</groupId>
             <artifactId>jsf-api</artifactId>
             <version>2.1.1-b04</version>

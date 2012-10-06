@@ -43,5 +43,9 @@ public class AdvertPriceGroupEntity {
 	@Min(value = 1)
 	private Integer duration;
 
+	@NotNull
+	@Column(name = "oindex")
+	private Integer oIndex;		// urcuje poradi cenove skupiny. Pro 2. AdvertGroup pouzij advert_price_group s oindex=2, nebo tu s nejvyssim oindex
+
 
 }

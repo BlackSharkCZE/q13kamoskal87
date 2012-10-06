@@ -3,109 +3,24 @@
 		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-			xmlns:h="http://java.sun.com/jsf/html"
-			xmlns:p="http://primefaces.org/ui"
-			xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
 
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; chartset=UTF-8"></meta>
-	<h:outputStylesheet library="css" name="commons.css"/>
+	<h:outputStylesheet library="css" name="common.css" />
+	<h:outputStylesheet library="css" name="partner.css" />
 	<title><h:outputText value="#{message.web_title}"/></title>
 </h:head>
 
 <h:body>
 
-
 	<div id="header">
-		<ui:insert name="header"> </ui:insert>
-	</div>
-
-
-	<div class="main_menu">
-	</div>
-
-
-	<div>
-		<table>
-			<tr>
-				<td>
-					<h:outputLink
-							value="#{facesContext.externalContext.context.contextPath}/index.jspx">
-						<h:outputText value="#{message['public.main_menu.introduction']}"/>
-					</h:outputLink>
-				</td>
-				<td><h:graphicImage title="delimiter" library="img" name="delimiter.png"/></td>
-				<td>
-					<h:outputLink value="#{facesContext.externalContext.context.contextPath}/about.jspx">
-						<h:outputText value="#{message['public.main_menu.about']}"/>
-					</h:outputLink>
-				</td>
-				<td><h:graphicImage title="delimiter" library="img" name="delimiter.png"/></td>
-				<td>
-					<h:outputLink
-							value="#{facesContext.externalContext.context.contextPath}/commissions.jspx">
-						<h:outputText value="#{message['public.main_menu.commissions']}"/>
-					</h:outputLink>
-				</td>
-				<td><h:graphicImage title="delimiter" library="img" name="delimiter.png"/></td>
-				<td>
-					<h:outputLink value="#{facesContext.externalContext.context.contextPath}/rules.jspx">
-						<h:outputText value="#{message['public.main_menu.rules']}"/>
-					</h:outputLink>
-				</td>
-				<td><h:graphicImage title="delimiter" library="img" name="delimiter.png"/></td>
-				<td>
-					<h:outputLink value="#{facesContext.externalContext.context.contextPath}/help.jspx">
-						<h:outputText value="#{message['public.main_menu.help']}"/>
-					</h:outputLink>
-
-				</td>
-				<td><h:graphicImage title="delimiter" library="img" name="delimiter.png"/></td>
-				<td>
-					<h:outputLink value="#{facesContext.externalContext.context.contextPath}/j_security_logout">
-						<h:outputText value="#{message['public.main_menu.logout']}"/>
-					</h:outputLink>
-				</td>
-			</tr>
-		</table>
-
-
-		<div>
-			Hlavni stranka po prihlaseni
-		</div>
-
-		<p:menubar autoDisplay="true">
-
-			<p:menuitem value="#{message['partner.menu.home']}" url="#{facesContext.externalContext.context.contextPath}/partner/index.jspx"/>
-			<p:menuitem value="#{message['partner.menu.smsPayment']}" url="#{facesContext.externalContext.context.contextPath}/partner/smspayment/overview.jspx"/>
-
-			<p:menuitem value="#{message['partner.menu.subscription']}"
-									rendered="#{facesContext.externalContext.isUserInRole('partner-basic')}"
-									url="#{facesContext.externalContext.context.contextPath}/partner/subscription/overview.jspx"/>
-
-
-			<p:submenu label="#{message['partner.menu.account']}">
-				<p:menuitem value="#{message['partner.menu.account.overview']}" url="#{facesContext.externalContext.context.contextPath}/partner/account.jspx"/>
-				<p:separator/>
-				<p:menuitem value="#{message['partner.menu.account.password-change']}" url="#{facesContext.externalContext.context.contextPath}/partner/setting/password.jspx"/>
-			</p:submenu>
-
-
-			<p:submenu label="SMS">
-				<p:menuitem value="#{message['partner.menu.incoming_list']}" url="#{facesContext.externalContext.context.contextPath}/partner/incoming/list.jspx"/>
-				<p:menuitem value="#{message['partner.menu.failed_list']}" url="#{facesContext.externalContext.context.contextPath}/partner/incoming/failed.jspx"/>
-
-			</p:submenu>
-
-
-		</p:menubar>
-
-
-	</div>
-
-	<div id="loggedInUser">
-		<ui:insert name="loggedInUser"></ui:insert>
+		<ui:insert name="header">
+			<h:outputText value="#{message['web_default_header']}"/>
+		</ui:insert>
 	</div>
 
 	<div id="content">

@@ -70,6 +70,10 @@ public class PartnerEntity {
 	@Column(name = "role")
 	private List<String> roles;
 
+	@Column(name = "activated")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date activated;
+
 
 
 	public PartnerEntity() {
@@ -85,4 +89,107 @@ public class PartnerEntity {
 	}
 
 
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getIc() {
+		return ic;
+	}
+
+	public void setIc(String ic) {
+		this.ic = ic;
+	}
+
+	public Boolean getVatPayer() {
+		return vatPayer;
+	}
+
+	public void setVatPayer(Boolean vatPayer) {
+		this.vatPayer = vatPayer;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getPsc() {
+		return psc;
+	}
+
+	public void setPsc(String psc) {
+		this.psc = psc;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public List<AdvertBundleEntity> getAdvertBundleEntityList() {
+		return advertBundleEntityList;
+	}
+
+	public void setAdvertBundleEntityList(List<AdvertBundleEntity> advertBundleEntityList) {
+		this.advertBundleEntityList = advertBundleEntityList;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
+	}
+
+	public Date getActivated() {
+		return activated;
+	}
+
+	public void setActivated(Date activated) {
+		this.activated = activated;
+	}
 }

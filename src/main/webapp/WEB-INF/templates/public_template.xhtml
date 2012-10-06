@@ -3,40 +3,24 @@
 		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
 
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; chartset=UTF-8"></meta>
-	<h:outputStylesheet library="css" name="commons.css"/>
+	<h:outputStylesheet library="css" name="common.css" />
+	<h:outputStylesheet library="css" name="public.css" />
 	<title><h:outputText value="#{message.web_title}"/></title>
 </h:head>
 
 <h:body>
+
 	<div id="header">
 		<ui:insert name="header">
 			<h:outputText value="#{message['web_default_header']}"/>
 		</ui:insert>
-	</div>
-
-	<div>
-		<h:form id="main_menu_form">
-
-			<ul>
-				<li>
-					<h:commandLink value="Administrace" action="#{serviceController.showServiceList}" />
-				</li>
-				<li>
-					<h:commandLink value="Sérž" action="#{searchController.gotoSearchPage}" />
-				</li>
-
-
-			</ul>
-
-
-		</h:form>
 	</div>
 
 	<div id="content">
@@ -50,6 +34,7 @@
 			<h:outputText value="#{message['web_default_footer']}"/>
 		</ui:insert>
 	</div>
+
 
 </h:body>
 
