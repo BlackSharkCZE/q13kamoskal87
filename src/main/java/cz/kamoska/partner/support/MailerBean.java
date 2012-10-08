@@ -6,7 +6,7 @@ import org.apache.commons.mail.HtmlEmail;
 import org.apache.log4j.Logger;
 
 import javax.ejb.Asynchronous;
-import javax.ejb.Stateless;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @version 0.1
  * @since 0.1
  */
-@Stateless
+@Singleton
 @ApplicationScoped
 public class MailerBean {
 

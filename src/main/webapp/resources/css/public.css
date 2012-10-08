@@ -1,0 +1,107 @@
+#page {
+    width:1150px;
+    background: white;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#page .left {
+    width:795px;
+    background: red;
+    float:left;
+    border: 1px solid  #D9D9D9;
+    background: #F3F3F3;
+}
+
+#page .right {
+    width:325px;
+    float:left;
+}
+
+
+#header {
+    padding: 10px 0;
+    margin: 0;
+    background: white;
+}
+
+.menu_left_bar {
+    width:160px;
+    float:left;
+
+}
+
+.menu_left {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu_left_item {
+ background: white;
+    padding: 10px 0px 10px 10px;
+    border-bottom: 1px solid  #D9D9D9;
+    border-right: 1px solid  #D9D9D9;
+
+}
+
+
+.menu_left_item.current {
+    background: #4C1130;
+}
+.menu_left_item.last{
+    border-bottom: none;
+}
+
+
+.menu_left_item.current a {
+    color:white;
+    font-weight: bold;
+}
+
+
+#content .content_bar {
+    float:left;
+    width:635px;
+    background: white;
+}
+
+#content .content_bar .inner_content {
+    padding: 15px;
+}
+
+
+.login_window {
+    background: #EFEFEF;
+    border: 1px solid #D9D9D9;
+    width:315px;
+    margin-left: 20px;
+}
+
+.login_window .content {
+    padding: 15px;
+}
+
+.login_window .title {
+    padding-bottom: 5px;
+}
+
+
+
+.ui-inputfield.kamoska_input {
+    padding: 4px 0;;
+    margin: 0;
+    width:285px;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+}
+
+.kamoska_button {
+    background: #4C1130;
+    color:white;
+}
+
+.kamoska_button:hover {
+    /*box-shadow: 1px 1px 2px 2px #9A838F;*/
+}

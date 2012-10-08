@@ -1,0 +1,42 @@
+* {
+    font-family: arial verdana
+
+}
+
+body {
+    /*background: yellow;*/
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+a {
+    color:#741B47;
+    text-decoration: none;
+}
+
+
+h1 {
+    color:#4C1130;
+    font-size:18px;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color:black;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+h3 {
+    color:black;
+    font-size: 14px;
+    margin: 0;
+    padding: 5px 0 5px 0;
+}
+
+.space_10 {
+    height: 10px;
+}

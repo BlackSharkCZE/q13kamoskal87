@@ -8,6 +8,5 @@
         <description>Navigation rules for all PARTNER pages</description>
         <from-view-id>*</from-view-id>
     </navigation-rule>
-    <navigation-rule>
 
 </faces-config>
