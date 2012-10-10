@@ -2,6 +2,7 @@ package cz.kamoska.partner.dao.interfaces;
 
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.enums.PartnerGroups;
 
 import javax.ejb.Local;
 
@@ -22,4 +23,16 @@ public interface PartnerDaoInterface extends DaoInterface<PartnerEntity> {
 	 */
 	PartnerEntity findByEmail(final String email);
 
+	/**
+	 * Vraci pocet partneru, kteri jsou ve skupine partnerGroup
+	 * @param partnerGroups skupina pro kterou nas zajima pocet uzivatelelu
+	 * @return pocet uzivatele v predane skupine
+	 */
+	Integer getPartnerCountByGroup(PartnerGroups partnerGroups);
+
+	/**
+	 * Vytvari view, ktere je nutne pro JAAS k overovani uzivatelu a nacitani jejich roli
+	 * @return
+	 */
+	boolean createLoginRoleView();
 }

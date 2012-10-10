@@ -3,8 +3,10 @@ package cz.kamoska.partner.dao.implementations;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.enums.PartnerGroups;
 
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +17,26 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implements PartnerDaoInterface {
+
+
+	@Override
+	public Integer getPartnerCountByGroup(PartnerGroups partnerGroups) {
+		try {
+			Query query = em.createNamedQuery("PartnerEntity.findCountByGroup").setParameter("group", PartnerGroups.GROUP_ADMIN.toString());
+			Long count = (Long) query.getSingleResult();
+			return count.intValue();
+		} catch (Exception e) {
+			logger.info("Can not obtain partner count in role " + PartnerGroups.GROUP_ADMIN, e);
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean createLoginRoleView() {
+		Integer res = executeUpdateNamedQuery("PartnerEntity.createRoleView", null);
+		return res > 0;
+	}
+
 	@Override
 	public PartnerEntity findByEmail(String email) {
 		//todo implement body

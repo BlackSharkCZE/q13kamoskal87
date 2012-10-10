@@ -397,8 +397,10 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 	public Integer executeUpdateNamedQuery(String namedQuery, Map<String, Object> params) {
 		try {
 			Query q = em.createNamedQuery(namedQuery);
-			for (String k : params.keySet()) {
-				q.setParameter(k, params.get(k));
+			if (params != null && !params.isEmpty()) {
+				for (String k : params.keySet()) {
+					q.setParameter(k, params.get(k));
+				}
 			}
 			int res = q.executeUpdate();
 			em.flush();

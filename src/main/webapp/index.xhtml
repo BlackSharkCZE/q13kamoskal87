@@ -12,6 +12,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ct="http://java.sun.com/jsf/composite/custom-components"
 	  xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
@@ -63,48 +64,12 @@
 						Hello World
 					</div>
 				</div>
-
 			</div>
 
-
-
-
-
 			<div class="right">
-				<div class="login_window">
 
-					<div class="content">
+				<ct:login />
 
-						<h3>
-							<h:outputText value="#{message['login']}"/>
-						</h3>
-
-						<div class="title"><h:outputText value="#{message['email']}"/></div>
-						<div class="input">
-							<p:inputText styleClass="kamoska_input"/>
-						</div>
-
-						<div class="space_10"/>
-
-
-						<div class="title"><h:outputText value="#{message['password']}"/></div>
-						<div class="input">
-							<p:password styleClass="kamoska_input" feedback="none"/>
-						</div>
-
-						<div class="space_10"/>
-
-						<p:commandButton value="#{message['login']}" styleClass="kamoska_button"/>
-
-						<div class="space_10" />
-
-						<h:outputLink value="">
-							<h:outputText value="#{message['forgotten_password']}"/>
-						</h:outputLink>
-
-
-					</div>
-				</div>
 			</div>
 
 		</ui:define>

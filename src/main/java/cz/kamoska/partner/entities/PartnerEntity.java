@@ -13,11 +13,22 @@ import java.util.List;
  * Time: 20:16
  * Objekt popisujici vlastniho partnera
  */
+
+@NamedQueries({
+		@NamedQuery(name = "PartnerEntity.findCountByGroup", query = "SELECT count(p) FROM PartnerEntity p WHERE :group MEMBER OF p.roles")
+})
+
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "PartnerEntity.createRoleView", query = "create or replace  view v_partner_role_cross as select p.email as login, r.role as role  from partner p join roles r on r.partnerentity_id = p.id")
+})
+
 @Entity
 @Table(name = "partner")
 public class PartnerEntity {
 
 	@Id
+	@GeneratedValue(generator = "partnerIDGenerator")
+	@SequenceGenerator(allocationSize = 1, sequenceName = "partner_id_seq", name = "partnerIDGenerator")
 	@Column(name = "id")
 	private Integer id;
 
@@ -41,6 +52,9 @@ public class PartnerEntity {
 	@NotNull
 	@Column(name = "ic")
 	private String ic;
+
+	@Column(name = "dic")
+	private String dic;
 
 	@NotNull
 	@Column(name = "vat_payer")
@@ -191,5 +205,13 @@ public class PartnerEntity {
 
 	public void setActivated(Date activated) {
 		this.activated = activated;
+	}
+
+	public String getDic() {
+		return dic;
+	}
+
+	public void setDic(String dic) {
+		this.dic = dic;
 	}
 }

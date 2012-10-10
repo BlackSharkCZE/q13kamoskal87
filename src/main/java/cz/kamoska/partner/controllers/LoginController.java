@@ -52,7 +52,7 @@ public class LoginController implements Serializable {
 	 * Odhlaseni uzivatele
 	 * @return Nasledujci View po odhlaseni uzivateledo
 	 */
-	private String logout() {
+	public String logout() {
 		loggedInPartner.setLoggedInTimestamp(null);
 		loggedInPartner.setPartner(null);
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -69,7 +69,7 @@ public class LoginController implements Serializable {
 	 * Pokusi se prihlasit uzivatele
 	 * @return nasledujici View po prihalseni, nebo null pokud prihlaseni selhalo
 	 */
-	private String login() {
+	public String login() {
 
 		PartnerEntity partnerByEmail = partnerDaoInterface.findByEmail(loginModel.getLogin());
 		if (partnerByEmail.getActivated() != null) {

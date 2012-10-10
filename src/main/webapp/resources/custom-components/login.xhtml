@@ -1,0 +1,47 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:h="http://java.sun.com/jsf/html"
+			  xmlns:p="http://primefaces.org/ui"
+			  xmlns:composite="http://java.sun.com/jsf/composite">
+
+	<composite:interface>
+	</composite:interface>
+
+	<composite:implementation>
+		<div class="login_window">
+
+			<div class="content">
+
+				<h3>
+					<h:outputText value="#{message['login']}"/>
+				</h3>
+
+				<div class="title"><h:outputText value="#{message['email']}"/></div>
+				<div class="input">
+					<p:inputText styleClass="kamoska_input" value="#{loginModel.login}"/>
+				</div>
+
+				<div class="space_10"/>
+
+
+				<div class="title"><h:outputText value="#{message['password']}"/></div>
+				<div class="input">
+					<p:password styleClass="kamoska_input" feedback="none" value="#{loginModel.password}"/>
+				</div>
+
+				<div class="space_10"/>
+
+				<p:commandButton value="#{message['login']}" styleClass="kamoska_button" action="#{loginController.login}"/>
+
+				<div class="space_10"/>
+
+				<h:outputLink value="">
+					<h:outputText value="#{message['forgotten_password']}"/>
+				</h:outputLink>
+
+
+			</div>
+		</div>
+	</composite:implementation>
+
+</ui:component>
