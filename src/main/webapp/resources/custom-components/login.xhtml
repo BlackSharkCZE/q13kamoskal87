@@ -10,37 +10,40 @@
 	<composite:implementation>
 		<div class="login_window">
 
-			<div class="content">
+			<h:form id="login-form">
 
-				<h3>
-					<h:outputText value="#{message['login']}"/>
-				</h3>
+				<div class="content">
 
-				<div class="title"><h:outputText value="#{message['email']}"/></div>
-				<div class="input">
-					<p:inputText styleClass="kamoska_input" value="#{loginModel.login}"/>
+					<h3>
+						<h:outputText value="#{message['login']}"/>
+					</h3>
+
+					<div class="title"><h:outputText value="#{message['email']}"/></div>
+					<div class="input">
+						<p:inputText styleClass="kamoska_input" value="#{loginModel.login}"/>
+					</div>
+
+					<div class="space_10"/>
+
+
+					<div class="title"><h:outputText value="#{message['password']}"/></div>
+					<div class="input">
+						<p:password styleClass="kamoska_input" feedback="none" value="#{loginModel.password}"/>
+					</div>
+
+					<div class="space_10"/>
+
+					<p:commandButton value="#{message['login']}" styleClass="kamoska_button" id="login-button" action="#{loginController.login}"/>
+
+					<div class="space_10"/>
+
+					<h:outputLink value="">
+						<h:outputText value="#{message['forgotten_password']}"/>
+					</h:outputLink>
+
+
 				</div>
-
-				<div class="space_10"/>
-
-
-				<div class="title"><h:outputText value="#{message['password']}"/></div>
-				<div class="input">
-					<p:password styleClass="kamoska_input" feedback="none" value="#{loginModel.password}"/>
-				</div>
-
-				<div class="space_10"/>
-
-				<p:commandButton value="#{message['login']}" styleClass="kamoska_button" action="#{loginController.login}"/>
-
-				<div class="space_10"/>
-
-				<h:outputLink value="">
-					<h:outputText value="#{message['forgotten_password']}"/>
-				</h:outputLink>
-
-
-			</div>
+			</h:form>
 		</div>
 	</composite:implementation>
 

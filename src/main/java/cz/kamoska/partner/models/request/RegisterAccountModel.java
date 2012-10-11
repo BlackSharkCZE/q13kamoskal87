@@ -16,8 +16,19 @@ public class RegisterAccountModel {
 
 	private PartnerEntity partnerEntity;
 
+	private boolean eulaAgreement=false;
+
+
 	public RegisterAccountModel() {
 		partnerEntity = new PartnerEntity();
+	}
+
+	public boolean isEulaAgreement() {
+		return eulaAgreement;
+	}
+
+	public void setEulaAgreement(boolean eulaAgreement) {
+		this.eulaAgreement = eulaAgreement;
 	}
 
 	public PartnerEntity getPartnerEntity() {

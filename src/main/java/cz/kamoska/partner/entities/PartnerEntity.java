@@ -89,6 +89,10 @@ public class PartnerEntity {
 	private Date activated;
 
 
+	@PrePersist
+	public void prePersist() {
+		dateCreated = Calendar.getInstance().getTime();
+	}
 
 	public PartnerEntity() {
 		dateCreated = Calendar.getInstance().getTime();
