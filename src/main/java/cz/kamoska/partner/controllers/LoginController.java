@@ -4,12 +4,15 @@ import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.models.request.LoginModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
+import cz.kamoska.partner.support.FacesMessageCreate;
+import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -31,7 +34,7 @@ public class LoginController implements Serializable {
 
 	/* Nazvy OUTCOME do navigation.xml pro dany controller */
 	private final String LOGIN_SUCCESSFUL_OUTCOME = "login_successful";
-	private final String LOGIN_FAILED_OUTCOME = "login_failed";
+	private final String LOGIN_FAILED_OUTCOME = null;
 
 	private final String LOGOUT_SUCCESSFUL_OUTCOME = "logout_successful";
 	private final String LOGOUT_FAILED_OUTCOME = "logout_failed";
@@ -43,6 +46,8 @@ public class LoginController implements Serializable {
 	private LoginModel loginModel;
 	@Inject
 	private LoggedInPartner loggedInPartner;
+	@Inject
+	private FacesMessageProvider facesMessageProvider;
 
 	@EJB
 	private PartnerDaoInterface partnerDaoInterface;
@@ -72,9 +77,9 @@ public class LoginController implements Serializable {
 	public String login() {
 
 		PartnerEntity partnerByEmail = partnerDaoInterface.findByEmail(loginModel.getLogin());
-		if (partnerByEmail.getActivated() != null) {
+		if (partnerByEmail != null && partnerByEmail.getActivated() != null) {
 
-			final String currentPassword = MD5.md5(loginModel.getPassword()).toString();
+			final String currentPassword = MD5.md5hexa(loginModel.getPassword()).toUpperCase();
 			if (currentPassword.equals(partnerByEmail.getPassword())) {
 
 				HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -94,22 +99,18 @@ public class LoginController implements Serializable {
 					request.login(loginModel.getLogin(), loginModel.getPassword());
 				} catch (ServletException e) {
 					logger.info("Can not login partner "+loginModel.getLogin(), e);
-					//todo nastavit chybovou zpravu, ze se prihlaseni nezdarilo (spatne udaje?)
+					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 					return null;
 				}
-
 				loggedInPartner.setPartner(partnerByEmail);
 				loggedInPartner.setLoggedInTimestamp(Calendar.getInstance().getTime());
-				return LOGIN_SUCCESSFUL_OUTCOME; // todo nastavit mapovani do pravidel pro akci na login_successful
-
-
+				return LOGIN_SUCCESSFUL_OUTCOME;
 			} else {
-				// todo je zcela jiste chybne heslo, takze musime informovat uzivatele
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 			}
 		} else {
-			//todo navratit chybovou zpravu, ze ucet neni aktivovany
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.account-not-activated"), FacesContext.getCurrentInstance());
 		}
-
 		return LOGIN_FAILED_OUTCOME;
 
 	}

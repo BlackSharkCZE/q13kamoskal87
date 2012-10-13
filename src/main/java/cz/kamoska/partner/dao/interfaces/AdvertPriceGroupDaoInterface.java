@@ -5,6 +5,7 @@ import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,5 +23,11 @@ public interface AdvertPriceGroupDaoInterface extends DaoInterface<AdvertPriceGr
 	 * @return nalezena cenova skupina
 	 */
 	AdvertPriceGroupEntity findNextForPartner(PartnerEntity partnerEntity);
+
+	/**
+	 * Hleda vsehny cenove hladiny registrovane v systemu.
+	 * @return seznam nalezenych nastavenych cenovych skupin
+	 */
+	List<AdvertPriceGroupEntity> getAll();
 
 }

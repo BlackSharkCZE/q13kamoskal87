@@ -35,4 +35,11 @@ public interface PartnerDaoInterface extends DaoInterface<PartnerEntity> {
 	 * @return
 	 */
 	boolean createLoginRoleView();
+
+	/**
+	 * Hleda partnera podle HASH z potvrzovaciho emailu
+	 * @param emailConfirmationHash potvrzovaci hash z emailu
+	 * @return nalezeny partner nebo null pokud nalezeny nebyl
+	 */
+	PartnerEntity findByEmailConfirmationHash(final String emailConfirmationHash);
 }

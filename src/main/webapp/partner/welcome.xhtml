@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title><h:outputText value="#{message['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+
+		<ui:define name="content">
+
+
+			<div class="main_menu_bar">
+				<ul class="main_menu">
+					<li class="item current">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.home-page']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.sponzored-tips']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.account']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.payments']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item last">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu-notification']}"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+
+			<h:form>
+			<div class="notification-spacer">
+
+				<p:messages id="errors" />
+
+
+					<div class="notification">
+						<div class="header">
+							<table>
+								<tr>
+									<th class="left">
+										<h:outputText value="#{message['notification']}"/> (1/1)
+									</th>
+									<th class="right">
+										&nbsp;
+									</th>
+								</tr>
+							</table>
+						</div>
+						<div class="content">
+							<div class="text">
+								<h4>
+									Vítejte v partnerském reklamním systému Kámoška.cz
+								</h4>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum. Lorem ipsum lolor sit amet, consectetur elit. Praesent dictum convallis ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum. Lorem ipsum lolor sit amet, consectetur elit. Praesent dictum.
+							</div>
+							<p:spacer height="30px" />
+
+							<table class="welcome w700">
+								<tr>
+									<td class="left">1.</td>
+									<td class="right">
+										<div class="text">
+											<h4>
+												Vytvořte si první sadu reklam
+											</h4>
+											<p>
+												V každé sadě reklam si máte možnost nastavit až 5 sponzorovaných tipů. Počet sad je neomezen, přičemž každá sada je zpoplatněna ročním poplatkem. Všechny sponzorované tipy se zobrazují náhodně, žádný není nijak zvýhodněn.
+											</p>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="left">&nbsp;</td>
+									<td class="right">
+										<div class="text">
+											<h4>Roční cena sady reklam</h4>
+											<table>
+												<ui:repeat value="#{advertPriceGroupDaoModel.allItems}" var="item">
+													<tr>
+														<td style="padding-right:20px;"><h:outputText value="#{item.name}"/></td>
+														<td>
+															<h:outputText value="#{item.priceCzk}">
+																<f:convertNumber maxFractionDigits="0" />
+															</h:outputText> Kč / <h:outputText value="#{item.duration}"/> dnů
+														</td>
+													</tr>
+
+												</ui:repeat>
+											</table>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="left">2.</td>
+									<td class="right">
+										<div class="text">
+											<h4>Nastavte reklamy</h4>
+											Nastavte si požadované reklamy, nebo využijte svého XML pro Zbozi.cz a nechte systém náhodně zobrazovat vaše zboží z tohoto XML jako sponzorované tipy. Využijte naplno celou sadu a nastavte všech 5 sponzorovaných tipů.
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="left">3.</td>
+									<td class="right">
+										<div class="text">
+											<h4>Vaše reklamy osloví až 90 000 dívek měsíčně</h4>
+											Nastavte si požadované reklamy, nebo využijte svého XML pro Zbozi.cz a nechte systém náhodně zobrazovat vaše zboží z tohoto XML jako sponzorované tipy. Využijte naplno celou sadu a nastavte všech 5 sponzorovaných tipů.
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+			</div>
+				<p:spacer width="20px" />
+				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{message['create-firtst-advert-group']}" styleClass="kamoska_button green small" update="errors" />
+
+				<div style="position: absolute;top:300px; left:800px; z-index: 1000;width:210px;">
+					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{message['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
+
+				</div>
+
+			</h:form>
+
+
+
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

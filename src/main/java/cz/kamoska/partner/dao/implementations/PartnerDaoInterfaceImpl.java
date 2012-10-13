@@ -7,6 +7,8 @@ import cz.kamoska.partner.enums.PartnerGroups;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,8 +40,16 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 	}
 
 	@Override
+	public PartnerEntity findByEmailConfirmationHash(String emailConfirmationHash) {
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("cHash", emailConfirmationHash);
+		return findSingleByNamedQuery("PartnerEntity.findByConfirmationEmail", params);
+	}
+
+	@Override
 	public PartnerEntity findByEmail(String email) {
-		//todo implement body
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("email", email);
+		return findSingleByNamedQuery("PartnerEntity.findByEmail", params);
 	}
 }

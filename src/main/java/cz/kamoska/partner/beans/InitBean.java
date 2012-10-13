@@ -1,7 +1,9 @@
 package cz.kamoska.partner.beans;
 
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
+import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
+import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import net.airtoy.encryption.MD5;
@@ -13,6 +15,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -36,12 +39,14 @@ public class InitBean implements Serializable  {
 
 	@EJB
 	private PartnerDaoInterface partnerDao;
+	@EJB
+	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
 
 	@PostConstruct
 	public void init() {
 		if (!partnerDao.createLoginRoleView()) {
 			logger.info("Can not create Login_Role_view");
-		};
+		}
 		if (partnerDao.getPartnerCountByGroup(PartnerGroups.GROUP_ADMIN) == 0) {
 			//zadny administrator v systemu neni, takze se vytvori defaultni
 			PartnerEntity partnerEntity = new PartnerEntity();
@@ -65,6 +70,25 @@ public class InitBean implements Serializable  {
 				logger.fatal("There is not ADMIN in database and it is not possible to create admin!");
 			}
 		}
+
+		if (advertPriceGroupDaoInterface.getAll().isEmpty()) {
+			logger.info("There is not any AdvertPriceGroup. Create default.");
+			// nejosu zadne platebni skupiny, takze si vytvorime 1. testovaci
+			AdvertPriceGroupEntity apge = new AdvertPriceGroupEntity();
+			apge.setDateCreated(Calendar.getInstance().getTime());
+			apge.setDuration(365);
+			apge.setName("První sada reklam");
+			apge.setoIndex(1);
+			apge.setPriceCzk(BigDecimal.valueOf(1200));
+			SaveDomainResult<AdvertPriceGroupEntity> save = advertPriceGroupDaoInterface.save(apge);
+			if (save.success) {
+				logger.info("Default APGE created: " + save.item);
+			} else {
+				logger.error("Can not save default APGE: " + apge);
+			}
+
+		}
+
 	}
 
 }

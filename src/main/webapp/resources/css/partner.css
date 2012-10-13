@@ -1,0 +1,162 @@
+#page {
+    width:1150px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+
+#header {
+    width:1150px;
+    height: 40px;
+}
+
+#header .title {
+    float:left;
+    width:575px;
+    height: 40px;
+    text-align: left;
+    font-size: 18px;
+    color:black;
+}
+
+#header .login {
+    float:left;
+    width:575px;
+    height: 40px;
+    text-align: right;
+}
+
+#header .login .content {
+    margin-top: 20px;
+    padding-right: 10px;
+}
+
+.main_menu_bar {
+    padding: 8px 0px 8px 0px;
+border:1px solid #EAD1DC;
+
+    width:1150px;
+    background-color:#C27BA0;
+}
+
+.main_menu_bar .main_menu {
+
+list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+.main_menu_bar .main_menu li {display:inline;}
+
+.main_menu_bar .main_menu .item  { padding: 8px 15px 8px 15px; border-right: 1px solid #EAD1DC;}
+.main_menu_bar .main_menu .item a { color:white; font-weight: bold;}
+.main_menu_bar .main_menu .item.current  { background: #4C1130}
+
+.main_menu_bar .main_menu .item .last{ }
+.main_menu_bar .main_menu .item .first{ }
+
+
+.system-message-spacer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.system-message {
+    padding: 8px;
+    background: #FFF6E0;
+    border: 1px solid#FFE599;
+}
+
+.system-message p {
+    padding: 0;
+    margin: 0;
+}
+
+.notification-spacer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.notification {
+    border:1px solid #D9D9D9;
+}
+
+.notification .header {
+    background: #EFEFEF;
+    border-bottom:1px solid #D9D9D9;
+}
+
+.notification .header table {
+    width:100%;
+}
+
+.notification .header th {
+    padding: 8px 10px 8px 10px;
+}
+
+.notification .header th.left {
+    text-align: left;
+}
+
+.notification .header th.right {
+    text-align: right;
+}
+
+.notification .content {
+    padding: 10px;
+}
+
+.notification .content td {
+    padding-bottom: 12px;
+}
+
+.notification .content td.right {
+
+    color:#666666;
+}
+
+.notification .content td.left {
+    width:80px;
+}
+
+.notification .content td a {
+    font-weight: bold;
+}
+
+.notification table.welcome td {
+    padding-bottom: 20px;
+}
+
+table.welcome td.left {
+    font-size: 48px;
+
+}
+
+
+
+
+.kamoska_button.green {
+    background: #38761D;
+    color:white;
+    text-shadow: none;
+    font-weight: bold;
+}
+
+.kamoska_button.green.small {
+    font-size:10px;
+}
+
+.kamoska_button.green.big {
+    font-size: 14px;
+}
+
+a {
+    color: #741B47;
+    text-decoration: none;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+}
+

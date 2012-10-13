@@ -17,6 +17,9 @@
 					<h3>
 						<h:outputText value="#{message['login']}"/>
 					</h3>
+					<div>
+						<p:messages id="msgs"/>
+					</div>
 
 					<div class="title"><h:outputText value="#{message['email']}"/></div>
 					<div class="input">
@@ -33,7 +36,7 @@
 
 					<div class="space_10"/>
 
-					<p:commandButton value="#{message['login']}" styleClass="kamoska_button" id="login-button" action="#{loginController.login}"/>
+					<p:commandButton value="#{message['login']}" styleClass="kamoska_button" id="login-button" update="msgs" action="#{loginController.login}"/>
 
 					<div class="space_10"/>
 

@@ -1,5 +1,7 @@
 package cz.kamoska.partner.entities;
 
+import net.airtoy.encryption.MD5;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
@@ -15,7 +17,9 @@ import java.util.List;
  */
 
 @NamedQueries({
-		@NamedQuery(name = "PartnerEntity.findCountByGroup", query = "SELECT count(p) FROM PartnerEntity p WHERE :group MEMBER OF p.roles")
+		@NamedQuery(name = "PartnerEntity.findCountByGroup", query = "SELECT count(p) FROM PartnerEntity p WHERE :group MEMBER OF p.roles"),
+		@NamedQuery(name = "PartnerEntity.findByConfirmationEmail", query = "SELECT p FROM PartnerEntity p WHERE p.emailConfirmationHash = :cHash"),
+		@NamedQuery(name = "PartnerEntity.findByEmail", query = "SELECT p FROM PartnerEntity p WHERE p.email = :email")
 })
 
 @NamedNativeQueries({
@@ -88,10 +92,15 @@ public class PartnerEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date activated;
 
+	@NotNull
+	@Column(name = "email_confirmation_hash", length = 64)
+	private String emailConfirmationHash;
+
 
 	@PrePersist
 	public void prePersist() {
 		dateCreated = Calendar.getInstance().getTime();
+		emailConfirmationHash = MD5.md5hexa(email + ":" + dateCreated.getTime());
 	}
 
 	public PartnerEntity() {
@@ -217,5 +226,13 @@ public class PartnerEntity {
 
 	public void setDic(String dic) {
 		this.dic = dic;
+	}
+
+	public String getEmailConfirmationHash() {
+		return emailConfirmationHash;
+	}
+
+	public void setEmailConfirmationHash(String emailConfirmationHash) {
+		this.emailConfirmationHash = emailConfirmationHash;
 	}
 }

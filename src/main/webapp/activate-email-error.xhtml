@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ct="http://java.sun.com/jsf/composite/custom-components"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title><h:outputText value="#{message['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/public_template.xhtml">
+
+		<ui:define name="header">
+			<h1>partner.kamoska.cz</h1>
+
+			<h2>Přihlášení k účtu</h2>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<div class="left">
+
+				<div class="menu_left_bar">
+					<ul class="menu_left">
+						<li class="menu_left_item current">
+							<h:outputLink value="">
+								<h:outputText value="#{message['how_does_it_works']}"/>
+							</h:outputLink>
+						</li>
+						<li class="menu_left_item">
+							<h:outputLink value="">
+								<h:outputText value="#{message['why_it_works']}"/>
+							</h:outputLink>
+						</li>
+						<li class="menu_left_item">
+							<h:outputLink value="">
+								<h:outputText value="#{message['payment']}"/>
+							</h:outputLink>
+						</li>
+						<li class="menu_left_item last">
+							<h:outputLink value="">
+								<h:outputText value="#{message['satisfied_partners']}"/>
+							</h:outputLink>
+						</li>
+					</ul>
+				</div>
+
+
+				<div class="content_bar">
+					<div class="inner_content">
+Activate EMAIL ERROR
+					</div>
+				</div>
+			</div>
+
+			<div class="right">
+
+				<ct:login />
+
+			</div>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

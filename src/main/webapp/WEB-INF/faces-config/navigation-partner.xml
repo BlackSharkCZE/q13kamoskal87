@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
-              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+			  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
 
-    <navigation-rule>
-        <description>Navigation rules for all PARTNER pages</description>
-        <from-view-id>*</from-view-id>
-    </navigation-rule>
+	<navigation-rule>
+		<description>Navigation rules for all PARTNER pages</description>
+		<from-view-id>*</from-view-id>
+
+		<navigation-case>
+			<description>
+				Pokud je nekde vyvolano login_successful, posleme uzivatele na jeho domovskou stranku
+			</description>
+			<from-outcome>login_successful</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
+		<navigation-case>
+			<description>
+				V pripade ze je zavolano logout successful posleme uzivatele na titulni stranky webu
+			</description>
+			<from-outcome>logout_successful</from-outcome>
+			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/partner/welcome.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>first-advert-bundle-created</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 
 </faces-config>

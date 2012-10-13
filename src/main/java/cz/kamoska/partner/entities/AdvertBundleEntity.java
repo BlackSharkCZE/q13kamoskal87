@@ -18,6 +18,8 @@ public class AdvertBundleEntity {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(generator = "AdvertBundleIdGenerator")
+	@SequenceGenerator(name = "AdvertBundleIdGenerator", sequenceName = "advert_bundle_id_seq", allocationSize = 1)
 	private Integer id;
 
 	@NotNull
@@ -29,12 +31,10 @@ public class AdvertBundleEntity {
 	@Column(name = "name")
 	private String name;
 
-	@NotNull
 	@Column(name = "valid_from")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date validFrom;
 
-	@NotNull
 	@Column(name = "valid_to")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date validTo;
@@ -50,6 +50,78 @@ public class AdvertBundleEntity {
 	private List<AdvertEntity> advertEntityList;
 
 	@ManyToOne
+	@JoinColumn(nullable = false)
 	private PartnerEntity partnerEntity;
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Date getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Date validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Date getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(Date validTo) {
+		this.validTo = validTo;
+	}
+
+	public Date getExpirationNotificationSent() {
+		return expirationNotificationSent;
+	}
+
+	public void setExpirationNotificationSent(Date expirationNotificationSent) {
+		this.expirationNotificationSent = expirationNotificationSent;
+	}
+
+	public AdvertPriceGroupEntity getAdvertPriceGroupEntity() {
+		return advertPriceGroupEntity;
+	}
+
+	public void setAdvertPriceGroupEntity(AdvertPriceGroupEntity advertPriceGroupEntity) {
+		this.advertPriceGroupEntity = advertPriceGroupEntity;
+	}
+
+	public List<AdvertEntity> getAdvertEntityList() {
+		return advertEntityList;
+	}
+
+	public void setAdvertEntityList(List<AdvertEntity> advertEntityList) {
+		this.advertEntityList = advertEntityList;
+	}
+
+	public PartnerEntity getPartnerEntity() {
+		return partnerEntity;
+	}
+
+	public void setPartnerEntity(PartnerEntity partnerEntity) {
+		this.partnerEntity = partnerEntity;
+	}
 }
