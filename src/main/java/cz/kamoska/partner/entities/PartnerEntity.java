@@ -103,6 +103,9 @@ public class PartnerEntity {
 		emailConfirmationHash = MD5.md5hexa(email + ":" + dateCreated.getTime());
 	}
 
+
+
+
 	public PartnerEntity() {
 		dateCreated = Calendar.getInstance().getTime();
 	}

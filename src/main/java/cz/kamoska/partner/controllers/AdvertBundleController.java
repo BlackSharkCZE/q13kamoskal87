@@ -42,7 +42,6 @@ public class AdvertBundleController implements Serializable {
 	private AdvertBundleDaoInterface advertBundleDaoInterface;
 
 	public String createEmptyAdvertBundle(PartnerEntity partnerEntity) {
-
 		if (partnerEntity.getAdvertBundleEntityList() == null) {
 			partnerEntity.setAdvertBundleEntityList(new ArrayList<AdvertBundleEntity>(5));
 		}
@@ -63,9 +62,15 @@ public class AdvertBundleController implements Serializable {
 			logger.error("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert-bundle.create.failed"), FacesContext.getCurrentInstance());
 		}
-
 		return null;
+	}
 
+	public void updateBundleName(AdvertBundleEntity advertBundleEntity) {
+		SaveDomainResult<AdvertBundleEntity> update = advertBundleDaoInterface.update(advertBundleEntity);
+		if (!update.success) {
+			logger.error("Can not update AdvertBundle (Change Name): " + advertBundleEntity);
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_WARN,facesMessageProvider.getLocalizedMessage("bundle.change.name.failed").replace("{0}", advertBundleEntity.getName()), FacesContext.getCurrentInstance());
+		}
 	}
 
 }

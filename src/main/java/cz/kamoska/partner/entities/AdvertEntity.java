@@ -61,4 +61,98 @@ public class AdvertEntity {
 	@Column(name = "view_count")
 	private Integer viewCount;
 
+	@Column(name = "reject_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date rejectDate;
+
+	@Column(name = "reject_message", columnDefinition = "TEXT")
+	private String rejectMessage;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getPictureFileName() {
+		return pictureFileName;
+	}
+
+	public void setPictureFileName(String pictureFileName) {
+		this.pictureFileName = pictureFileName;
+	}
+
+	public AdvertState getState() {
+		return state;
+	}
+
+	public void setState(AdvertState state) {
+		this.state = state;
+	}
+
+	public List<SectionEntity> getSectionEntityList() {
+		return sectionEntityList;
+	}
+
+	public void setSectionEntityList(List<SectionEntity> sectionEntityList) {
+		this.sectionEntityList = sectionEntityList;
+	}
+
+	public Integer getViewCount() {
+		return viewCount;
+	}
+
+	public void setViewCount(Integer viewCount) {
+		this.viewCount = viewCount;
+	}
+
+	public Date getRejectDate() {
+		return rejectDate;
+	}
+
+	public void setRejectDate(Date rejectDate) {
+		this.rejectDate = rejectDate;
+	}
+
+	public String getRejectMessage() {
+		return rejectMessage;
+	}
+
+	public void setRejectMessage(String rejectMessage) {
+		this.rejectMessage = rejectMessage;
+	}
 }

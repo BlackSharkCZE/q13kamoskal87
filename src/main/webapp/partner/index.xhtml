@@ -12,7 +12,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">
+	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
 	<title><h:outputText value="#{message['web_title']}"/></title>
@@ -105,17 +105,95 @@
 
 				<h:panelGroup id="bundle-list">
 					<ui:repeat value="#{loggedInPartner.partner.advertBundleEntityList}" var="bundle">
-						<h:outputText value="#{bundle.name}"/><br/>
+
+
+						<div class="advert">
+							<div class="header">
+								<table>
+									<tr>
+										<td class="left">
+											<p:inplace editor="true">
+												<p:inputText value="#{bundle.name}" required="true" requiredMessage="#{message['bundle.name.required']}"/>
+												<p:ajax event="save" listener="#{advertBundleController.updateBundleName(bundle)}"/>
+											</p:inplace>
+										</td>
+										<td class="right">
+
+											<h:panelGroup rendered="#{bundle.validTo!=null}">
+												<h:outputText value="#{message['valid-until']}"/>
+												<h:outputText value="#{bundle.validTo}">
+													<f:convertDateTime pattern="d.M.yy"/>
+												</h:outputText>
+											</h:panelGroup>
+
+											<h:panelGroup rendered="#{bundle.validTo==null}">
+												<h:outputText value="#{message['inactive']}"/>
+											</h:panelGroup>
+
+										</td>
+									</tr>
+								</table>
+							</div>
+
+							<table class="tips">
+								<tr>
+									<th>Sponozorovany tip</th>
+									<th>Sekce</th>
+									<th>Stav</th>
+									<th>Akce</th>
+								</tr>
+
+								<ui:repeat value="#{bundle.advertEntityList}" var="advert">
+									<tr>
+										<td>hello</td>
+										<td>1</td>
+										<td>2</td>
+										<td>3</td>
+									</tr>
+								</ui:repeat>
+
+								<ui:repeat value="#{bundle.advertSpacer}" var="s">
+									<tr>
+										<td class="tip">
+											<div class="image"></div>
+											<div class="text">
+												<h1>
+													Lorem ipsum dolor sit amet
+												</h1>
+
+												<p>
+													Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare.
+												</p>
+											</div>
+											<div class="clear"/>
+										</td>
+										<td class="section">&nbsp;</td>
+										<td class="state">&nbsp;</td>
+										<td class="action">
+											<p:commandButton value="#{message['new-advert']}" action="#{advertController.createNewAdvert}" styleClass="kamoska_button light-green">
+												<f:setPropertyActionListener value="#{bundle}" target="#{advertBundleModel.currentItem}" />
+											</p:commandButton>
+										</td>
+
+									</tr>
+								</ui:repeat>
+
+							</table>
+
+						</div>
+						<p:spacer height="20px"/>
 					</ui:repeat>
-
-
 				</h:panelGroup>
+
+				<div class="clear"/>
 
 				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
 								 styleClass="kamoska_button green small"
-								 value="#{message['create-firtst-advert-group']}" update="errors bundle-list"/>
+								 value="#{message['add-advert-group']}" update="errors bundle-list"/>
 
 			</h:form>
+
+			<p:spacer height="50px"/>
 
 		</ui:define>
 

@@ -37,4 +37,15 @@
 		</navigation-case>
 	</navigation-rule>
 
+
+	<navigation-rule>
+		<from-view-id>/partner/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>create-new-advert</from-outcome>
+			<to-view-id>/partner/pridat-tip.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+
+
 </faces-config>

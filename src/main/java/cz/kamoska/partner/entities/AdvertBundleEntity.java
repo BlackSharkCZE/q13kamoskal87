@@ -1,5 +1,7 @@
 package cz.kamoska.partner.entities;
 
+import cz.kamoska.partner.enums.AdvertState;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -52,6 +54,26 @@ public class AdvertBundleEntity {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private PartnerEntity partnerEntity;
+
+
+	@NotNull
+	@Column(name = "status")
+	@Enumerated(EnumType.STRING)
+	private AdvertState status;
+
+	@Column(name = "reject_message", columnDefinition = "TEXT")
+	private String rejectMessage;
+
+
+	public AdvertBundleEntity() {
+		status = AdvertState.WAITING_TO_ACK;
+	}
+
+	public Object[] getAdvertSpacer() {
+		int a = advertEntityList == null ? 5 : 5 - advertEntityList.size();
+		return new Object[a];
+	}
+
 
 	public Integer getId() {
 		return id;
@@ -123,5 +145,21 @@ public class AdvertBundleEntity {
 
 	public void setPartnerEntity(PartnerEntity partnerEntity) {
 		this.partnerEntity = partnerEntity;
+	}
+
+	public AdvertState getStatus() {
+		return status;
+	}
+
+	public void setStatus(AdvertState status) {
+		this.status = status;
+	}
+
+	public String getRejectMessage() {
+		return rejectMessage;
+	}
+
+	public void setRejectMessage(String rejectMessage) {
+		this.rejectMessage = rejectMessage;
 	}
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title><h:outputText value="#{message['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+
+		<ui:define name="content">
+
+
+			<div class="main_menu_bar">
+				<ul class="main_menu">
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.home-page']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item current">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.sponzored-tips']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.account']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu.payments']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item last">
+						<h:outputLink value="">
+							<h:outputText value="#{message['partner.menu-notification']}"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+
+
+			<h:form>
+
+			</h:form>
+
+			<p:spacer height="50px"/>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

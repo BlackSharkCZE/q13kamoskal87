@@ -133,7 +133,9 @@ table.welcome td.left {
 }
 
 
-
+.kamoska_button {
+    text-shadow: none;
+}
 
 .kamoska_button.green {
     background: #38761D;
@@ -150,6 +152,14 @@ table.welcome td.left {
     font-size: 14px;
 }
 
+.kamoska_button.light-green {
+    border:1px solid #38761D;
+    background: #6AA84F;
+    color:white;
+    font-weight: bold;
+    font-size: 10px;
+}
+
 a {
     color: #741B47;
     text-decoration: none;
@@ -160,3 +170,78 @@ p {
     margin: 0;
 }
 
+
+
+.advert table.tips {
+    width: 100%;
+    border: 1px solid #D9D9D9;
+}
+
+.advert .header table {
+    border:none;
+    width:100%;
+}
+.advert .header table td {
+    padding: 10px;
+}
+.advert .header table td.left {
+
+    font-size: 12px;
+    font-weight: bold;
+}
+.advert .header table td.right {
+    text-align: right;
+}
+
+
+.advert table.tips th {
+    text-align: left;
+    background: #EFEFEF;
+    padding: 8px 8px;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+
+.advert table.tips td.action {
+    width:200px;
+    text-align: center;
+
+}
+
+.advert table.tips td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+}
+
+.advert table.tips td.tip { width: 640px; }
+.advert table.tips td.section { width: 180px; }
+.advert table.tips td.state {width: 180px; }
+.advert table.tips td.action { border-right: none; }
+
+.advert table.tips td.tip .image {
+    width:60px;
+    height: 60px;
+    border: 1px solid #EFEFEF;
+    float:left;
+    background: #EFEFEF;
+}
+
+.advert table.tips td.tip .text {
+    float:left;
+    padding-left: 15px;
+}
+
+.advert table.tips td.tip .text h1 {
+ color:#D9D9D9;
+    padding: 0px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.advert table.tips td.tip .text p {
+    color:#D9D9D9;
+    padding: 0px;
+    font-size: 10px;
+    font-weight: normal;
+}
