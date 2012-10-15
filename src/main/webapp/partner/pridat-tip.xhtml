@@ -56,7 +56,80 @@
 			</div>
 
 
-			<h:form>
+			<h:form enctype="multipart/form-data">
+
+				<p:growl id="messages" />
+
+
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="#{message['title']}: "/>
+						</td>
+						<td>
+							<p:inputText value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{message['advert.title.required']}" validatorMessage="#{message['advert.title.too-long']}">
+								<f:validateLength maximum="50"/>
+								<p:ajax event="keyup" update="atitle" />
+
+							</p:inputText>
+							&nbsp;
+							<span class="counter" id="title_counter">(0/50)</span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="#{message['advert.description']}:"/>
+						</td>
+						<td>
+							<p:inputTextarea value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{message['advert.body.required']}" validatorMessage="#{message['advert.body.too-long']}">
+								<f:validateLength maximum="90" />
+							</p:inputTextarea>
+							<div class="counter" id="body_counter">(0/90)</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="#{message['advert.destination']}: "/>
+						</td>
+						<td>
+							<span class="counter">http://</span>
+							<p:inputText value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{message['advert.link.required']}" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<h:outputText value="#{message['advert.picture']}: "/>
+						</td>
+						<td>
+							<p:fileUpload mode="advanced"
+										  multiple="false"
+										  auto="true"
+										  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+										  sizeLimit="100000"
+										  fileUploadListener="#{advertController.handleFileUpload}"
+										  update="messages image advert_file_name" />
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</table>
+
+
+				<div>
+
+					<p:graphicImage url="#{advertController.imagePreviewUrl}" id="image" />
+					<h:outputText value="#{advertModel.advertEntity.title}" id="atitle"/>
+
+				</div>
+
+
+				<p:inputText value="#{advertModel.advertFileName}" id="advert_file_name" />
 
 			</h:form>
 
