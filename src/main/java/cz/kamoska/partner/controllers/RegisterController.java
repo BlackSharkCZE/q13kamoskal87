@@ -1,5 +1,6 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
@@ -17,8 +18,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 
 /**
@@ -58,6 +63,15 @@ public class RegisterController {
 		if (saveResult.success) {
 			logger.info("Save new partner with ID:" + saveResult.item.getId());
 			sendConfirmationEmail(saveResult.item, textPassword);
+
+			Path path = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH,saveResult.item.getId()+"/src");
+			try {
+				Files.createDirectories(path);
+			} catch (IOException e) {
+				logger.error("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
+			}
+
+
 			return REGISTER_SUCCESSFUL_OUTCOME;
 		} else {
 			logger.info("Can not save Partner " + partnerEntity);

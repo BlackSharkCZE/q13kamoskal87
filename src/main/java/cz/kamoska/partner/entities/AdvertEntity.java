@@ -45,10 +45,6 @@ public class AdvertEntity {
 	private String url;
 
 	@NotNull
-	@Column(name = "picture")
-	private String pictureFileName; // nazev souboru, ktery se pouzije jako obrazek. Obrazek musi byt ulozeny nekde v systemu a tedy musi existovat provider (Servlet) na ziskavani obrazku
-
-	@NotNull
 	@Column(name = "state")
 	@Enumerated(EnumType.STRING)
 	private AdvertState state;
@@ -67,6 +63,12 @@ public class AdvertEntity {
 
 	@Column(name = "reject_message", columnDefinition = "TEXT")
 	private String rejectMessage;
+
+	@NotNull
+	@OneToOne
+	@JoinColumn(name = "picture_id")
+	private PictureEntity pictureEntity;
+
 
 	public Integer getId() {
 		return id;
@@ -106,14 +108,6 @@ public class AdvertEntity {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getPictureFileName() {
-		return pictureFileName;
-	}
-
-	public void setPictureFileName(String pictureFileName) {
-		this.pictureFileName = pictureFileName;
 	}
 
 	public AdvertState getState() {

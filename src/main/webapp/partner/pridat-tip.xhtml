@@ -69,7 +69,7 @@
 						<td>
 							<p:inputText value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{message['advert.title.required']}" validatorMessage="#{message['advert.title.too-long']}">
 								<f:validateLength maximum="50"/>
-								<p:ajax event="keyup" update="atitle" />
+								<!--p:ajax event="keyup" update="atitle" /-->
 
 							</p:inputText>
 							&nbsp;
@@ -105,9 +105,9 @@
 										  multiple="false"
 										  auto="true"
 										  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-										  sizeLimit="100000"
+										  sizeLimit="1000000"
 										  fileUploadListener="#{advertController.handleFileUpload}"
-										  update="messages image advert_file_name" />
+										  />
 						</td>
 					</tr>
 					<tr>
@@ -123,13 +123,12 @@
 
 				<div>
 
-					<p:graphicImage url="#{advertController.imagePreviewUrl}" id="image" />
-					<h:outputText value="#{advertModel.advertEntity.title}" id="atitle"/>
+
 
 				</div>
 
 
-				<p:inputText value="#{advertModel.advertFileName}" id="advert_file_name" />
+
 
 			</h:form>
 

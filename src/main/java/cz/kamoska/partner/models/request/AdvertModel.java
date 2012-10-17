@@ -16,18 +16,10 @@ import javax.enterprise.inject.Model;
 public class AdvertModel {
 
 	private AdvertEntity advertEntity;
-	private String advertFileName;
+
 
 	public AdvertModel() {
 		advertEntity = new AdvertEntity();
-	}
-
-	public String getAdvertFileName() {
-		return advertFileName;
-	}
-
-	public void setAdvertFileName(String advertFileName) {
-		this.advertFileName = advertFileName;
 	}
 
 	public AdvertEntity getAdvertEntity() {
