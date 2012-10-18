@@ -4,6 +4,7 @@ import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.SectionEntity;
 
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +15,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface SectionDaoInterface extends DaoInterface<SectionEntity> {
+
+	List<SectionEntity> findAll();
+
+	List<SectionEntity> findAllAlwaysSelected();
+
 }

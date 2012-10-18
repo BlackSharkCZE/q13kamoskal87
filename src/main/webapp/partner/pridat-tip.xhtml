@@ -56,80 +56,190 @@
 			</div>
 
 
+			<h1>
+				Editace reklamy sady - Sada reklam 1
+			</h1>
+
+
 			<h:form enctype="multipart/form-data">
 
-				<p:growl id="messages" />
+				<div class="tip-form">
 
 
-				<table>
-					<tr>
-						<td>
-							<h:outputText value="#{message['title']}: "/>
-						</td>
-						<td>
-							<p:inputText value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{message['advert.title.required']}" validatorMessage="#{message['advert.title.too-long']}">
-								<f:validateLength maximum="50"/>
-								<!--p:ajax event="keyup" update="atitle" /-->
+					<p:growl id="messages"/>
 
-							</p:inputText>
-							&nbsp;
-							<span class="counter" id="title_counter">(0/50)</span>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h:outputText value="#{message['advert.description']}:"/>
-						</td>
-						<td>
-							<p:inputTextarea value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{message['advert.body.required']}" validatorMessage="#{message['advert.body.too-long']}">
-								<f:validateLength maximum="90" />
-							</p:inputTextarea>
-							<div class="counter" id="body_counter">(0/90)</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h:outputText value="#{message['advert.destination']}: "/>
-						</td>
-						<td>
-							<span class="counter">http://</span>
-							<p:inputText value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{message['advert.link.required']}" />
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<h:outputText value="#{message['advert.picture']}: "/>
-						</td>
-						<td>
-							<p:fileUpload mode="advanced"
-										  multiple="false"
-										  auto="true"
-										  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-										  sizeLimit="1000000"
-										  fileUploadListener="#{advertController.handleFileUpload}"
-										  />
-						</td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td></td>
-						<td></td>
-					</tr>
-				</table>
+					<div class="text" style="padding: 10px 10px 50px 10px;">
+						Zadejte reklamu Sponzorovaný tip. Formulujte ji jasně a přesně.
+						<h:outputLink value="">Potřebuji pomoci s tvorbou kvalitní reklamy.</h:outputLink>
+					</div>
+
+					<div class="create-tip-left">
+						<div class="padding">
+							<table>
+								<tr>
+									<td>
+										<h:outputText value="#{message['title']}: "/>
+									</td>
+									<td>
+										<p:inputText id="title" value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{message['advert.title.required']}" validatorMessage="#{message['advert.title.too-long']}">
+											<f:validateLength maximum="50"/>
+											<p:ajax event="keyup" update="link-tip1-title link-tip2-title"/>
+										</p:inputText>
+										&nbsp;
+										<span class="counter" id="title_counter">(0/50)</span>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{message['advert.description']}:"/>
+									</td>
+									<td>
+										<p:inputTextarea id="body" value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{message['advert.body.required']}" validatorMessage="#{message['advert.body.too-long']}">
+											<f:validateLength maximum="90"/>
+											<p:ajax event="keyup" update="link-tip1-body link-tip2-body"/>
+										</p:inputTextarea>
+
+										<div class="counter" id="body_counter">(0/90)</div>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<h:outputText value="#{message['advert.destination']}: "/>
+									</td>
+									<td>
+										<span class="counter">http://</span>
+										<p:inputText id="link" value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{message['advert.link.required']}"/>
+									</td>
+								</tr>
+
+								<tr>
+									<td><h:outputText value="#{message['section']}: "/></td>
+									<td>
+
+										<p:selectManyCheckbox value="#{advertModel.advertEntity.sectionEntityList}" converter="advertSectionConverter" layout="pageDirection">
+											<f:selectItems value="#{advertSectionModel.all}" var="s" itemLabel="#{message[s.name]}" itemValue="#{s}"/>
+										</p:selectManyCheckbox>
+
+									</td>
+								</tr>
 
 
-				<div>
+								<tr>
+									<td>
+										<h:outputText value="#{message['advert.picture']}: "/>
+									</td>
+									<td>
+										<p:fileUpload mode="advanced"
+													  multiple="false"
+													  auto="true"
+													  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+													  sizeLimit="1000000"
+													  fileUploadListener="#{advertController.handleFileUpload}"
+													  update="img_preview1 img_preview2"
+												/>
+									</td>
+								</tr>
+
+							</table>
+
+							<div class="info">
+								<p>
+									Maximální možná velikost obrázku je 200 kB, obrázek bude dále automaticky oříznut na velikost 60x60 px
+								</p>
+
+								<p>
+									Podporované formáty: GIF, JPG, PNG
+								</p>
+							</div>
+
+							<div class="info">
+
+								<ul>
+									<li>Výsledná velikost obrázku je 60x60 px</li>
+									<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare</li>
+								</ul>
+
+							</div>
+						</div>
+
+					</div>
+
+					<div class="create-tip-right">
+						<div class="padding">
+
+							<div class="tip">
+								<div class="tip-img">
+									<h:outputLink value="#{advertModel.advertEntity.url}" id="link-tip1">
+										<h:panelGroup id="img_preview1">
+											<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advertController.pictureEntity.id}" rendered="#{advertController.pictureEntity.id!=null}"/>
+											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.jpg" rendered="#{advertController.pictureEntity.id==null}"/>
+										</h:panelGroup>
+									</h:outputLink>
+								</div>
+								<!-- end tip-img -->
+
+								<div class="tip-content">
+									<p class="tip-heading">
+										<h:outputLink value="#{advertModel.advertEntity.url}" target="_blank" id="link-tip1-title">
+											<h:outputText value="#{advertModel.advertEntity.title}"/>
+										</h:outputLink>
+									</p>
+
+									<p>
+										<h:outputText value="#{advertModel.advertEntity.body}" id="link-tip1-body"/>
+									</p>
+								</div>
+								<!-- end tip-content -->
+
+								<div class="tip-text">
+									Sponzorovaný tip
+								</div>
+								<!-- end tip-text -->
+
+								<div class="clear"></div>
+							</div>
+							<!-- end tip -->
 
 
+							<div class="tip-height">
+								<div class="tip-img-height">
+									<h:outputLink value="#{advertModel.advertEntity.url}" id="link-tip2">
+										<h:panelGroup id="img_preview2">
+											<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advertController.pictureEntity.id}" rendered="#{advertController.pictureEntity.id!=null}"/>
+											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.jpg" rendered="#{advertController.pictureEntity.id==null}"/>
+										</h:panelGroup>
+
+									</h:outputLink>
+								</div>
+								<!-- end tip-img -->
+
+								<div class="tip-content-height">
+									<p class="tip-heading">
+										<h:outputLink value="#{advertModel.advertEntity.url}" target="_blank" id="link-tip2-title">
+											<h:outputText value="#{advertModel.advertEntity.title}"/>
+										</h:outputLink>
+									</p>
+
+									<p>
+										<h:outputText value="#{advertModel.advertEntity.body}" id="link-tip2-body"/>
+									</p>
+								</div>
+								<!-- end tip-content -->
+
+								<div class="tip-text-height">
+									Sponzorovaný tip
+								</div>
+								<!-- end tip-text -->
+
+								<div class="clear"></div>
+							</div>
+							<!-- end tip -->
+						</div>
+					</div>
+
+					<div class="clear"></div>
 
 				</div>
-
-
-
-
 			</h:form>
 
 			<p:spacer height="50px"/>

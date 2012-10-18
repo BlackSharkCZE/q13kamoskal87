@@ -245,3 +245,31 @@ p {
     font-size: 10px;
     font-weight: normal;
 }
+
+
+.create-tip-right {
+    float: left;
+    width: 679px;
+    border-left:1px dashed #CCCCCC;
+
+}
+
+.create-tip-right .padding{
+    padding-left: 10px;
+}
+
+
+.create-tip-left {
+    float: left;
+    width: 470px;
+}
+
+.create-tip-left .padding {
+    padding: 10px;
+}
+
+
+.tip-form {
+    padding-top: 10px;
+    background:#EFEFEF;
+}

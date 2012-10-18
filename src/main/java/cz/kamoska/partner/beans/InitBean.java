@@ -3,8 +3,10 @@ package cz.kamoska.partner.beans;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
+import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
 import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
@@ -16,9 +18,9 @@ import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,17 +32,19 @@ import java.util.Calendar;
 @ApplicationScoped
 @Startup
 @Singleton
-public class InitBean implements Serializable  {
+public class InitBean implements Serializable {
 
 	private final Logger logger = Logger.getLogger(InitBean.class);
 
-	private  static final String DEFAULT_LOGIN = "admin@kamoska.cz";
+	private static final String DEFAULT_LOGIN = "admin@kamoska.cz";
 	private static final String DEFAULT_PASSWORD = "adminadmin";
 
 	@EJB
 	private PartnerDaoInterface partnerDao;
 	@EJB
 	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
+	@EJB
+	private SectionDaoInterface sectionDaoInterface;
 
 	@PostConstruct
 	public void init() {
@@ -88,6 +92,60 @@ public class InitBean implements Serializable  {
 			}
 
 		}
+
+		List<SectionEntity> sectionEntities = sectionDaoInterface.findAll();
+		if (sectionEntities == null || sectionEntities.isEmpty()) {
+			//zadne sekce nejsou vytvorene, takze je vytvorime
+			createSections();
+		}
+
+	}
+
+	private void createSections() {
+
+		SectionEntity s1 = new SectionEntity();
+		s1.setAlwaysSelected(false);
+		s1.setName("sex");
+		SaveDomainResult<SectionEntity> saveResult = sectionDaoInterface.save(s1);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s1);
+		}
+		SectionEntity s2 = new SectionEntity();
+		s2.setAlwaysSelected(false);
+		s2.setName("culture");
+		saveResult = sectionDaoInterface.save(s2);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s2);
+		}
+		SectionEntity s3 = new SectionEntity();
+		s3.setAlwaysSelected(false);
+		s3.setName("fashion");
+		saveResult = sectionDaoInterface.save(s3);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s3);
+		}
+		SectionEntity s4 = new SectionEntity();
+		s4.setAlwaysSelected(false);
+		s4.setName("bloggers");
+		saveResult = sectionDaoInterface.save(s4);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s4);
+		}
+		SectionEntity s5 = new SectionEntity();
+		s5.setAlwaysSelected(false);
+		s5.setName("healthy");
+		saveResult = sectionDaoInterface.save(s5);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s5);
+		}
+		SectionEntity s6 = new SectionEntity();
+		s6.setAlwaysSelected(true);
+		s6.setName("main-page");
+		saveResult = sectionDaoInterface.save(s6);
+		if (!saveResult.success) {
+			logger.error("Can not create Section " + s6);
+		}
+
 
 	}
 

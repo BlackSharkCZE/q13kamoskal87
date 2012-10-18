@@ -1,0 +1,33 @@
+body { font-family: Arial; font-size: 13px; color: #333333; }
+
+.tip { width: 642px; height: 74px; position: relative; background-color: #fcf7e3; border-top: 1px solid #eeeeee; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333; margin-bottom: 2px;}
+
+.tip-img { width: 60px; height: 60px; float: left; margin: 7px 10px 0 0; }
+
+.tip-content { width: 565px; margin: 7px 0 0 0; float: left; }
+
+.tip-content p { margin: 0; padding: 0; line-height: 16px; }
+
+.tip-content p.tip-heading { margin: 8px 0 3px 0; font-size: 17px; font-weight: bold; line-height: 21px; }
+
+
+.tip-heading a:link, .tip-heading a:visited { color: #462644; text-decoration: none; }
+
+.tip-heading a:hover, .tip-heading a:active { color: #482744; text-decoration: none; }
+
+
+.tip-text { position: absolute; top: 7px; right: 10px; color: #7f7f7f; text-transform: uppercase; font-size: 9px; font-weight: bold; }
+
+
+
+.tip-height { width: 306px; height: 125px; position: relative; background-color: #fcf7e3; border-top: 1px solid #eeeeee; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333; margin-bottom: 2px;}
+
+.tip-img-height { width: 60px; height: 60px; float: left; margin: 10px 10px 0 10px; }
+
+.tip-content-height { width: 220px; margin: 0 0 0 0; float: left; }
+
+.tip-content-height p { margin: 0; padding: 0; line-height: 16px; }
+
+.tip-content-height p.tip-heading { margin: 8px 0 3px 0; font-size: 17px; font-weight: bold; line-height: 21px; }
+
+.tip-text-height { position: absolute; top: 110px; right: 10px; color: #7f7f7f; text-transform: uppercase; font-size: 9px; font-weight: bold; }
