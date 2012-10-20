@@ -2,9 +2,15 @@ package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
+import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
+import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
+import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.PictureEntity;
+import cz.kamoska.partner.entities.SectionEntity;
+import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.models.request.AdvertModel;
+import cz.kamoska.partner.models.sessions.AdvertBundleModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
@@ -20,9 +26,16 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.file.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,15 +56,72 @@ public class AdvertController implements Serializable {
 	private LoggedInPartner loggedInPartner;
 	@Inject
 	private FacesMessageProvider fmp;
+	@Inject
+	private AdvertBundleModel advertBundleModel;
+	@Inject
+	private FacesMessageProvider facesMessageProvider;
+	@EJB
+	private PictureDaoInterface pictureDaoInterface;
+	@EJB
+	private SectionDaoInterface sectionDaoInterface;
+	@EJB
+	private AdvertDaoInterface advertDaoInterface;
+
+
 
 	private PictureEntity pictureEntity;
 
-	@EJB
-	private PictureDaoInterface pictureDaoInterface;
-
+	public AdvertController() {
+		pictureEntity = new PictureEntity();
+	}
 
 	public String createNewAdvert() {
+
 		return "create-new-advert";
+	}
+
+	public String saveAdvert() {
+
+		String res = null;
+
+		if (advertModel.getAdvertEntity() != null) {
+			// najit obrazek v DB, ktery ma byt prirazeny k reklamne
+			PictureEntity picture = pictureDaoInterface.findByPrimaryKey(PictureEntity.class, pictureEntity.getId());
+			if (picture != null) {
+				advertModel.getAdvertEntity().setPictureEntity(picture);
+				advertModel.getAdvertEntity().setState(AdvertState.WAITING_TO_ACK);
+				List<SectionEntity> requiredSectionEntity = sectionDaoInterface.findAllAlwaysSelected();
+				for (SectionEntity se : requiredSectionEntity) {
+					if (!advertModel.getAdvertEntity().getSectionEntityList().contains(se)) {
+						advertModel.getAdvertEntity().getSectionEntityList().add(se);
+					}
+				}
+				advertModel.getAdvertEntity().setBundleEntity(advertBundleModel.getCurrentItem());
+				SaveDomainResult<AdvertEntity> save = advertDaoInterface.save(advertModel.getAdvertEntity());
+				if (save.success) {
+					logger.info("Advert Entity saved. " + save.item);
+					res = "save-advert-successful";
+				} else {
+					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
+					logger.error("Save advert " + advertModel.getAdvertEntity() + " failed.");
+				}
+
+			} else {
+				logger.warn("Can not find picture entity by ID: " + pictureEntity.getId());
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
+			}
+		} else {
+			logger.warn("Can not save new Advert, becouse advertModel.getAdvertEntity() is null");
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
+
+		}
+
+		return res;
+	}
+
+
+	public String cancelAdvert() {
+		return "cancel-advert";
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
@@ -102,7 +172,7 @@ public class AdvertController implements Serializable {
 
 							SaveDomainResult<PictureEntity> saveResult = pictureDaoInterface.save(pictureEntity);
 							if (!saveResult.success) {
-								logger.warn("Can not save " + pictureEntity  + " to DB!");
+								logger.warn("Can not save " + pictureEntity + " to DB!");
 							}
 
 						} catch (Exception e) {

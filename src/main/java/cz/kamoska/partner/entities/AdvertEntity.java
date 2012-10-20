@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class AdvertEntity {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(generator = "AdvertEntityIdGen")
+	@SequenceGenerator(name = "AdvertEntityIdGen", sequenceName = "advert_id_seq", allocationSize = 10)
 	private Integer id;
 
 	@NotNull
@@ -68,6 +71,21 @@ public class AdvertEntity {
 	@OneToOne
 	@JoinColumn(name = "picture_id")
 	private PictureEntity pictureEntity;
+
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "bundle_id")
+	private AdvertBundleEntity bundleEntity;
+
+	@PrePersist
+	public void prePersist() {
+		if (dateCreated == null) {
+			dateCreated = Calendar.getInstance().getTime();
+		}
+		if (viewCount == null) {
+			viewCount = 0;
+		}
+	}
 
 
 	public Integer getId() {
@@ -148,5 +166,21 @@ public class AdvertEntity {
 
 	public void setRejectMessage(String rejectMessage) {
 		this.rejectMessage = rejectMessage;
+	}
+
+	public PictureEntity getPictureEntity() {
+		return pictureEntity;
+	}
+
+	public void setPictureEntity(PictureEntity pictureEntity) {
+		this.pictureEntity = pictureEntity;
+	}
+
+	public AdvertBundleEntity getBundleEntity() {
+		return bundleEntity;
+	}
+
+	public void setBundleEntity(AdvertBundleEntity bundleEntity) {
+		this.bundleEntity = bundleEntity;
 	}
 }

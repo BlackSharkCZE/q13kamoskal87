@@ -104,7 +104,7 @@
 				</div>
 
 				<h:panelGroup id="bundle-list">
-					<ui:repeat value="#{loggedInPartner.partner.advertBundleEntityList}" var="bundle">
+					<ui:repeat value="#{advertBundleModel.getAdvertBundlesForPartner(loggedInPartner.partner)}" var="bundle">
 
 
 						<div class="advert">
@@ -143,18 +143,60 @@
 									<th>Akce</th>
 								</tr>
 
+
 								<ui:repeat value="#{bundle.advertEntityList}" var="advert">
 									<tr>
-										<td>hello</td>
-										<td>1</td>
-										<td>2</td>
-										<td>3</td>
+										<td class="tip-preview">
+											<div class="image">
+												<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
+											</div>
+											<div class="text">
+												<h1>
+													<h:outputLink target="_blank" value="http://#{advert.url}">
+														<h:outputText value="#{advert.title}"/>
+													</h:outputLink>
+												</h1>
+
+												<p>
+													<h:outputText value="#{advert.body}"/>
+												</p>
+											</div>
+											<div class="clear"/>
+
+											<h:panelGroup rendered="#{advert.state=='REJECTED'}">
+												<p:spacer width="5px" height="10px"/>
+												<div class="reject-message">
+													<div class="title">
+														<h:outputText value="#{message['advert-reject-title']}:"/></div>
+													<div>
+														<h:outputText value="#{advert.rejectMessage}"/>
+													</div>
+												</div>
+											</h:panelGroup>
+
+										</td>
+										<td>
+											<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
+												<h:outputText value="#{message[section.name]}"/>
+												<h:outputText value="#{status.last?'':','}"/>
+											</ui:repeat>
+
+										</td>
+										<td>
+											<h:outputText value="#{message[advert.state]}"/>
+										</td>
+										<td>
+
+											4
+
+										</td>
 									</tr>
 								</ui:repeat>
 
+
 								<ui:repeat value="#{bundle.advertSpacer}" var="s">
 									<tr>
-										<td class="tip">
+										<td class="tip-preview">
 											<div class="image"></div>
 											<div class="text">
 												<h1>
@@ -171,7 +213,7 @@
 										<td class="state">&nbsp;</td>
 										<td class="action">
 											<p:commandButton value="#{message['new-advert']}" action="#{advertController.createNewAdvert}" styleClass="kamoska_button light-green">
-												<f:setPropertyActionListener value="#{bundle}" target="#{advertBundleModel.currentItem}" />
+												<f:setPropertyActionListener value="#{bundle}" target="#{advertBundleModel.currentItem}"/>
 											</p:commandButton>
 										</td>
 

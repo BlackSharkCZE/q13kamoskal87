@@ -18,14 +18,15 @@ import javax.inject.Named;
  * Time: 17:57
  * To change this template use File | Settings | File Templates.
  */
-@Named
-@RequestScoped
+@Model
 public class AdvertModel {
 
 	@EJB
 	private SectionDaoInterface sectionDaoInterface;
 
 	private AdvertEntity advertEntity;
+
+	private String test;
 
 
 	public AdvertModel() {
@@ -43,5 +44,14 @@ public class AdvertModel {
 
 	public void setAdvertEntity(AdvertEntity advertEntity) {
 		this.advertEntity = advertEntity;
+	}
+
+
+	public String getTest() {
+		return test;
+	}
+
+	public void setTest(String test) {
+		this.test = test;
 	}
 }

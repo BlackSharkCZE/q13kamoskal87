@@ -47,5 +47,21 @@
 		</navigation-case>
 	</navigation-rule>
 
+	<navigation-rule>
+		<from-view-id>/partner/pridat-tip.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>save-advert-successful</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>cancel-advert</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+	</navigation-rule>
+
 
 </faces-config>

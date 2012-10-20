@@ -16,6 +16,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "advert_bundle")
+
+@NamedQueries({
+		@NamedQuery(name = "AdvertBundleEntity.findByPartnerId", query = "SELECT a FROM AdvertBundleEntity a where a.partnerEntity.id = :partnerID")
+})
 public class AdvertBundleEntity {
 
 	@Id
@@ -48,7 +52,7 @@ public class AdvertBundleEntity {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private AdvertPriceGroupEntity advertPriceGroupEntity;
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, mappedBy = "bundleEntity")
 	private List<AdvertEntity> advertEntityList;
 
 	@ManyToOne
