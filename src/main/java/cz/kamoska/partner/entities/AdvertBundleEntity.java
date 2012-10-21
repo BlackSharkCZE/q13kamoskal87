@@ -4,6 +4,7 @@ import cz.kamoska.partner.enums.AdvertState;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class AdvertBundleEntity {
 	private AdvertPriceGroupEntity advertPriceGroupEntity;
 
 	@OneToMany(orphanRemoval = true, mappedBy = "bundleEntity")
+	@OrderBy(value = "dateCreated")
 	private List<AdvertEntity> advertEntityList;
 
 	@ManyToOne
@@ -68,6 +70,15 @@ public class AdvertBundleEntity {
 	@Column(name = "reject_message", columnDefinition = "TEXT")
 	private String rejectMessage;
 
+
+	@Transient()
+	public int getAdvertCount() {
+		if (advertEntityList == null || advertEntityList.isEmpty()) {
+			return 0;
+		} else {
+			return advertEntityList.size();
+		}
+	}
 
 	public AdvertBundleEntity() {
 		status = AdvertState.WAITING_TO_ACK;

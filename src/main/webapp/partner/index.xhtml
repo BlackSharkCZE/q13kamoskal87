@@ -64,7 +64,21 @@
 				</div>
 			</div>
 
-			<h:form>
+
+			<h:form id="dialog_form">
+				<p:confirmDialog message="#{message['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
+					<h:inputHidden value="#{advertModel.advertEntity.id}" />
+					<p:commandButton id="confirm" value="#{message['yes']}" update=":index_form" oncomplete="confirmation.hide()"
+									 actionListener="#{advertController.dropAdvert}"/>
+					<p:commandButton id="decline" value="#{message['no']}" onclick="confirmation.hide()" type="button"/>
+				</p:confirmDialog>
+			</h:form>
+
+
+			<h:form id="index_form">
+
+
+
 
 				<div class="notification-spacer">
 
@@ -116,13 +130,18 @@
 												<p:inputText value="#{bundle.name}" required="true" requiredMessage="#{message['bundle.name.required']}"/>
 												<p:ajax event="save" listener="#{advertBundleController.updateBundleName(bundle)}"/>
 											</p:inplace>
+
+											&nbsp;
+
+											(<h:outputText value="#{bundle.advertCount}"/>/5)
 										</td>
 										<td class="right">
 
 											<h:panelGroup rendered="#{bundle.validTo!=null}">
 												<h:outputText value="#{message['valid-until']}"/>
+												&nbsp;
 												<h:outputText value="#{bundle.validTo}">
-													<f:convertDateTime pattern="d.M.yy"/>
+													<f:convertDateTime pattern="d.M.yyyy"/>
 												</h:outputText>
 											</h:panelGroup>
 
@@ -165,6 +184,7 @@
 
 											<h:panelGroup rendered="#{advert.state=='REJECTED'}">
 												<p:spacer width="5px" height="10px"/>
+
 												<div class="reject-message">
 													<div class="title">
 														<h:outputText value="#{message['advert-reject-title']}:"/></div>
@@ -175,19 +195,34 @@
 											</h:panelGroup>
 
 										</td>
-										<td>
+										<td class="section">
 											<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
 												<h:outputText value="#{message[section.name]}"/>
 												<h:outputText value="#{status.last?'':','}"/>
 											</ui:repeat>
 
 										</td>
-										<td>
-											<h:outputText value="#{message[advert.state]}"/>
-										</td>
-										<td>
+										<td class="state">
+											<h:outputText value="#{message[advert.state]}" styleClass="#{advert.state}" rendered="#{advert.state=='WAITING_TO_ACK' or advert.state=='REJECTED'}"/>
+											<p:selectOneMenu value="#{advert.state}" rendered="#{advert.state=='ACTIVE' or advert.state=='SUSPEND'}">
+												<f:selectItems value="#{enumModel.allPartnerState}"/>
+												<p:ajax event="change" listener="#{advertController.changeState(advert)}" partialSubmit="true" process="@form"/>
+											</p:selectOneMenu>
 
-											4
+										</td>
+										<td class="action">
+
+											<p:commandButton value="#{message['edit']}" action="#{advertController.editAdvert}" styleClass="kamoska_button pink">
+												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
+											</p:commandButton>
+
+											&nbsp;
+
+
+											<p:commandButton value="Delete" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog">
+												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
+											</p:commandButton>
+
 
 										</td>
 									</tr>

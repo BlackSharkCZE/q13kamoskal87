@@ -10,8 +10,9 @@ package cz.kamoska.partner.enums;
 public enum AdvertState {
 
 	WAITING_TO_ACK,
-	ACTIVE,
 	REJECTED,
+
+	ACTIVE,
 	SUSPEND
 
 }

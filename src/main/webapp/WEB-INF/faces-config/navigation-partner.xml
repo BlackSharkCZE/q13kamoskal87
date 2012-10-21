@@ -23,7 +23,7 @@
 			</description>
 			<from-outcome>logout_successful</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
-			<redirect />
+			<redirect/>
 		</navigation-case>
 
 	</navigation-rule>
@@ -33,7 +33,7 @@
 		<navigation-case>
 			<from-outcome>first-advert-bundle-created</from-outcome>
 			<to-view-id>/partner/index.xhtml</to-view-id>
-			<redirect />
+			<redirect/>
 		</navigation-case>
 	</navigation-rule>
 
@@ -43,22 +43,45 @@
 		<navigation-case>
 			<from-outcome>create-new-advert</from-outcome>
 			<to-view-id>/partner/pridat-tip.xhtml</to-view-id>
-			<redirect />
+			<redirect/>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>edit-advert</from-outcome>
+			<to-view-id>/partner/upravit-tip.xhtml</to-view-id>
+		</navigation-case>
+
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/partner/pridat-tip.xhtml</from-view-id>
+		<from-view-id>/partner/upravit-tip.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>save-advert-successful</from-outcome>
+			<from-outcome>update-advert-successful</from-outcome>
 			<to-view-id>/partner/index.xhtml</to-view-id>
-			<redirect />
+			<redirect/>
 		</navigation-case>
 
 		<navigation-case>
 			<from-outcome>cancel-advert</from-outcome>
 			<to-view-id>/partner/index.xhtml</to-view-id>
 			<redirect />
+		</navigation-case>
+
+	</navigation-rule>
+
+
+	<navigation-rule>
+		<from-view-id>/partner/pridat-tip.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>save-advert-successful</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>cancel-advert</from-outcome>
+			<to-view-id>/partner/index.xhtml</to-view-id>
+			<redirect/>
 		</navigation-case>
 
 	</navigation-rule>

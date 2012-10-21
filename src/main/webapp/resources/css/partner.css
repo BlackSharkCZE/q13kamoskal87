@@ -170,11 +170,21 @@ table.welcome td.left {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
+
 .kamoska_button.gray {
     background: #D9D9D9;
     border:1px solid #B7B7B7;
-
     color:black;
+    font-weight: bold;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.kamoska_button.pink {
+    background:#C27CA1 ;
+    border:1px solid #A74F7A;
+    color:white;
     font-weight: bold;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -396,3 +406,7 @@ p {
 .reject-message .title {
     font-weight: bold;
 }
+
+
+.WAITING_TO_ACK {color:#ff8c00; font-weight: bold;}
+.REJECTED {color:red;}

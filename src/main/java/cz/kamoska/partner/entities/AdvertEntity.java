@@ -30,6 +30,7 @@ public class AdvertEntity {
 	@NotNull
 	@Column(name = "date_created")
 	@Temporal(TemporalType.TIMESTAMP)
+	@OrderBy
 	private Date dateCreated;
 
 	@Size(max = 50)
