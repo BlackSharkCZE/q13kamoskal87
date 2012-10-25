@@ -42,4 +42,10 @@ public interface PartnerDaoInterface extends DaoInterface<PartnerEntity> {
 	 * @return nalezeny partner nebo null pokud nalezeny nebyl
 	 */
 	PartnerEntity findByEmailConfirmationHash(final String emailConfirmationHash);
+
+	/**
+	 * Vraci pocet partneru (tech co jsou ve skupine {@link PartnerGroups#GROUP_PARTNER}) a aktivovali si ucet
+	 * @return pocet aktivnich uzivatelu
+	 */
+	Long getPartnerCountOfActivatedPartners();
 }

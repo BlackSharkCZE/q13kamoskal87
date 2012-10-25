@@ -47,6 +47,16 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 	}
 
 	@Override
+	public Long getPartnerCountOfActivatedPartners() {
+		try {
+			return (Long)em.createNamedQuery("PartnerEntity.countOfAllActivatedPartners").getSingleResult();
+		} catch (Exception e) {
+			logger.error("Can not obtain count of activated partners", e);
+		}
+		return -1L;
+	}
+
+	@Override
 	public PartnerEntity findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("email", email);

@@ -1,0 +1,1 @@
+Jakmile uzivatel edituje reklamu, musi se to prepnout zpet na WAITING_TO_CK?

@@ -9,6 +9,7 @@ import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.PictureEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.AdvertState;
+import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.AdvertModel;
 import cz.kamoska.partner.models.sessions.AdvertBundleModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
@@ -19,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -68,7 +70,6 @@ public class AdvertController implements Serializable {
 	private AdvertDaoInterface advertDaoInterface;
 
 
-
 	private PictureEntity pictureEntity;
 
 	public AdvertController() {
@@ -88,33 +89,73 @@ public class AdvertController implements Serializable {
 		}
 	}
 
+	@RolesAllowed("admin")
+	public String acceptTip(AdvertEntity advertEntity) {
+		if (advertEntity != null) {
+			advertEntity.setAcceptDate(Calendar.getInstance().getTime());
+			advertEntity.setState(AdvertState.ACTIVE);
+			SaveDomainResult<AdvertEntity> updateResult = advertDaoInterface.update(advertEntity);
+			if (!updateResult.success) {
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.accept.failed"), FacesContext.getCurrentInstance());
+			}
+		} else {
+			logger.warn("Can not accept null advertEntity");
+		}
+		return null;
+	}
+
+	@RolesAllowed("admin")
+	public String rejectSelectedAdvert() {
+		if (advertModel.getAdvertEntity().getId() == null || advertModel.getRejectMessage() == null) {
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.reject.advert-or-message-null"), FacesContext.getCurrentInstance());
+		} else {
+			advertModel.setAdvertEntity(advertDaoInterface.findByPrimaryKey(AdvertEntity.class, advertModel.getAdvertEntity().getId()));
+			advertModel.getAdvertEntity().setState(AdvertState.REJECTED);
+			advertModel.getAdvertEntity().setRejectDate(Calendar.getInstance().getTime());
+			advertModel.getAdvertEntity().setRejectMessage(advertModel.getRejectMessage());
+			SaveDomainResult<AdvertEntity> update = advertDaoInterface.update(advertModel.getAdvertEntity());
+			if (!update.success) {
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.reject.failed"), FacesContext.getCurrentInstance());
+			}
+		}
+		return null;
+	}
+
+
 	public String dropAdvert() {
-
 		advertModel.setAdvertEntity(advertDaoInterface.findByPrimaryKey(AdvertEntity.class, advertModel.getAdvertEntity().getId()));
+		if (advertModel.getAdvertEntity().getBundleEntity().getPartnerEntity().equals(loggedInPartner.getPartner()) || loggedInPartner.getPartner().getRoles().contains(PartnerGroups.GROUP_ADMIN.toString())) {
+			final String systemName = advertModel.getAdvertEntity().getPictureEntity().getSystemName().split("\\.")[0];
+			final String[] parts = advertModel.getAdvertEntity().getPictureEntity().getOrigName().split("\\.");
+			final String suffix = parts[parts.length - 1].toLowerCase();
 
-		final String systemName = advertModel.getAdvertEntity().getPictureEntity().getSystemName().split("\\.")[0];
-		final String[] parts = advertModel.getAdvertEntity().getPictureEntity().getOrigName().split("\\.");
-		final String suffix = parts[parts.length - 1].toLowerCase();
+			Path thumbs = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId(), advertModel.getAdvertEntity().getPictureEntity().getSystemName());
+			Path origFile = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId() + "/" + MainConfig.SRC_FILE_FOLDER, systemName + "." + suffix);
+			try {
+				Files.deleteIfExists(thumbs);
+			} catch (IOException e) {
+				logger.error("Can not delete ThumbBile " + thumbs, e);
+			}
 
-		Path thumbs = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId() , advertModel.getAdvertEntity().getPictureEntity().getSystemName());
-		Path origFile = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId() + "/" + MainConfig.SRC_FILE_FOLDER, systemName+"."+suffix);
-		try {
-			Files.deleteIfExists(thumbs);
-		} catch (IOException e) {
-			logger.error("Can not delete ThumbBile "+thumbs, e);
+			try {
+				Files.deleteIfExists(origFile);
+			} catch (IOException e) {
+				logger.error("Can not delete OrigFile: " + origFile, e);
+
+			}
+
+			advertModel.getAdvertEntity().setState(AdvertState.DELETED);
+			SaveDomainResult<AdvertEntity> update = advertDaoInterface.update(advertModel.getAdvertEntity());
+
+			if (!update.success) {
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.drop.failed"), FacesContext.getCurrentInstance());
+				logger.error("Can not drop advert: " + advertModel.getAdvertEntity());
+			}
+		} else {
+			logger.warn("Can not drop advert of other user. Current advert is owned by " + advertModel.getAdvertEntity().getBundleEntity().getPartnerEntity() + " but current partner is " + loggedInPartner.getPartner());
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.drop.failed-partner-is-not-owner"), FacesContext.getCurrentInstance());
 		}
 
-		try {
-			Files.deleteIfExists(origFile);
-		} catch (IOException e) {
-			logger.error("Can not delete OrigFile: "+origFile, e);
-
-		}
-
-		if (!advertDaoInterface.drop(advertModel.getAdvertEntity())) {
-			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.drop.failed"), FacesContext.getCurrentInstance());
-			logger.error("Can not drop advert: " + advertModel.getAdvertEntity());
-		}
 
 		return null;
 	}
@@ -125,7 +166,7 @@ public class AdvertController implements Serializable {
 		return "edit-advert";
 	}
 
-	public String updateAdvert(){
+	public String updateAdvert() {
 
 		String res = null;
 
@@ -152,6 +193,10 @@ public class AdvertController implements Serializable {
 
 				ae.setSectionEntityList(advertModel.getAdvertEntity().getSectionEntityList());
 
+				ae.setRejectDate(null);
+				ae.setRejectMessage(null);
+				ae.setState(AdvertState.WAITING_TO_ACK);
+
 				SaveDomainResult<AdvertEntity> save = advertDaoInterface.update(ae);
 				advertModel.setAdvertEntity(ae);
 
@@ -159,17 +204,17 @@ public class AdvertController implements Serializable {
 					logger.info("Advert Entity updated. " + save.item);
 					res = "update-advert-successful";
 				} else {
-					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
+					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
 					logger.error("Update advert " + advertModel.getAdvertEntity() + " failed.");
 				}
 
 			} else {
 				logger.warn("Can not find picture entity by ID: " + pictureEntity.getId());
-				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
 			}
 		} else {
 			logger.warn("Can not update, becouse advertModel.getAdvertEntity() is null");
-			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
 
 		}
 
@@ -201,17 +246,17 @@ public class AdvertController implements Serializable {
 					logger.info("Advert Entity saved. " + save.item);
 					res = "save-advert-successful";
 				} else {
-					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
+					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
 					logger.error("Save advert " + advertModel.getAdvertEntity() + " failed.");
 				}
 
 			} else {
 				logger.warn("Can not find picture entity by ID: " + pictureEntity.getId());
-				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
 			}
 		} else {
 			logger.warn("Can not save new Advert, becouse advertModel.getAdvertEntity() is null");
-			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR,facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
 
 		}
 
@@ -248,7 +293,7 @@ public class AdvertController implements Serializable {
 			pictureEntity.setOrigHeight(bi.getHeight());
 			pictureEntity.setOrigWidth(bi.getWidth());
 			final String newName = String.valueOf(Calendar.getInstance().getTime().getTime());
-			pictureEntity.setSystemName(newName+".jpg");
+			pictureEntity.setSystemName(newName + ".jpg");
 
 			BufferedImage croppedImage = PictureUtils.cropImageByCenter(bi);
 			if (croppedImage != null) {
@@ -260,7 +305,7 @@ public class AdvertController implements Serializable {
 					if (PictureUtils.saveAsJPG(thumbName, resizedImage)) {
 						final String[] parts = uFile.getFileName().split("\\.");
 						final String suffix = parts[parts.length - 1].toLowerCase();
-						Path path = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId() + "/" + MainConfig.SRC_FILE_FOLDER, newName+"."+suffix);
+						Path path = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH + "/" + loggedInPartner.getPartner().getId() + "/" + MainConfig.SRC_FILE_FOLDER, newName + "." + suffix);
 						try (
 								InputStream in = uFile.getInputstream();
 								OutputStream out = Files.newOutputStream(path, StandardOpenOption.CREATE_NEW);

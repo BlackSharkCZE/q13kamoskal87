@@ -2,8 +2,10 @@ package cz.kamoska.partner.dao.interfaces;
 
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.AdvertEntity;
+import cz.kamoska.partner.enums.AdvertState;
 
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +16,9 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdvertDaoInterface extends DaoInterface<AdvertEntity> {
+
+	List<AdvertEntity> findAllWaitingToAck();
+
+	Long getAdvertCountInState(AdvertState state);
+
 }

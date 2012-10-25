@@ -6,6 +6,13 @@
     <navigation-rule>
         <description>Navigation rules for all ADMIN pages</description>
         <from-view-id>*</from-view-id>
+
+		<navigation-case>
+			<from-outcome>admin_login_successful</from-outcome>
+			<to-view-id>/admin/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
     </navigation-rule>
 
 </faces-config>

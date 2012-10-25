@@ -17,22 +17,35 @@
 
 <h:body>
 
-	<div id="header">
-		<ui:insert name="header">
-			<h:outputText value="#{message['web_default_header']}"/>
-		</ui:insert>
-	</div>
+	<div id="page">
 
-	<div id="content">
-		<ui:insert name="content">
-			<h:outputText value="#{message['web_default_content']}"/>
-		</ui:insert>
-	</div>
+		<div id="header">
+			<ui:insert name="header">
+				<div class="title">partner.kamoska.cz</div>
+				<div class="login">
+					<div class="content">
+						<h:outputText value="#{loggedInPartner.partner.email}" styleClass="light-gray"/>
+						&nbsp;
+						&nbsp;
+						<p:commandLink action="#{loginController.logout}" value="#{message['logout']}"/>
+					</div>
+				</div>
+				<div class="clear"/>
+			</ui:insert>
+		</div>
 
-	<div id="footer">
-		<ui:insert name="footer">
-			<h:outputText value="#{message['web_default_footer']}"/>
-		</ui:insert>
+
+		<div id="content">
+			<ui:insert name="content">
+				<h:outputText value="#{message['web_default_content']}"/>
+			</ui:insert>
+		</div>
+
+		<div id="footer">
+			<ui:insert name="footer">
+				<h:outputText value="#{message['web_default_footer']}"/>
+			</ui:insert>
+		</div>
 	</div>
 
 

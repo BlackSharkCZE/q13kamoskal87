@@ -3,8 +3,11 @@ package cz.kamoska.partner.dao.implementations;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.AdvertEntity;
+import cz.kamoska.partner.enums.AdvertState;
+import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,4 +18,23 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements AdvertDaoInterface {
+
+	private final Logger logger = Logger.getLogger(AdvertDaoInterfaceImpl.class);
+
+	@Override
+	public List<AdvertEntity> findAllWaitingToAck() {
+		return findListByNamedQuery("AdvertEntity.findAllWaitingToACK", 0, -1, null);
+	}
+
+
+	@Override
+	public Long getAdvertCountInState(AdvertState state) {
+		try {
+			Long count = (Long) em.createNamedQuery("AdvertEntity.countInState").setParameter("state", state).getSingleResult();
+			return count;
+		} catch (Exception e) {
+			logger.error("Can not read Advert Count in state " + state, e);
+		}
+		return -1L;
+	}
 }

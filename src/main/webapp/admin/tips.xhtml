@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title><h:outputText value="#{message['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/admin_template.xhtml">
+
+		<ui:define name="content">
+
+
+			<div class="main_menu_bar">
+				<ul class="main_menu">
+					<li class="item">
+						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
+							<h:outputText value="#{message['admin.menu.home-page']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.partners']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item current">
+						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
+							<h:outputText value="#{message['admin.menu.agreement.tips']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.agreement.xml']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item last">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.invoices']}"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+
+			<h:form id="reject_form">
+				<p:dialog id="reject_message_dialog" header="Zamítnutí tipu" widgetVar="rejectDialog" modal="true" resizable="false">
+					<p:messages id="err" />
+					<h4>Napiš důvod neschválení</h4>
+					<div class="default-font-size">Text:</div>
+					<p:inputTextarea styleClass="reject-message" value="#{advertModel.rejectMessage}" required="true" requiredMessage="#{message['advert.reject-message.required']}" />
+					<h:inputHidden value="#{advertModel.advertEntity.id}" />
+					<div class="align-right" style="padding-top: 10px;">
+						<p:commandButton value="Odeslat" action="#{advertController.rejectSelectedAdvert}" update="@form :tip-form" oncomplete="rejectDialog.hide()" styleClass="kamoska_button light_gray" />
+					</div>
+				</p:dialog>
+			</h:form>
+
+
+			<h:form id="tip-form">
+
+
+				<h:panelGroup id="bundle-list">
+
+					<p:messages />
+
+						<div class="advert">
+							<div class="header">
+								<table>
+									<tr>
+										<td class="left"> Nové nebo editované reklamy, čekající na schválení</td>
+										<td class="right"> &nbsp; </td>
+									</tr>
+								</table>
+							</div>
+
+							<table class="tips">
+								<tr>
+									<th>Sponozorovaný tip</th>
+									<th>Sekce</th>
+									<th>Zamítnutí inzerátu</th>
+									<th>Schválit</th>
+								</tr>
+
+
+								<ui:repeat value="#{advertDaoModel.allWaitingToAck}" var="advert">
+									<tr>
+										<td class="tip-preview">
+											<div class="image">
+												<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
+											</div>
+											<div class="text">
+												<h1>
+													<h:outputLink target="_blank" value="http://#{advert.url}">
+														<h:outputText value="#{advert.title}"/>
+													</h:outputLink>
+												</h1>
+
+												<p>
+													<h:outputText value="#{advert.body}"/>
+												</p>
+											</div>
+											<div class="clear"/>
+
+										</td>
+										<td class="section">
+											<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
+												<h:outputText value="#{message[section.name]}"/>
+												<h:outputText value="#{status.last?'':','}"/>
+											</ui:repeat>
+
+										</td>
+										<td class="state">
+											<p:commandButton value="Zamítnout" oncomplete="rejectDialog.show()" action="null" update=":reject_form:reject_message_dialog"  styleClass="kamoska_button red">
+												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
+											</p:commandButton>
+
+										</td>
+										<td class="action">
+											<p:commandButton value="Schválit" update=":tip-form:bundle-list" action="#{advertController.acceptTip(advert)}" styleClass="kamoska_button light-green" />
+										</td>
+									</tr>
+								</ui:repeat>
+
+							</table>
+
+						</div>
+				</h:panelGroup>
+
+				<div class="clear"/>
+
+			</h:form>
+
+			<p:spacer height="50px"/>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

@@ -38,16 +38,19 @@
 }
 
 .menu_left_item {
- background: white;
+    background: white;
     padding: 10px 0px 10px 10px;
     border-bottom: 1px solid  #D9D9D9;
     border-right: 1px solid  #D9D9D9;
+    color:#741B47;
 
 }
 
 
 .menu_left_item.current {
     background: #4C1130;
+    color:white;
+    font-weight: bold;
 }
 .menu_left_item.last{
     border-bottom: none;
@@ -112,6 +115,8 @@
 #page input[type="text"], #page input[type="password"] {
     border-radius: 0;
     color:black;
+    font-size: 12px;
+    padding: 2px;
 }
 
 form.register-form input[type="text"], form.register-form input[type="password"] {
@@ -125,6 +130,7 @@ form.register-form input[type="text"], form.register-form input[type="password"]
 
 
 #register-form .ui-messages-error {
+    font-size: 12px;
     background: #990000;
     border: 1px solid #660000;
     color:white;
@@ -134,4 +140,43 @@ form.register-form input[type="text"], form.register-form input[type="password"]
 
 #register-form .ui-messages-error .ui-messages-error-icon {
     background: none;
+}
+
+.link-big {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.nav-active {
+    width:24px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    background: #4C1130;
+    border:1px solid #4C1130;
+    text-align: center;
+    padding: 2px;
+}
+.nav-inactive {
+    width:24px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    background: #D9D9D9;
+    border:1px solid #CCCCCC;
+    text-align: center;
+    padding: 2px;
+}
+
+.inner {
+    margin: auto auto;
+    font-weight: bold;
+    font-size: 18px;
+    color:white;
+}
+
+
+.form-table td {
+    padding-bottom: 5px;
+    padding-left: 10px;
 }

@@ -3,13 +3,16 @@ package cz.kamoska.partner.models.sessions;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
+import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.models.template.AbstractModel;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -33,7 +36,19 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 
 
 	public List<AdvertBundleEntity> getAdvertBundlesForPartner(PartnerEntity partner) {
-		return advertBundleDaoInterface.findAllForPartner(partner);
+		List<AdvertBundleEntity> allForPartner = advertBundleDaoInterface.findAllForPartner(partner);
+		for (AdvertBundleEntity ab : allForPartner) {
+			if (ab.getAdvertEntityList()!=null && !ab.getAdvertEntityList().isEmpty()) {
+				Iterator<AdvertEntity> iterator = ab.getAdvertEntityList().iterator();
+				while (iterator.hasNext()) {
+					AdvertEntity next = iterator.next();
+					if (next.getState() == AdvertState.DELETED) {
+						iterator.remove();
+					}
+				}
+			}
+		}
+		return allForPartner;
 	}
 
 	@Override

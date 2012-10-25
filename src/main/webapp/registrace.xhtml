@@ -38,14 +38,10 @@
 				<div class="menu_left_bar">
 					<ul class="menu_left">
 						<li class="menu_left_item current">
-							<h:outputLink value="">
-								<h:outputText value="#{message['partner-registration']}"/>
-							</h:outputLink>
+							<h:outputText value="#{message['partner-registration']}"/>
 						</li>
 						<li class="menu_left_item last">
-							<h:outputLink value="">
-								<h:outputText value="#{message['registration-confirm']}"/>
-							</h:outputLink>
+							<h:outputText value="#{message['registration-confirm']}"/>
 						</li>
 					</ul>
 				</div>
@@ -69,14 +65,16 @@
 
 						<p:spacer height="30px"/>
 
-						<h3>Příhlašovací údaje</h3>
+
 
 
 						<h:form id="register-form" styleClass="register-form">
 
-							<p:messages id="errors" autoUpdate="false"/>
+							<p:messages id="errors" autoUpdate="false" closable="true" />
 
-							<h:panelGrid columns="3">
+							<h3>Příhlašovací údaje</h3>
+
+							<h:panelGrid columns="3" styleClass="form-table">
 
 								<h:outputText value="#{message['email']}: "/>
 								<p:inputText value="#{registerAccountModel.partnerEntity.email}" required="true" requiredMessage="#{message['register.email.required']}"/>
@@ -94,7 +92,7 @@
 
 							<h3>Firemní údaje</h3>
 
-							<h:panelGrid columns="3">
+							<h:panelGrid columns="3" styleClass="form-table">
 
 
 								<h:outputText value="#{message['company-name']}: "/>

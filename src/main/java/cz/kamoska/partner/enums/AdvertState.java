@@ -13,6 +13,6 @@ public enum AdvertState {
 	REJECTED,
 
 	ACTIVE,
-	SUSPEND
+	DELETED, SUSPEND
 
 }

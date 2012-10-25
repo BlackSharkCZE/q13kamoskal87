@@ -2,6 +2,7 @@ package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.LoginModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
@@ -33,6 +34,8 @@ import java.util.Calendar;
 public class LoginController implements Serializable {
 
 	/* Nazvy OUTCOME do navigation.xml pro dany controller */
+	private final String ADMIN_LOGIN_SUCCESSFUL_OUTCOME = "admin_login_successful";
+
 	private final String LOGIN_SUCCESSFUL_OUTCOME = "login_successful";
 	private final String LOGIN_FAILED_OUTCOME = null;
 
@@ -104,7 +107,7 @@ public class LoginController implements Serializable {
 				}
 				loggedInPartner.setPartner(partnerByEmail);
 				loggedInPartner.setLoggedInTimestamp(Calendar.getInstance().getTime());
-				return LOGIN_SUCCESSFUL_OUTCOME;
+				return loggedInPartner.getPartner().getRoles().contains(PartnerGroups.GROUP_ADMIN.toString()) ? ADMIN_LOGIN_SUCCESSFUL_OUTCOME :  LOGIN_SUCCESSFUL_OUTCOME;
 			} else {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 			}

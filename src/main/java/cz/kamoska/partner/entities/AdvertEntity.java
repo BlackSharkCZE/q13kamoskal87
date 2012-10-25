@@ -19,6 +19,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "advert")
+@NamedQueries({
+		@NamedQuery(name = "AdvertEntity.findAllWaitingToACK", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.WAITING_TO_ACK ORDER BY a.dateCreated ASC"),
+		@NamedQuery(name = "AdvertEntity.countInState", query = "SELECT COUNT(a) FROM AdvertEntity a WHERE a.state=:state ")
+})
 public class AdvertEntity {
 
 	@Id
@@ -32,6 +36,12 @@ public class AdvertEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	@OrderBy
 	private Date dateCreated;
+
+
+	@Column(name = "accept_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date acceptDate;
+
 
 	@Size(max = 50)
 	@Column(name = "title")
@@ -183,5 +193,13 @@ public class AdvertEntity {
 
 	public void setBundleEntity(AdvertBundleEntity bundleEntity) {
 		this.bundleEntity = bundleEntity;
+	}
+
+	public Date getAcceptDate() {
+		return acceptDate;
+	}
+
+	public void setAcceptDate(Date acceptDate) {
+		this.acceptDate = acceptDate;
 	}
 }

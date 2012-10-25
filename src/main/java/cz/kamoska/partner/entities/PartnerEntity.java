@@ -19,7 +19,8 @@ import java.util.List;
 @NamedQueries({
 		@NamedQuery(name = "PartnerEntity.findCountByGroup", query = "SELECT count(p) FROM PartnerEntity p WHERE :group MEMBER OF p.roles"),
 		@NamedQuery(name = "PartnerEntity.findByConfirmationEmail", query = "SELECT p FROM PartnerEntity p WHERE p.emailConfirmationHash = :cHash"),
-		@NamedQuery(name = "PartnerEntity.findByEmail", query = "SELECT p FROM PartnerEntity p WHERE p.email = :email")
+		@NamedQuery(name = "PartnerEntity.findByEmail", query = "SELECT p FROM PartnerEntity p WHERE p.email = :email"),
+		@NamedQuery(name = "PartnerEntity.countOfAllActivatedPartners", query = "SELECT COUNT(p) FROM PartnerEntity p WHERE p.roles = 'GROUP_PARTNER' AND p.activated IS NOT null")
 })
 
 @NamedNativeQueries({
@@ -103,8 +104,22 @@ public class PartnerEntity {
 		emailConfirmationHash = MD5.md5hexa(email + ":" + dateCreated.getTime());
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
+		PartnerEntity that = (PartnerEntity) o;
 
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 
 	public PartnerEntity() {
 		dateCreated = Calendar.getInstance().getTime();

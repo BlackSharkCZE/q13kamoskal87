@@ -73,11 +73,15 @@ public class AdvertBundleEntity {
 
 	@Transient()
 	public int getAdvertCount() {
-		if (advertEntityList == null || advertEntityList.isEmpty()) {
-			return 0;
-		} else {
-			return advertEntityList.size();
+		int count = 0;
+		if (advertEntityList != null && !advertEntityList.isEmpty()) {
+			for (AdvertEntity advertEntity : advertEntityList) {
+				if (advertEntity.getState() != AdvertState.DELETED) {
+					count++;
+				}
+			}
 		}
+		return count;
 	}
 
 	public AdvertBundleEntity() {

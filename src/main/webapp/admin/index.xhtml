@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><h:outputText value="#{message['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/admin_template.xhtml">
+
+		<ui:define name="content">
+
+			<div class="main_menu_bar">
+				<ul class="main_menu">
+					<li class="item current">
+						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
+							<h:outputText value="#{message['admin.menu.home-page']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.partners']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
+							<h:outputText value="#{message['admin.menu.agreement.tips']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.agreement.xml']}"/>
+						</h:outputLink>
+					</li>
+					<li class="item last">
+						<h:outputLink value="">
+							<h:outputText value="#{message['admin.menu.invoices']}"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+
+
+			<div class="notification-spacer">
+
+
+				<p:messages id="errors"/>
+
+				<div class="notification">
+					<div class="header">
+						<table>
+							<tr>
+								<th class="left">
+									<h:outputText value="#{message['new-in-system']}"/>
+								</th>
+								<th class="right">
+									&nbsp;
+								</th>
+							</tr>
+						</table>
+					</div>
+					<div class="content">
+
+						<div>
+							<span><h:outputText value="#{message['tips-waiting-to-pass']}: "/></span>
+							<span class="count">
+								<h:outputText value="#{advertDaoModel.getCountInState('WAITING_TO_ACK')}"/>
+							</span>
+						</div>
+						<div>
+							<span><h:outputText value="#{message['xml-waiting-to-pass']}"/></span>
+							<span class="count">55 </span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="notification-spacer">
+				<div class="notification">
+					<div class="header">
+						<table>
+							<tr>
+								<th class="left">
+									<h:outputText value="#{message['stats-overview']}"/>
+								</th>
+								<th class="right">
+									&nbsp;
+								</th>
+							</tr>
+						</table>
+					</div>
+					<div class="content">
+
+						<div>
+							<span><h:outputText value="#{message['stats.monthly-tips-display']}: "/></span>
+							<span class="count">44</span>
+						</div>
+						<div>
+							<span><h:outputText value="#{message['stats.number-of-registered-partners']}"/></span>
+							<span class="count">
+								<h:outputText value="#{partnerDaoModel.partnerCountOfActivatedPartners}"/>
+							</span>
+
+							<span><h:outputText value="#{message['stats.number-of-payers']}"/></span>
+							<span class="count">55</span>
+						</div>
+
+						<div>
+							<span><h:outputText value="#{message['stats.promo-invoice-count']}"/></span>
+							<span class="count">55</span>
+							<span><h:outputText value="#{message['stats.promo.invoice-payed']}"/></span>
+							<span class="count">55</span>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

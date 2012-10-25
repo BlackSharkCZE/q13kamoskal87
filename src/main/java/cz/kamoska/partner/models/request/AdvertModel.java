@@ -25,8 +25,8 @@ public class AdvertModel {
 	private SectionDaoInterface sectionDaoInterface;
 
 	private AdvertEntity advertEntity;
+	private String rejectMessage;
 
-	private String test;
 
 
 	public AdvertModel() {
@@ -46,12 +46,11 @@ public class AdvertModel {
 		this.advertEntity = advertEntity;
 	}
 
-
-	public String getTest() {
-		return test;
+	public String getRejectMessage() {
+		return rejectMessage;
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+	public void setRejectMessage(String rejectMessage) {
+		this.rejectMessage = rejectMessage;
 	}
 }
