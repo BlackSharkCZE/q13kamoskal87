@@ -98,6 +98,9 @@ public class PartnerEntity {
 	private String emailConfirmationHash;
 
 
+	@Column(name = "fakturoid_id")
+	private Integer fakturoidId;
+
 	@PrePersist
 	public void prePersist() {
 		dateCreated = Calendar.getInstance().getTime();
@@ -252,5 +255,13 @@ public class PartnerEntity {
 
 	public void setEmailConfirmationHash(String emailConfirmationHash) {
 		this.emailConfirmationHash = emailConfirmationHash;
+	}
+
+	public Integer getFakturoidId() {
+		return fakturoidId;
+	}
+
+	public void setFakturoidId(Integer fakturoidId) {
+		this.fakturoidId = fakturoidId;
 	}
 }

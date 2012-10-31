@@ -1,0 +1,26 @@
+# Vraci seznam faktur
+  curl -v -u X:e015e0b66aeb4e03f30e3941e1c5bc7507f43ecc -H 'User-Agent: kamoska (sticha@kamoska.cz)' \
+  https://kamoska.fakturoid.cz/api/v1/invoices.json
+
+# Vraci seznam faktur
+  curl -v -u X:e015e0b66aeb4e03f30e3941e1c5bc7507f43ecc -H 'User-Agent: kamoska (sticha@kamoska.cz)' \
+  -X POST -d '{ "subject_id": "28" }' \
+  https://kamoska.fakturoid.cz/api/v1/invoices.json
+
+# Funkcni - vytvoreni kontaktu (subject ID=30625)
+curl -v -u X:e015e0b66aeb4e03f30e3941e1c5bc7507f43ecc -H 'User-Agent: kamoska (sticha@kamoska.cz)' \
+	-H 'Content-Type: application/json' \
+  -X POST -d '{"custom_id": 999, "name": "Testovaci", "street": "Vysko\u010dilova 1461/2a", "city": "Praha", "zip": "14000", "country": "\u010cesk\u00e1 republika", "registration_no": "47123737", "vat_no": "CZ47123737", "full_name": "Radek Sticha", "email": "sticha@airtoy.net", "phone": "420602322333"}' \
+  https://kamoska.fakturoid.cz/api/v1/subjects.json
+  
+#Funkcni zalozeni faktury
+curl -v -u X:e015e0b66aeb4e03f30e3941e1c5bc7507f43ecc -H 'User-Agent: kamoska (sticha@kamoska.cz)' \
+	-H 'Content-Type: application/json' \
+  -X POST -d '{"subject_id": "30625", "due": 14, "proforma": true, "lines":[{"name": "Sada 5ti reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.", "quantity": "1.0", "unit_name": "", "unit_price": "1008.0", "vat_rate": 20,  "with_vat": true } ] }' \
+  https://kamoska.fakturoid.cz/api/v1/invoices.json
+
+
+curl -v -u X:e015e0b66aeb4e03f30e3941e1c5bc7507f43ecc -H 'User-Agent: kamoska (sticha@kamoska.cz)' \
+  https://kamoska.fakturoid.cz/api/v1/invoices/proforma.json?status=paid
+
+

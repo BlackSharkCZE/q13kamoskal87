@@ -70,6 +70,10 @@ public class AdvertBundleEntity {
 	@Column(name = "reject_message", columnDefinition = "TEXT")
 	private String rejectMessage;
 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertBundleEntity")
+	@OrderBy(value = "dateCreated")
+	private List<Invoice> invoices;
+
 
 	@Transient()
 	public int getAdvertCount() {
@@ -180,5 +184,13 @@ public class AdvertBundleEntity {
 
 	public void setRejectMessage(String rejectMessage) {
 		this.rejectMessage = rejectMessage;
+	}
+
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
 	}
 }

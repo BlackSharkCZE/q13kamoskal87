@@ -1,5 +1,6 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.beans.FakturoidDao;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
@@ -13,6 +14,7 @@ import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.AdvertModel;
 import cz.kamoska.partner.models.sessions.AdvertBundleModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
+import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.PictureUtils;
@@ -68,6 +70,8 @@ public class AdvertController implements Serializable {
 	private SectionDaoInterface sectionDaoInterface;
 	@EJB
 	private AdvertDaoInterface advertDaoInterface;
+	@EJB
+	private FakturoidDao fakturoidDao;
 
 
 	private PictureEntity pictureEntity;
@@ -244,6 +248,15 @@ public class AdvertController implements Serializable {
 
 				if (save.success) {
 					logger.info("Advert Entity saved. " + save.item);
+					//todo pokud neni k dane sade vystavena faktura, tak se musi faktura vystavit. Z AdvertBundle vime do ktere patri cenove hladiny
+					Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(),advertModel.getAdvertEntity().getBundleEntity().getAdvertPriceGroupEntity().getPriceCzk());
+
+					cz.kamoska.partner.entities.Invoice invoiceEntity = fakturoidDao.createInvoice(invoice);
+					if (invoiceEntity == null) {
+						//todo nebyla vytvorena faktura, coz neni fatalni problem, protoze to muzou udelat kluci (nekde, nejak). Ale nemela by to byt prekazka k tomu aby si zalozil reklamu
+						logger.warn("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
+					}
+
 					res = "save-advert-successful";
 				} else {
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());

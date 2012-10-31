@@ -1,11 +1,13 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.beans.FakturoidDao;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
+import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
-import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import org.apache.log4j.Logger;
@@ -36,40 +38,66 @@ public class AdvertBundleController implements Serializable {
 	@Inject
 	private FacesMessageProvider facesMessageProvider;
 
+	@Inject
+	private LoggedInPartner loggedInPartner;
+
 	@EJB
 	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
 	@EJB
 	private AdvertBundleDaoInterface advertBundleDaoInterface;
+	@EJB
+	private FakturoidDao fakturoidDao;
+	@EJB
+	private PartnerDaoInterface partnerDaoInterface;
+
 
 	public String createEmptyAdvertBundle(PartnerEntity partnerEntity) {
-		if (partnerEntity.getAdvertBundleEntityList() == null) {
-			partnerEntity.setAdvertBundleEntityList(new ArrayList<AdvertBundleEntity>(5));
-		}
 
-		final String name = facesMessageProvider.getLocalizedMessage("default-advert-bundle-name").replace("{0}", String.valueOf(partnerEntity.getAdvertBundleEntityList().size() + 1));
-		AdvertBundleEntity advertBundleEntity = new AdvertBundleEntity();
-		advertBundleEntity.setDateCreated(Calendar.getInstance().getTime());
-		advertBundleEntity.setName(name);
-		advertBundleEntity.setPartnerEntity(partnerEntity);
-		advertBundleEntity.setAdvertPriceGroupEntity(advertPriceGroupDaoInterface.findNextForPartner(partnerEntity));
-
-		SaveDomainResult<AdvertBundleEntity> saveResult = advertBundleDaoInterface.save(advertBundleEntity);
-		if (saveResult.success) {
-			logger.info("Advert bundle " + saveResult.item + " added to partner " + partnerEntity);
-			partnerEntity.getAdvertBundleEntityList().add(saveResult.item);
-			return "first-advert-bundle-created";
+		logger.info("Try register partner into fakturoid");
+		Integer fId = fakturoidDao.registerPartner(partnerEntity);
+		if (fId == null) {
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("fakturoid.register-partner.failed"), FacesContext.getCurrentInstance());
 		} else {
-			logger.error("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);
-			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert-bundle.create.failed"), FacesContext.getCurrentInstance());
+
+			partnerEntity.setFakturoidId(fId);
+			SaveDomainResult<PartnerEntity> updateResult = partnerDaoInterface.update(partnerEntity);
+			if (!updateResult.success) {
+				logger.error("Can not assign Fakturoid_ID to partner " + partnerEntity);
+			} else {
+				loggedInPartner.setPartner(updateResult.item);
+				partnerEntity = updateResult.item;
+			}
+
+			if (partnerEntity.getAdvertBundleEntityList() == null) {
+				partnerEntity.setAdvertBundleEntityList(new ArrayList<AdvertBundleEntity>(5));
+			}
+
+			final String name = facesMessageProvider.getLocalizedMessage("default-advert-bundle-name").replace("{0}", String.valueOf(partnerEntity.getAdvertBundleEntityList().size() + 1));
+			AdvertBundleEntity advertBundleEntity = new AdvertBundleEntity();
+			advertBundleEntity.setDateCreated(Calendar.getInstance().getTime());
+			advertBundleEntity.setName(name);
+			advertBundleEntity.setPartnerEntity(partnerEntity);
+			advertBundleEntity.setAdvertPriceGroupEntity(advertPriceGroupDaoInterface.findNextForPartner(partnerEntity));
+
+			SaveDomainResult<AdvertBundleEntity> saveResult = advertBundleDaoInterface.save(advertBundleEntity);
+			if (saveResult.success) {
+				logger.info("Advert bundle " + saveResult.item + " added to partner " + partnerEntity);
+				partnerEntity.getAdvertBundleEntityList().add(saveResult.item);
+				return "first-advert-bundle-created";
+			} else {
+				logger.error("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert-bundle.create.failed"), FacesContext.getCurrentInstance());
+			}
 		}
 		return null;
+
 	}
 
 	public void updateBundleName(AdvertBundleEntity advertBundleEntity) {
 		SaveDomainResult<AdvertBundleEntity> update = advertBundleDaoInterface.update(advertBundleEntity);
 		if (!update.success) {
 			logger.error("Can not update AdvertBundle (Change Name): " + advertBundleEntity);
-			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_WARN,facesMessageProvider.getLocalizedMessage("bundle.change.name.failed").replace("{0}", advertBundleEntity.getName()), FacesContext.getCurrentInstance());
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_WARN, facesMessageProvider.getLocalizedMessage("bundle.change.name.failed").replace("{0}", advertBundleEntity.getName()), FacesContext.getCurrentInstance());
 		}
 	}
 
