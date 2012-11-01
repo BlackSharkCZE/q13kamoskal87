@@ -1,5 +1,6 @@
-package cz.kamoska.partner.support;
+package cz.kamoska.partner.beans.singletons;
 
+import cz.kamoska.partner.config.MainConfig;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
@@ -11,21 +12,17 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 /**
- * @author blackshark
- * @version 0.1
- * @since 0.1
+ * Created with IntelliJ IDEA.
+ * User: blackshark
+ * Date: 1.11.12
+ * Time: 20:48
+ * To change this template use File | Settings | File Templates.
  */
+
 @Singleton
 @ApplicationScoped
 public class MailerBean {
 
-	public static final String EMAIL_FROM = "partner@kamoska.cz";
-
-	private final String EMAIL_SMTP_HOST = "localhost";
-	private final int EMAIL_SMTP_PORT = 25;
-	private final String EMAIL_USER = "";
-	private final String EMAIL_PASSWORD = "";
-	private final boolean EMAIL_TLS = false;
 
 	private final Logger logger = Logger.getLogger(MailerBean.class);
 
@@ -36,14 +33,14 @@ public class MailerBean {
 
 			HtmlEmail email = new HtmlEmail();
 			try {
-				email.setHostName(EMAIL_SMTP_HOST);
-				email.setSmtpPort(EMAIL_SMTP_PORT);
-				if (!EMAIL_USER.isEmpty() && !EMAIL_PASSWORD.isEmpty()) {
-					email.setAuthenticator(new DefaultAuthenticator(EMAIL_USER, EMAIL_PASSWORD));
+				email.setHostName(MainConfig.EMAIL_SMTP_HOST);
+				email.setSmtpPort(MainConfig.EMAIL_SMTP_PORT);
+				if (!MainConfig.EMAIL_SMTP_USER.isEmpty() && !MainConfig.EMAIL_SMTP_PASSWORD.isEmpty()) {
+					email.setAuthenticator(new DefaultAuthenticator(MainConfig.EMAIL_SMTP_USER, MainConfig.EMAIL_SMTP_PASSWORD));
 				}
-				email.setTLS(EMAIL_TLS);
+				email.setTLS(MainConfig.EMAIL_SMTP_TLS);
 
-				email.setFrom(from, EMAIL_FROM, "UTF-8");
+				email.setFrom(from, MainConfig.EMAIL_FROM, "UTF-8");
 				email.setSubject(subject);
 				email.setCharset("UTF-8");
 
@@ -78,5 +75,6 @@ public class MailerBean {
 			logger.warn("Try send email with subject " + subject + " but recipients empty.");
 		}
 	}
+
 
 }

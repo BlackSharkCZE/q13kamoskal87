@@ -1,12 +1,12 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.beans.singletons.MailerBean;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.RegisterAccountModel;
-import cz.kamoska.partner.support.MailerBean;
 import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
 

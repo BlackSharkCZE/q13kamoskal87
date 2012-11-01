@@ -4,7 +4,6 @@ import cz.kamoska.partner.enums.AdvertState;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class AdvertBundleEntity {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "advertBundleEntity")
 	@OrderBy(value = "dateCreated")
-	private List<Invoice> invoices;
+	private List<InvoiceEntity> invoiceEntities;
 
 
 	@Transient()
@@ -186,11 +185,20 @@ public class AdvertBundleEntity {
 		this.rejectMessage = rejectMessage;
 	}
 
-	public List<Invoice> getInvoices() {
-		return invoices;
+	public List<InvoiceEntity> getInvoiceEntities() {
+		return invoiceEntities;
 	}
 
-	public void setInvoices(List<Invoice> invoices) {
-		this.invoices = invoices;
+	public void setInvoiceEntities(List<InvoiceEntity> invoiceEntities) {
+		this.invoiceEntities = invoiceEntities;
+	}
+
+	@Override
+	public String toString() {
+		return "AdvertBundleEntity{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", status=" + status +
+				'}';
 	}
 }

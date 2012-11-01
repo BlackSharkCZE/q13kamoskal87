@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name ="invoices")
-public class Invoice {
+public class InvoiceEntity {
 
 	@Id
 	@GeneratedValue(generator = "invoiceIDGenerator")
@@ -98,5 +98,18 @@ public class Invoice {
 
 	public void setFakturoidUrl(String fakturoidUrl) {
 		this.fakturoidUrl = fakturoidUrl;
+	}
+
+
+	@Override
+	public String toString() {
+		return "InvoiceEntity{" +
+				"id=" + id +
+				", dateCreated=" + dateCreated +
+				", paid=" + paid +
+				", advertBundleEntity=" + advertBundleEntity +
+				", fakturoidId=" + fakturoidId +
+				", fakturoidUrl='" + fakturoidUrl + '\'' +
+				'}';
 	}
 }

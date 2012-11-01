@@ -1,5 +1,8 @@
 package cz.kamoska.partner.pojo.fakturoid;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Created with IntelliJ IDEA.
  * User: blackshark
@@ -29,5 +32,16 @@ public enum InvoiceStatus {
 			}
 		}
 		throw  new EnumConstantNotPresentException(InvoiceStatus.class, key);
+	}
+
+
+	@JsonValue
+	public String toJson() {
+		return this.getValue();
+	}
+
+	@JsonCreator
+	public static InvoiceStatus fromJson(String text) {
+		return InvoiceStatus.getByKey(text);
 	}
 }

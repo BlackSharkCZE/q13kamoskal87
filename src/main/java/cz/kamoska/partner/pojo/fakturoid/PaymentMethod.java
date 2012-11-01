@@ -1,5 +1,8 @@
 package cz.kamoska.partner.pojo.fakturoid;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Created with IntelliJ IDEA.
  * User: blackshark
@@ -28,5 +31,15 @@ public enum PaymentMethod {
 			}
 		}
 		throw  new EnumConstantNotPresentException(PaymentMethod.class, key);
+	}
+
+	@JsonValue
+	public String toJson() {
+		return this.getValue();
+	}
+
+	@JsonCreator
+	public static PaymentMethod fromJson(String text) {
+		return PaymentMethod.getByKey(text);
 	}
 }

@@ -16,7 +16,7 @@ public class MainConfig {
 	private static final Logger logger = Logger.getLogger(MainConfig.class);
 
 	public static final String SRC_FILE_FOLDER = "src";
-	public static String IMAGE_STORE_ROOT_PATH = null;
+	public static String IMAGE_STORE_ROOT_PATH = "/srv/partner.kamoska.cz/images";
 
 	static {
 
@@ -44,4 +44,12 @@ public class MainConfig {
 	public static final String INVOICE_LINE_NAME = "Sada 5ti reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.";
 	public static final Integer INVOICE_VAT_RATE = 20;
 	public static final boolean INVOICE_WITH_VAT = true;
+	public static final String EMAIL_SMTP_HOST = "localhost";
+	public static final int EMAIL_SMTP_PORT = 25;
+	public static final String EMAIL_SMTP_USER = "";
+
+
+	public static final String EMAIL_SMTP_PASSWORD = "";
+	public static final boolean EMAIL_SMTP_TLS = false;
+	public static final String EMAIL_FROM = "partner@kamoska.cz";
 }

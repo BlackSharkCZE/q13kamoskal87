@@ -25,7 +25,7 @@ public class Invoice {
 	private String yourName;
 	private String yourStreet;
 	private String yourStreet2;
-	private String city;
+	private String yourCity;
 	private String yourZip;
 	private String yourCountry;
 	private String yourRegistrationNo;
@@ -71,7 +71,7 @@ public class Invoice {
 	private BigDecimal remainingNativeAmount;
 	private String htmlUrl;
 	private String publicHtmlUrl;
-	private String urll;// API adresa faktury
+	private String url;// API adresa faktury
 	private String subjectUrl;
 	private Date updatedAt;
 	private List<InvoiceLine> lines;
@@ -110,6 +110,7 @@ public class Invoice {
 		this.proforma = proforma;
 	}
 
+	@JsonProperty(value = "partial_proforma")
 	public boolean isPartialProforma() {
 		return partialProforma;
 	}
@@ -126,6 +127,7 @@ public class Invoice {
 		this.number = number;
 	}
 
+	@JsonProperty(value = "variable_symbol")
 	public String getVariableSymbol() {
 		return variableSymbol;
 	}
@@ -134,6 +136,7 @@ public class Invoice {
 		this.variableSymbol = variableSymbol;
 	}
 
+	@JsonProperty(value = "your_name")
 	public String getYourName() {
 		return yourName;
 	}
@@ -142,6 +145,7 @@ public class Invoice {
 		this.yourName = yourName;
 	}
 
+	@JsonProperty(value = "your_street")
 	public String getYourStreet() {
 		return yourStreet;
 	}
@@ -150,6 +154,7 @@ public class Invoice {
 		this.yourStreet = yourStreet;
 	}
 
+	@JsonProperty(value = "your_street2")
 	public String getYourStreet2() {
 		return yourStreet2;
 	}
@@ -158,14 +163,16 @@ public class Invoice {
 		this.yourStreet2 = yourStreet2;
 	}
 
-	public String getCity() {
-		return city;
+	@JsonProperty(value = "your_city")
+	public String getYourCity() {
+		return yourCity;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setYourCity(String yourCity) {
+		this.yourCity = yourCity;
 	}
 
+	@JsonProperty(value = "your_zip")
 	public String getYourZip() {
 		return yourZip;
 	}
@@ -174,6 +181,7 @@ public class Invoice {
 		this.yourZip = yourZip;
 	}
 
+	@JsonProperty(value = "your_country")
 	public String getYourCountry() {
 		return yourCountry;
 	}
@@ -182,6 +190,7 @@ public class Invoice {
 		this.yourCountry = yourCountry;
 	}
 
+	@JsonProperty(value = "your_registration_no")
 	public String getYourRegistrationNo() {
 		return yourRegistrationNo;
 	}
@@ -190,6 +199,7 @@ public class Invoice {
 		this.yourRegistrationNo = yourRegistrationNo;
 	}
 
+	@JsonProperty(value = "your_vat_no")
 	public String getYourVatNo() {
 		return yourVatNo;
 	}
@@ -198,6 +208,7 @@ public class Invoice {
 		this.yourVatNo = yourVatNo;
 	}
 
+	@JsonProperty(value = "client_name")
 	public String getClientName() {
 		return clientName;
 	}
@@ -206,6 +217,7 @@ public class Invoice {
 		this.clientName = clientName;
 	}
 
+	@JsonProperty(value = "client_street")
 	public String getClientStreet() {
 		return clientStreet;
 	}
@@ -214,6 +226,7 @@ public class Invoice {
 		this.clientStreet = clientStreet;
 	}
 
+	@JsonProperty(value = "client_street2")
 	public String getClientStreet2() {
 		return clientStreet2;
 	}
@@ -222,6 +235,7 @@ public class Invoice {
 		this.clientStreet2 = clientStreet2;
 	}
 
+	@JsonProperty(value = "client_city")
 	public String getClientCity() {
 		return clientCity;
 	}
@@ -230,6 +244,7 @@ public class Invoice {
 		this.clientCity = clientCity;
 	}
 
+	@JsonProperty(value = "client_zip")
 	public String getClientZip() {
 		return clientZip;
 	}
@@ -238,6 +253,7 @@ public class Invoice {
 		this.clientZip = clientZip;
 	}
 
+	@JsonProperty(value = "client_country")
 	public String getClientCountry() {
 		return clientCountry;
 	}
@@ -246,6 +262,7 @@ public class Invoice {
 		this.clientCountry = clientCountry;
 	}
 
+	@JsonProperty(value = "client_registration_no")
 	public String getClientRegistrationNo() {
 		return clientRegistrationNo;
 	}
@@ -254,6 +271,7 @@ public class Invoice {
 		this.clientRegistrationNo = clientRegistrationNo;
 	}
 
+	@JsonProperty(value = "client_vat_no")
 	public String getClientVatNo() {
 		return clientVatNo;
 	}
@@ -276,6 +294,7 @@ public class Invoice {
 		return generatorId;
 	}
 
+	@JsonProperty(value = "generator_id")
 	public void setGeneratorId(Integer generatorId) {
 		this.generatorId = generatorId;
 	}
@@ -284,6 +303,7 @@ public class Invoice {
 		return relatedId;
 	}
 
+	@JsonProperty(value = "related_id")
 	public void setRelatedId(Integer relatedId) {
 		this.relatedId = relatedId;
 	}
@@ -296,6 +316,7 @@ public class Invoice {
 		this.token = token;
 	}
 
+	@JsonProperty(value = "status")
 	public InvoiceStatus getInvoiceStatus() {
 		return invoiceStatus;
 	}
@@ -313,6 +334,7 @@ public class Invoice {
 		this.orderNumber = orderNumber;
 	}
 
+	@JsonProperty(value = "issued_on")
 	public Date getIssuedOn() {
 		return issuedOn;
 	}
@@ -339,6 +361,7 @@ public class Invoice {
 		this.due = due;
 	}
 
+	@JsonProperty(value = "due_on")
 	public Date getDueOn() {
 		return dueOn;
 	}
@@ -347,6 +370,7 @@ public class Invoice {
 		this.dueOn = dueOn;
 	}
 
+	@JsonProperty(value = "sent_at")
 	public Date getSentAt() {
 		return sentAt;
 	}
@@ -355,6 +379,7 @@ public class Invoice {
 		this.sentAt = sentAt;
 	}
 
+	@JsonProperty(value = "paid_at")
 	public Date getPaidAt() {
 		return paidAt;
 	}
@@ -363,6 +388,7 @@ public class Invoice {
 		this.paidAt = paidAt;
 	}
 
+	@JsonProperty(value = "reminder_sent_at")
 	public Date getReminderSentAt() {
 		return reminderSentAt;
 	}
@@ -371,6 +397,7 @@ public class Invoice {
 		this.reminderSentAt = reminderSentAt;
 	}
 
+	@JsonProperty(value = "accepted_at")
 	public Date getAcceptedAt() {
 		return acceptedAt;
 	}
@@ -379,6 +406,7 @@ public class Invoice {
 		this.acceptedAt = acceptedAt;
 	}
 
+	@JsonProperty(value = "cancelled_at")
 	public Date getCanceledAt() {
 		return canceledAt;
 	}
@@ -432,6 +460,7 @@ public class Invoice {
 		this.swiftBic = swiftBic;
 	}
 
+	@JsonProperty(value = "payment_method")
 	public PaymentMethod getPaymentMethod() {
 		return paymentMethod;
 	}
@@ -466,6 +495,7 @@ public class Invoice {
 		this.language = language;
 	}
 
+	@JsonProperty(value = "transferred_tax_liability")
 	public Boolean getTransferredTaxLiability() {
 		return transferredTaxLiability;
 	}
@@ -482,6 +512,7 @@ public class Invoice {
 		this.subtotal = subtotal;
 	}
 
+	@JsonProperty(value = "native_subtotal")
 	public BigDecimal getNativeSubtotal() {
 		return nativeSubtotal;
 	}
@@ -498,6 +529,7 @@ public class Invoice {
 		this.total = total;
 	}
 
+	@JsonProperty(value = "native_total")
 	public BigDecimal getNativeTotal() {
 		return nativeTotal;
 	}
@@ -506,6 +538,7 @@ public class Invoice {
 		this.nativeTotal = nativeTotal;
 	}
 
+	@JsonProperty(value = "remaining_amount")
 	public BigDecimal getRemainingAmount() {
 		return remainingAmount;
 	}
@@ -514,6 +547,7 @@ public class Invoice {
 		this.remainingAmount = remainingAmount;
 	}
 
+	@JsonProperty(value = "remaining_native_amount")
 	public BigDecimal getRemainingNativeAmount() {
 		return remainingNativeAmount;
 	}
@@ -522,6 +556,7 @@ public class Invoice {
 		this.remainingNativeAmount = remainingNativeAmount;
 	}
 
+	@JsonProperty(value = "html_url")
 	public String getHtmlUrl() {
 		return htmlUrl;
 	}
@@ -530,6 +565,7 @@ public class Invoice {
 		this.htmlUrl = htmlUrl;
 	}
 
+	@JsonProperty(value = "public_html_url")
 	public String getPublicHtmlUrl() {
 		return publicHtmlUrl;
 	}
@@ -538,14 +574,15 @@ public class Invoice {
 		this.publicHtmlUrl = publicHtmlUrl;
 	}
 
-	public String getUrll() {
-		return urll;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setUrll(String urll) {
-		this.urll = urll;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
+	@JsonProperty(value = "subject_url")
 	public String getSubjectUrl() {
 		return subjectUrl;
 	}
@@ -554,6 +591,7 @@ public class Invoice {
 		this.subjectUrl = subjectUrl;
 	}
 
+	@JsonProperty(value = "updated_at")
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}

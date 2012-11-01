@@ -1,14 +1,14 @@
 package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.FakturoidDao;
+import cz.kamoska.partner.beans.singletons.MailerBean;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
+import cz.kamoska.partner.dao.interfaces.InvoiceDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
 import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
-import cz.kamoska.partner.entities.AdvertEntity;
-import cz.kamoska.partner.entities.PictureEntity;
-import cz.kamoska.partner.entities.SectionEntity;
+import cz.kamoska.partner.entities.*;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.AdvertModel;
@@ -38,6 +38,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -72,6 +73,10 @@ public class AdvertController implements Serializable {
 	private AdvertDaoInterface advertDaoInterface;
 	@EJB
 	private FakturoidDao fakturoidDao;
+	@EJB
+	private MailerBean mailerBean;
+	@EJB
+	private InvoiceDaoInterface invoiceDaoInterface;
 
 
 	private PictureEntity pictureEntity;
@@ -242,19 +247,31 @@ public class AdvertController implements Serializable {
 						advertModel.getAdvertEntity().getSectionEntityList().add(se);
 					}
 				}
-				advertModel.getAdvertEntity().setBundleEntity(advertBundleModel.getCurrentItem());
-
+				AdvertBundleEntity advertBundle = advertBundleModel.getCurrentItem();
+				advertModel.getAdvertEntity().setBundleEntity(advertBundle);
 				SaveDomainResult<AdvertEntity> save = advertDaoInterface.save(advertModel.getAdvertEntity());
 
 				if (save.success) {
-					logger.info("Advert Entity saved. " + save.item);
-					//todo pokud neni k dane sade vystavena faktura, tak se musi faktura vystavit. Z AdvertBundle vime do ktere patri cenove hladiny
-					Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(),advertModel.getAdvertEntity().getBundleEntity().getAdvertPriceGroupEntity().getPriceCzk());
 
-					cz.kamoska.partner.entities.Invoice invoiceEntity = fakturoidDao.createInvoice(invoice);
-					if (invoiceEntity == null) {
-						//todo nebyla vytvorena faktura, coz neni fatalni problem, protoze to muzou udelat kluci (nekde, nejak). Ale nemela by to byt prekazka k tomu aby si zalozil reklamu
-						logger.warn("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
+					logger.info("Advert Entity saved. " + save.item);
+
+					if (advertBundle.getInvoiceEntities() == null || advertBundle.getInvoiceEntities().isEmpty()) {
+						// neni vystavena faktura, takze fakturu vystavime
+						Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(), advertModel.getAdvertEntity().getBundleEntity().getAdvertPriceGroupEntity().getPriceCzk());
+						InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
+						if (invoiceEntity == null) {
+							logger.warn("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
+							//todo odeslat email klukum, ze nebyla vystavena faktura
+						} else {
+
+							invoiceEntity.setAdvertBundleEntity(save.item.getBundleEntity());
+							SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
+							if (!saveResult.success) {
+								logger.error("Can not save InvoiceEntity: " + invoiceEntity );
+							} else {
+								logger.info("InvoiceEntity saved: " + saveResult.item);
+							}
+						}
 					}
 
 					res = "save-advert-successful";

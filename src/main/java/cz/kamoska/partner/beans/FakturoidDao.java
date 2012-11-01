@@ -3,40 +3,24 @@ package cz.kamoska.partner.beans;
 import cz.kamoska.partner.beans.singletons.CustomHttpClient;
 import cz.kamoska.partner.beans.singletons.JSONMapper;
 import cz.kamoska.partner.config.MainConfig;
+import cz.kamoska.partner.entities.InvoiceEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.pojo.fakturoid.Subject;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 /**
@@ -125,7 +109,7 @@ public class FakturoidDao {
 	}
 
 
-	public cz.kamoska.partner.entities.Invoice createInvoice(cz.kamoska.partner.pojo.fakturoid.Invoice invoice) {
+	public InvoiceEntity createInvoice(cz.kamoska.partner.pojo.fakturoid.Invoice invoice) {
 		final String serializedData = jsonMapper.serialize(invoice);
 		HttpPost post = null;
 		HttpEntity entity = null;
@@ -155,14 +139,17 @@ public class FakturoidDao {
 				int statusCode = response.getStatusLine().getStatusCode();
 				switch (statusCode) {
 					case HttpServletResponse.SC_CREATED:
-						cz.kamoska.partner.entities.Invoice res = new cz.kamoska.partner.entities.Invoice();
+						InvoiceEntity res = new InvoiceEntity();
 						entity = response.getEntity();
 						final String strResponse = EntityUtils.toString(entity);
 						logger.info("New Invoice Created on fakturoid. Response:" + strResponse);
 
 						Invoice respInvoice = (Invoice) jsonMapper.deserialize(strResponse, Invoice.class);
+						/*
 						Header[] locations = response.getHeaders("location");
 						if (locations!=null) res.setFakturoidUrl(locations[0].getValue());
+						*/
+						res.setFakturoidUrl(respInvoice.getPublicHtmlUrl());
 						if (respInvoice!=null) res.setFakturoidId(respInvoice.getId());
 						res.setDateCreated(Calendar.getInstance().getTime());
 
