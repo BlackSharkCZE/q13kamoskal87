@@ -15,7 +15,7 @@
 	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -29,27 +29,27 @@
 				<ul class="main_menu">
 					<li class="item">
 						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
-							<h:outputText value="#{message['admin.menu.home-page']}"/>
+							<h:outputText value="#{i18n['admin.menu.home-page']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.partners']}"/>
+							<h:outputText value="#{i18n['admin.menu.partners']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item current">
 						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
-							<h:outputText value="#{message['admin.menu.agreement.tips']}"/>
+							<h:outputText value="#{i18n['admin.menu.agreement.tips']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.agreement.xml']}"/>
+							<h:outputText value="#{i18n['admin.menu.agreement.xml']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item last">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.invoices']}"/>
+							<h:outputText value="#{i18n['admin.menu.invoices']}"/>
 						</h:outputLink>
 					</li>
 				</ul>
@@ -60,7 +60,7 @@
 					<p:messages id="err" />
 					<h4>Napiš důvod neschválení</h4>
 					<div class="default-font-size">Text:</div>
-					<p:inputTextarea styleClass="reject-message" value="#{advertModel.rejectMessage}" required="true" requiredMessage="#{message['advert.reject-message.required']}" />
+					<p:inputTextarea styleClass="reject-message" value="#{advertModel.rejectMessage}" required="true" requiredMessage="#{i18n['advert.reject-message.required']}" />
 					<h:inputHidden value="#{advertModel.advertEntity.id}" />
 					<div class="align-right" style="padding-top: 10px;">
 						<p:commandButton value="Odeslat" action="#{advertController.rejectSelectedAdvert}" update="@form :tip-form" oncomplete="rejectDialog.hide()" styleClass="kamoska_button light_gray" />

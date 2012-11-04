@@ -1,5 +1,7 @@
 package cz.kamoska.partner.entities;
 
+import org.eclipse.persistence.annotations.Index;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Calendar;
@@ -19,6 +21,7 @@ import java.util.Date;
 
 @Entity
 @Table(name  = "section")
+@Index(name = "URL_NAME_INDEX", columnNames = {"url_name"})
 public class SectionEntity {
 
 	@Id
@@ -39,6 +42,10 @@ public class SectionEntity {
 	@NotNull
 	@Column(name = "allways_selected")
 	private Boolean alwaysSelected = Boolean.FALSE;	// zda je vzdy vybrana a tedy neni mozne ji vybrat
+
+	@NotNull
+	@Column(name = "url_name", length = 15)
+	private String urlName;
 
 	@Override
 	public boolean equals(Object o) {
@@ -94,5 +101,13 @@ public class SectionEntity {
 
 	public void setAlwaysSelected(Boolean alwaysSelected) {
 		this.alwaysSelected = alwaysSelected;
+	}
+
+	public String getUrlName() {
+		return urlName;
+	}
+
+	public void setUrlName(String urlName) {
+		this.urlName = urlName;
 	}
 }

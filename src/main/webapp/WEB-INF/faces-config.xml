@@ -12,7 +12,7 @@
 
         <resource-bundle>
             <base-name>i18n/messages</base-name>
-            <var>message</var>
+            <var>i18n</var>
         </resource-bundle>
 
         <resource-handler>org.primefaces.application.PrimeResourceHandler</resource-handler>
@@ -24,10 +24,7 @@
     </converter>
 
 
-    <component>
-        <component-type>customComponent</component-type>
-        <component-class>net.airtoy.jsf.component.CustomComponent01</component-class>
-    </component>
+
 
 
 </faces-config>

@@ -2,8 +2,10 @@ package cz.kamoska.partner.dao.interfaces;
 
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.InvoiceEntity;
+import cz.kamoska.partner.entities.PartnerEntity;
 
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,4 +16,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface InvoiceDaoInterface extends DaoInterface<InvoiceEntity> {
+
+	public List<InvoiceEntity> findAllForPartner(PartnerEntity partnerEntity);
+
 }

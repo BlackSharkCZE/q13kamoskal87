@@ -410,3 +410,55 @@ p {
 
 .WAITING_TO_ACK {color:#ff8c00; font-weight: bold;}
 .REJECTED {color:red;}
+
+
+table.invoice-list {
+    width:100%;
+    margin: 0 auto;
+}
+
+table.invoice-list th {
+    text-align: left;
+    padding: 8px 0px 8px 8px;
+    background: #EFEFEF;
+    color:black;
+    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+}
+
+table.invoice-list th.left {
+    border-left: 1px solid #D9D9D9;
+}
+
+table.invoice-list th.right {
+    border-right: 1px solid #D9D9D9;
+}
+
+
+
+table.invoice-list td {
+    text-align: left;
+    padding: 5px 0px 15px 8px;
+    border-bottom: 1px solid #EFEFEF;
+    border-left: 1px solid #D9D9D9;
+}
+
+table.invoice-list td.no-line {
+    border-bottom: none;
+}
+
+
+table.invoice-list td.left {
+    border-left: 1px solid #D9D9D9;
+}
+
+table.invoice-list td.right {
+    border-right: 1px solid #D9D9D9;
+}
+
+table.invoice-list tr.last td {
+    border-bottom: 1px solid #D9D9D9;
+
+}
+
+

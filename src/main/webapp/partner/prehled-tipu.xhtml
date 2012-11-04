@@ -25,19 +25,7 @@
 	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
 
 		<ui:define name="content">
-
-
 			<partner:menu/>
-
-
-			<div class="system-message-spacer">
-				<div class="system-message">
-					<p>
-						Reklamy v sadě: Sada reklam1 se nezobrazují. Důvod: zálohová faktura č. PK2478556 není uhrazena.
-					</p>
-				</div>
-			</div>
-
 
 			<h:form id="dialog_form">
 				<p:confirmDialog message="#{i18n['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
@@ -48,50 +36,10 @@
 				</p:confirmDialog>
 			</h:form>
 
-
 			<h:form id="index_form">
-
-
-
-				<div class="notification-spacer">
-					<p:messages id="errors"/>
-
-					<div class="notification">
-						<div class="header">
-							<table>
-								<tr>
-									<th class="left">
-										<h:outputText value="#{i18n['notification']}"/> (0/2)
-									</th>
-									<th class="right">
-										<p:commandLink value="#{i18n['show-all-notification']}"/>
-									</th>
-								</tr>
-							</table>
-						</div>
-						<div class="content">
-							<table>
-								<tr>
-									<td class="left">12.9.2012</td>
-									<td class="right">
-										<p:commandLink value="Byla vám vystavena zálohová faktura č PK2478556" action="null"/>
-										- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum
-									</td>
-								</tr>
-								<tr>
-									<td class="left">19.9.2012</td>
-									<td class="right">Vítejte v partnerském portálu Kámoška.cz - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-
-				</div>
-
+				<p:messages id="errors"/>
 				<h:panelGroup id="bundle-list">
 					<ui:repeat value="#{advertBundleModel.getAdvertBundlesForPartner(loggedInPartner.partner)}" var="bundle">
-
-
 						<div class="advert">
 							<div class="header">
 								<table>
@@ -101,9 +49,7 @@
 												<p:inputText value="#{bundle.name}" required="true" requiredMessage="#{i18n['bundle.name.required']}"/>
 												<p:ajax event="save" listener="#{advertBundleController.updateBundleName(bundle)}"/>
 											</p:inplace>
-
 											&nbsp;
-
 											(<h:outputText value="#{bundle.advertCount}"/>/5)
 										</td>
 										<td class="right">

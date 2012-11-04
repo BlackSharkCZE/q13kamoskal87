@@ -106,6 +106,7 @@ public class InitBean implements Serializable {
 		SectionEntity s1 = new SectionEntity();
 		s1.setAlwaysSelected(false);
 		s1.setName("sex");
+		s1.setUrlName("sex");
 		SaveDomainResult<SectionEntity> saveResult = sectionDaoInterface.save(s1);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s1);
@@ -113,6 +114,8 @@ public class InitBean implements Serializable {
 		SectionEntity s2 = new SectionEntity();
 		s2.setAlwaysSelected(false);
 		s2.setName("culture");
+		s2.setUrlName("culture");
+
 		saveResult = sectionDaoInterface.save(s2);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s2);
@@ -120,6 +123,7 @@ public class InitBean implements Serializable {
 		SectionEntity s3 = new SectionEntity();
 		s3.setAlwaysSelected(false);
 		s3.setName("fashion");
+		s3.setUrlName("fashion");
 		saveResult = sectionDaoInterface.save(s3);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s3);
@@ -127,6 +131,7 @@ public class InitBean implements Serializable {
 		SectionEntity s4 = new SectionEntity();
 		s4.setAlwaysSelected(false);
 		s4.setName("bloggers");
+		s4.setUrlName("bloggers");
 		saveResult = sectionDaoInterface.save(s4);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s4);
@@ -134,6 +139,7 @@ public class InitBean implements Serializable {
 		SectionEntity s5 = new SectionEntity();
 		s5.setAlwaysSelected(false);
 		s5.setName("healthy");
+		s5.setUrlName("healthy");
 		saveResult = sectionDaoInterface.save(s5);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s5);
@@ -141,6 +147,7 @@ public class InitBean implements Serializable {
 		SectionEntity s6 = new SectionEntity();
 		s6.setAlwaysSelected(true);
 		s6.setName("main-page");
+		s6.setUrlName("main-page");
 		saveResult = sectionDaoInterface.save(s6);
 		if (!saveResult.success) {
 			logger.error("Can not create Section " + s6);

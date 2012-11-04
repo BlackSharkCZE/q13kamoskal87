@@ -1,7 +1,10 @@
 package cz.kamoska.partner.entities;
 
+import cz.kamoska.partner.enums.InvoiceType;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,12 +17,21 @@ import java.util.Date;
  */
 @Entity
 @Table(name ="invoices")
+
+@NamedQueries({
+		@NamedQuery(name = "InvoiceEntity.findAllForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID ORDER BY i.dateCreated DESC")
+})
+
 public class InvoiceEntity {
 
 	@Id
 	@GeneratedValue(generator = "invoiceIDGenerator")
 	@SequenceGenerator(name = "invoiceIDGenerator", sequenceName = "invoices_id_seq", allocationSize = 1)
 	private Integer id;
+
+	@NotNull
+	@Column(name = "number", length = 50)
+	private String number;
 
 	@Column(name = "date_created")
 	@NotNull
@@ -42,6 +54,20 @@ public class InvoiceEntity {
 	@Column(name = "fakturoid_url")
 	@NotNull
 	private String fakturoidUrl;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private InvoiceType invoiceType;
+
+	@Column(name = "price", precision = 10, scale = 2)
+	private BigDecimal price;
+
+	@Column(name = "price_inc_vat", precision = 10, scale = 2)
+	private BigDecimal priceIncVat;
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "invoice_id")
+	private InvoiceEntity invoice = null;		// zakladem je proforma faktura, a k ni je po zaplaceni dostupna normalni faktura
 
 
 	@PrePersist
@@ -100,16 +126,57 @@ public class InvoiceEntity {
 		this.fakturoidUrl = fakturoidUrl;
 	}
 
+	public InvoiceType getInvoiceType() {
+		return invoiceType;
+	}
+
+	public void setInvoiceType(InvoiceType invoiceType) {
+		this.invoiceType = invoiceType;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
 
 	@Override
 	public String toString() {
 		return "InvoiceEntity{" +
 				"id=" + id +
+				", number='" + number + '\'' +
 				", dateCreated=" + dateCreated +
 				", paid=" + paid +
 				", advertBundleEntity=" + advertBundleEntity +
 				", fakturoidId=" + fakturoidId +
 				", fakturoidUrl='" + fakturoidUrl + '\'' +
+				", invoiceType=" + invoiceType +
 				'}';
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public BigDecimal getPriceIncVat() {
+		return priceIncVat;
+	}
+
+	public void setPriceIncVat(BigDecimal priceIncVat) {
+		this.priceIncVat = priceIncVat;
+	}
+
+	public InvoiceEntity getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(InvoiceEntity invoice) {
+		this.invoice = invoice;
 	}
 }

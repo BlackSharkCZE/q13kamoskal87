@@ -16,7 +16,7 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -27,7 +27,7 @@
 			<h1>partner.kamoska.cz</h1>
 
 			<h2>
-				<h:outputText value="#{message['create-account']}"/>
+				<h:outputText value="#{i18n['create-account']}"/>
 			</h2>
 		</ui:define>
 
@@ -38,10 +38,10 @@
 				<div class="menu_left_bar">
 					<ul class="menu_left">
 						<li class="menu_left_item current">
-							<h:outputText value="#{message['partner-registration']}"/>
+							<h:outputText value="#{i18n['partner-registration']}"/>
 						</li>
 						<li class="menu_left_item last">
-							<h:outputText value="#{message['registration-confirm']}"/>
+							<h:outputText value="#{i18n['registration-confirm']}"/>
 						</li>
 					</ul>
 				</div>
@@ -59,7 +59,7 @@
 						<div class="text">
 							Před vyplněním registrace si prosím přečtěte:
 							<h:outputLink value="">
-								<h:outputText value="#{message['eula']}"/>
+								<h:outputText value="#{i18n['eula']}"/>
 							</h:outputLink>
 						</div>
 
@@ -76,16 +76,16 @@
 
 							<h:panelGrid columns="3" styleClass="form-table">
 
-								<h:outputText value="#{message['email']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.email}" required="true" requiredMessage="#{message['register.email.required']}"/>
+								<h:outputText value="#{i18n['email']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/>
 								<h:outputText value="E-mail zároveň slouží jako login do systému" styleClass="note"/>
 
-								<h:outputText value="#{message['password']}: "/>
-								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd1" match="pwd2" required="true" requiredMessage="#{message['register.password.required']}"/>
+								<h:outputText value="#{i18n['password']}: "/>
+								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd1" match="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['password-again']}: "/>
-								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd2" required="true" requiredMessage="#{message['register.password.required']}"/>
+								<h:outputText value="#{i18n['password-again']}: "/>
+								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
 								&nbsp;
 
 							</h:panelGrid>
@@ -95,12 +95,12 @@
 							<h:panelGrid columns="3" styleClass="form-table">
 
 
-								<h:outputText value="#{message['company-name']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.company}" required="true" requiredMessage="#{message['register.company.required']}"/>
+								<h:outputText value="#{i18n['company-name']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.company}" required="true" requiredMessage="#{i18n['register.company.required']}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['ic']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.ic}" required="true" requiredMessage="#{message['register.ic.required']}"/>
+								<h:outputText value="#{i18n['ic']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.ic}" required="true" requiredMessage="#{i18n['register.ic.required']}"/>
 								&nbsp;
 
 								<h:outputText value="-"/>
@@ -109,33 +109,33 @@
 										<p:ajax event="change" update="dic"/>
 									</p:selectBooleanCheckbox>
 									&nbsp;
-									<h:outputText value="#{message['vat-payer']}"/>
+									<h:outputText value="#{i18n['vat-payer']}"/>
 								</h:panelGroup>
 								&nbsp;
 
-								<h:outputText value="#{message['dic']}: "/>
+								<h:outputText value="#{i18n['dic']}: "/>
 								<p:inputText value="#{registerAccountModel.partnerEntity.dic}" id="dic" disabled="#{registerAccountModel.partnerEntity.vatPayer==false}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['street']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.street}" required="true" requiredMessage="#{message['register.street.required']}"/>
+								<h:outputText value="#{i18n['street']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.street}" required="true" requiredMessage="#{i18n['register.street.required']}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['city']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.city}" required="true" requiredMessage="#{message['register.city.required']}"/>
+								<h:outputText value="#{i18n['city']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.city}" required="true" requiredMessage="#{i18n['register.city.required']}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['postcode']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.psc}" required="true" requiredMessage="#{message['register.postcode.required']}"/>
+								<h:outputText value="#{i18n['postcode']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.psc}" required="true" requiredMessage="#{i18n['register.postcode.required']}"/>
 								&nbsp;
 
-								<h:outputText value="#{message['phone-number']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.phoneNumber}" required="true" requiredMessage="#{message['register.phone-number.required']}"/>
+								<h:outputText value="#{i18n['phone-number']}: "/>
+								<p:inputText value="#{registerAccountModel.partnerEntity.phoneNumber}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
 								&nbsp;
 
 								<h:outputText value=""/>
 								<h:panelGroup>
-									<p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{message['register.eula-agreement.required']}"/>
+									<p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
 									<h:outputText value="Souhlasím s "/>
 									<h:outputLink value="">všeobecnýmí obchodními podmínkami</h:outputLink>
 								</h:panelGroup>
@@ -145,7 +145,7 @@
 
 
 							<div class="align-right" style="padding: 20px 0">
-								<p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{message['register']}" styleClass="kamoska_button"/>
+								<p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button"/>
 							</div>
 
 						</h:form>

@@ -16,7 +16,7 @@
 	  xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -30,27 +30,27 @@
 				<ul class="main_menu">
 					<li class="item current">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.home-page']}"/>
+							<h:outputText value="#{i18n['partner.menu.home-page']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.sponzored-tips']}"/>
+							<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.account']}"/>
+							<h:outputText value="#{i18n['partner.menu.account']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.payments']}"/>
+							<h:outputText value="#{i18n['partner.menu.payments']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item last">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu-notification']}"/>
+							<h:outputText value="#{i18n['partner.menu-notification']}"/>
 						</h:outputLink>
 					</li>
 				</ul>
@@ -67,7 +67,7 @@
 							<table>
 								<tr>
 									<th class="left">
-										<h:outputText value="#{message['notification']}"/> (1/1)
+										<h:outputText value="#{i18n['notification']}"/> (1/1)
 									</th>
 									<th class="right">
 										&nbsp;
@@ -142,10 +142,10 @@
 					</div>
 			</div>
 				<p:spacer width="20px" />
-				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{message['create-firtst-advert-group']}" styleClass="kamoska_button green small" update="errors" />
+				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green small" update="errors" />
 
 				<div style="position: absolute;top:300px; left:800px; z-index: 1000;width:210px;">
-					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{message['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
+					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
 
 				</div>
 

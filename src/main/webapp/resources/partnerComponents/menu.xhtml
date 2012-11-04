@@ -1,0 +1,43 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:h="http://java.sun.com/jsf/html"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:composite="http://java.sun.com/jsf/composite" xmlns:fnt="http://java.sun.com/jsp/jstl/functions">
+
+	<composite:interface>
+	</composite:interface>
+
+	<composite:implementation>
+
+		<div class="main_menu_bar">
+			<ul class="main_menu">
+				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerHomePage) ? 'current' : ''} ">
+					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerHomePage}">
+						<h:outputText value="#{i18n['partner.menu.home-page']}"/>
+					</h:outputLink>
+				</li>
+				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerTipsList) ? 'current' : ''} ">
+					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerTipsList}">
+						<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
+					</h:outputLink>
+				</li>
+				<li class="item">
+					<h:outputLink value="">
+						<h:outputText value="#{i18n['partner.menu.account']}"/>
+					</h:outputLink>
+				</li>
+				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerInvoices) ? 'current' : ''}">
+					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerInvoices}">
+						<h:outputText value="#{i18n['partner.menu.payments']}"/>
+					</h:outputLink>
+				</li>
+				<li class="item last">
+					<h:outputLink value="">
+						<h:outputText value="#{i18n['partner.menu-notification']}"/>
+					</h:outputLink>
+				</li>
+			</ul>
+		</div>
+
+	</composite:implementation>
+
+</ui:component>

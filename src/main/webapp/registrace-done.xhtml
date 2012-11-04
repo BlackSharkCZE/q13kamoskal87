@@ -16,7 +16,7 @@
 	  xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -27,7 +27,7 @@
 			<h1>partner.kamoska.cz</h1>
 
 			<h2>
-				<h:outputText value="#{message['create-account']}"/>
+				<h:outputText value="#{i18n['create-account']}"/>
 			</h2>
 		</ui:define>
 
@@ -39,12 +39,12 @@
 					<ul class="menu_left">
 						<li class="menu_left_item current">
 							<h:outputLink value="">
-								<h:outputText value="#{message['partner-registration']}"/>
+								<h:outputText value="#{i18n['partner-registration']}"/>
 							</h:outputLink>
 						</li>
 						<li class="menu_left_item last">
 							<h:outputLink value="">
-								<h:outputText value="#{message['registration-confirm']}"/>
+								<h:outputText value="#{i18n['registration-confirm']}"/>
 							</h:outputLink>
 						</li>
 					</ul>

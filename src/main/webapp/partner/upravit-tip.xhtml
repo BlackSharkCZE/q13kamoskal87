@@ -15,7 +15,7 @@
 	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -29,27 +29,27 @@
 				<ul class="main_menu">
 					<li class="item">
 						<h:outputLink value="index.jspx">
-							<h:outputText value="#{message['partner.menu.home-page']}"/>
+							<h:outputText value="#{i18n['partner.menu.home-page']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item current">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.sponzored-tips']}"/>
+							<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.account']}"/>
+							<h:outputText value="#{i18n['partner.menu.account']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu.payments']}"/>
+							<h:outputText value="#{i18n['partner.menu.payments']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item last">
 						<h:outputLink value="">
-							<h:outputText value="#{message['partner.menu-notification']}"/>
+							<h:outputText value="#{i18n['partner.menu-notification']}"/>
 						</h:outputLink>
 					</li>
 				</ul>
@@ -57,11 +57,11 @@
 
 
 			<div class="navigation">
-				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{message['partner.menu.home-page']}"/></h:outputLink>
+				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
 				>
-				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{message['partner.menu.sponzored-tips']}"/></h:outputLink>
+				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/></h:outputLink>
 				>
-				<span class="text"><h:outputText value="#{message['new-advert']}"/></span>
+				<span class="text"><h:outputText value="#{i18n['new-advert']}"/></span>
 			</div>
 
 			<div style="padding:0px 0px 10px 10px">
@@ -87,10 +87,10 @@
 							<table class="form">
 								<tr>
 									<td class="first">
-										<h:outputText value="#{message['title']}: "/>
+										<h:outputText value="#{i18n['title']}: "/>
 									</td>
 									<td class="second">
-										<p:inputText id="title" value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{message['advert.title.required']}" validatorMessage="#{message['advert.title.too-long']}" style="width:250px;">
+										<p:inputText id="title" value="#{advertModel.advertEntity.title}" widgetVar="title_widget" required="true" requiredMessage="#{i18n['advert.title.required']}" validatorMessage="#{i18n['advert.title.too-long']}" style="width:250px;">
 											<f:validateLength maximum="50"/>
 											<p:ajax event="keyup" update="link-tip1-title link-tip2-title"/>
 										</p:inputText>
@@ -100,10 +100,10 @@
 								</tr>
 								<tr>
 									<td class="first align-top">
-										<h:outputText value="#{message['advert.description']}:"/>
+										<h:outputText value="#{i18n['advert.description']}:"/>
 									</td>
 									<td class="second">
-										<p:inputTextarea id="body" value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{message['advert.body.required']}" validatorMessage="#{message['advert.body.too-long']}">
+										<p:inputTextarea id="body" value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{i18n['advert.body.required']}" validatorMessage="#{i18n['advert.body.too-long']}">
 											<f:validateLength maximum="90"/>
 											<p:ajax event="keyup" update="link-tip1-body link-tip2-body"/>
 										</p:inputTextarea>
@@ -113,18 +113,18 @@
 								</tr>
 								<tr>
 									<td class="first">
-										<h:outputText value="#{message['advert.destination']}: "/>
+										<h:outputText value="#{i18n['advert.destination']}: "/>
 									</td>
 									<td class="second">
 										<span class="counter">http://</span>
-										<p:inputText style="width:270px" id="link" value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{message['advert.link.required']}"/>
+										<p:inputText style="width:270px" id="link" value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{i18n['advert.link.required']}"/>
 									</td>
 								</tr>
 								<tr>
-									<td class="first align-top"><h:outputText value="#{message['section']}: "/></td>
+									<td class="first align-top"><h:outputText value="#{i18n['section']}: "/></td>
 									<td class="second">
 										<p:selectManyCheckbox value="#{advertModel.advertEntity.sectionEntityList}" converter="advertSectionConverter" layout="pageDirection">
-											<f:selectItems value="#{advertSectionModel.all}" var="s" itemLabel="#{message[s.name]}" itemValue="#{s}"/>
+											<f:selectItems value="#{advertSectionModel.all}" var="s" itemLabel="#{i18n[s.name]}" itemValue="#{s}"/>
 										</p:selectManyCheckbox>
 									</td>
 								</tr>
@@ -213,12 +213,12 @@
 						<table>
 							<tr>
 								<td class="align-top align-right" style="padding: 10px 10px 0 0; width: 100px;">
-									<h:outputText value="#{message['advert.picture']}: "/>
+									<h:outputText value="#{i18n['advert.picture']}: "/>
 								</td>
 								<td>
 
 									<p:fileUpload mode="advanced"
-												  label="#{message['browse']}"
+												  label="#{i18n['browse']}"
 												  multiple="false"
 												  auto="true"
 												  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
@@ -248,14 +248,14 @@
 
 						</div>
 
-						<p:commandButton update="@form" value="#{message['update_advert']}" action="#{advertController.updateAdvert}" styleClass="kamoska_button violet" />
+						<p:commandButton update="@form" value="#{i18n['update_advert']}" action="#{advertController.updateAdvert}" styleClass="kamoska_button violet" />
 						<p:spacer width="20px;" height="0" />
-						<p:commandButton value="#{message['cancel_advert']}" action="#{advertController.cancelAdvert}" styleClass="kamoska_button gray" immediate="true"/>
+						<p:commandButton value="#{i18n['cancel_advert']}" action="#{advertController.cancelAdvert}" styleClass="kamoska_button gray" immediate="true"/>
 
 					</div>
 				</div>
 
-				<h:inputHidden value="#{advertController.pictureEntity.id}" required="true" id="advert_picture_id" requiredMessage="#{message['advert.picture.required']}"/>
+				<h:inputHidden value="#{advertController.pictureEntity.id}" required="true" id="advert_picture_id" requiredMessage="#{i18n['advert.picture.required']}"/>
 				<h:inputHidden value="#{advertModel.advertEntity.id}" required="true"/>
 
 			</h:form>

@@ -10,6 +10,7 @@ import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
 import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
 import cz.kamoska.partner.entities.*;
 import cz.kamoska.partner.enums.AdvertState;
+import cz.kamoska.partner.enums.InvoiceType;
 import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.AdvertModel;
 import cz.kamoska.partner.models.sessions.AdvertBundleModel;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -257,14 +259,19 @@ public class AdvertController implements Serializable {
 
 					if (advertBundle.getInvoiceEntities() == null || advertBundle.getInvoiceEntities().isEmpty()) {
 						// neni vystavena faktura, takze fakturu vystavime
-						Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(), advertModel.getAdvertEntity().getBundleEntity().getAdvertPriceGroupEntity().getPriceCzk());
+						BigDecimal invoicePrice = advertModel.getAdvertEntity().getBundleEntity().getAdvertPriceGroupEntity().getPriceCzk();
+						Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(), invoicePrice);
 						InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
 						if (invoiceEntity == null) {
 							logger.warn("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
 							//todo odeslat email klukum, ze nebyla vystavena faktura
 						} else {
-
 							invoiceEntity.setAdvertBundleEntity(save.item.getBundleEntity());
+							invoiceEntity.setInvoiceType(InvoiceType.PROFORMA);
+							invoiceEntity.setPrice(invoicePrice);
+							//TODO zde se musi spravne urcovat DPH a spravne prepocitavat castka. Musi dodat Radek
+							invoiceEntity.setPriceIncVat(invoicePrice.multiply(BigDecimal.valueOf(1.2)));
+
 							SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
 							if (!saveResult.success) {
 								logger.error("Can not save InvoiceEntity: " + invoiceEntity );

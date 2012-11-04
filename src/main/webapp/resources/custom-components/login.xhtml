@@ -15,13 +15,13 @@
 				<div class="content">
 
 					<h3>
-						<h:outputText value="#{message['login']}"/>
+						<h:outputText value="#{i18n['login']}"/>
 					</h3>
 					<div>
 						<p:messages id="msgs"/>
 					</div>
 
-					<div class="title"><h:outputText value="#{message['email']}"/></div>
+					<div class="title"><h:outputText value="#{i18n['email']}"/></div>
 					<div class="input">
 						<p:inputText styleClass="kamoska_input" value="#{loginModel.login}"/>
 					</div>
@@ -29,19 +29,19 @@
 					<div class="space_10"/>
 
 
-					<div class="title"><h:outputText value="#{message['password']}"/></div>
+					<div class="title"><h:outputText value="#{i18n['password']}"/></div>
 					<div class="input">
 						<p:password styleClass="kamoska_input" feedback="none" value="#{loginModel.password}"/>
 					</div>
 
 					<div class="space_10"/>
 
-					<p:commandButton value="#{message['login']}" styleClass="kamoska_button" id="login-button" update="msgs" action="#{loginController.login}"/>
+					<p:commandButton value="#{i18n['login']}" styleClass="kamoska_button" id="login-button" update="msgs" action="#{loginController.login}"/>
 
 					<div class="space_10"/>
 
 					<h:outputLink value="">
-						<h:outputText value="#{message['forgotten_password']}"/>
+						<h:outputText value="#{i18n['forgotten_password']}"/>
 					</h:outputLink>
 
 

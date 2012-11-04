@@ -77,3 +77,14 @@ table td, table th {
 .w700 {
     width:700px;
 }
+
+
+.success {
+    font-weight: bold;
+    color:#38761D;
+}
+
+.error {
+    font-weight: bold;
+    color:#FF0000;
+}

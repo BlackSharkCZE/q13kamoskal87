@@ -145,11 +145,8 @@ public class FakturoidDao {
 						logger.info("New Invoice Created on fakturoid. Response:" + strResponse);
 
 						Invoice respInvoice = (Invoice) jsonMapper.deserialize(strResponse, Invoice.class);
-						/*
-						Header[] locations = response.getHeaders("location");
-						if (locations!=null) res.setFakturoidUrl(locations[0].getValue());
-						*/
 						res.setFakturoidUrl(respInvoice.getPublicHtmlUrl());
+						res.setNumber(respInvoice.getNumber());
 						if (respInvoice!=null) res.setFakturoidId(respInvoice.getId());
 						res.setDateCreated(Calendar.getInstance().getTime());
 

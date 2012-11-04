@@ -15,7 +15,7 @@
 	  xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title><h:outputText value="#{message['web_title']}"/></title>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
@@ -28,27 +28,27 @@
 				<ul class="main_menu">
 					<li class="item current">
 						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
-							<h:outputText value="#{message['admin.menu.home-page']}"/>
+							<h:outputText value="#{i18n['admin.menu.home-page']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.partners']}"/>
+							<h:outputText value="#{i18n['admin.menu.partners']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
-							<h:outputText value="#{message['admin.menu.agreement.tips']}"/>
+							<h:outputText value="#{i18n['admin.menu.agreement.tips']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.agreement.xml']}"/>
+							<h:outputText value="#{i18n['admin.menu.agreement.xml']}"/>
 						</h:outputLink>
 					</li>
 					<li class="item last">
 						<h:outputLink value="">
-							<h:outputText value="#{message['admin.menu.invoices']}"/>
+							<h:outputText value="#{i18n['admin.menu.invoices']}"/>
 						</h:outputLink>
 					</li>
 				</ul>
@@ -65,7 +65,7 @@
 						<table>
 							<tr>
 								<th class="left">
-									<h:outputText value="#{message['new-in-system']}"/>
+									<h:outputText value="#{i18n['new-in-system']}"/>
 								</th>
 								<th class="right">
 									&nbsp;
@@ -76,13 +76,13 @@
 					<div class="content">
 
 						<div>
-							<span><h:outputText value="#{message['tips-waiting-to-pass']}: "/></span>
+							<span><h:outputText value="#{i18n['tips-waiting-to-pass']}: "/></span>
 							<span class="count">
 								<h:outputText value="#{advertDaoModel.getCountInState('WAITING_TO_ACK')}"/>
 							</span>
 						</div>
 						<div>
-							<span><h:outputText value="#{message['xml-waiting-to-pass']}"/></span>
+							<span><h:outputText value="#{i18n['xml-waiting-to-pass']}"/></span>
 							<span class="count">55 </span>
 						</div>
 
@@ -96,7 +96,7 @@
 						<table>
 							<tr>
 								<th class="left">
-									<h:outputText value="#{message['stats-overview']}"/>
+									<h:outputText value="#{i18n['stats-overview']}"/>
 								</th>
 								<th class="right">
 									&nbsp;
@@ -107,23 +107,23 @@
 					<div class="content">
 
 						<div>
-							<span><h:outputText value="#{message['stats.monthly-tips-display']}: "/></span>
+							<span><h:outputText value="#{i18n['stats.monthly-tips-display']}: "/></span>
 							<span class="count">44</span>
 						</div>
 						<div>
-							<span><h:outputText value="#{message['stats.number-of-registered-partners']}"/></span>
+							<span><h:outputText value="#{i18n['stats.number-of-registered-partners']}"/></span>
 							<span class="count">
 								<h:outputText value="#{partnerDaoModel.partnerCountOfActivatedPartners}"/>
 							</span>
 
-							<span><h:outputText value="#{message['stats.number-of-payers']}"/></span>
+							<span><h:outputText value="#{i18n['stats.number-of-payers']}"/></span>
 							<span class="count">55</span>
 						</div>
 
 						<div>
-							<span><h:outputText value="#{message['stats.promo-invoice-count']}"/></span>
+							<span><h:outputText value="#{i18n['stats.promo-invoice-count']}"/></span>
 							<span class="count">55</span>
-							<span><h:outputText value="#{message['stats.promo.invoice-payed']}"/></span>
+							<span><h:outputText value="#{i18n['stats.promo.invoice-payed']}"/></span>
 							<span class="count">55</span>
 						</div>
 
