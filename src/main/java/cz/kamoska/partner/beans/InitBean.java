@@ -12,12 +12,16 @@ import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.context.ApplicationScoped;
+import javax.sql.DataSource;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -45,6 +49,10 @@ public class InitBean implements Serializable {
 	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
 	@EJB
 	private SectionDaoInterface sectionDaoInterface;
+
+	@Resource(name = "jdbc/kamoska")
+	private DataSource dataSource;
+
 
 	@PostConstruct
 	public void init() {
@@ -98,6 +106,8 @@ public class InitBean implements Serializable {
 			//zadne sekce nejsou vytvorene, takze je vytvorime
 			createSections();
 		}
+
+		initDatabaseFunctions();
 
 	}
 
@@ -156,4 +166,47 @@ public class InitBean implements Serializable {
 
 	}
 
+	/**
+	 * Vytvari potrebne databazove funkce
+	 */
+	private void initDatabaseFunctions() {
+		final String query = sqlFunctionCreateCommand;
+		try (Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
+
+			int res = ps.executeUpdate();
+			logger.info("Function to generate daily stats create successful");
+		} catch (Exception e) {
+			logger.error("Can not execute query " + query, e);
+		}
+	}
+
+
+	private final String sqlFunctionCreateCommand = "-- Function: fnc_generate_daily_stats()\n" +
+			"\n" +
+			"-- DROP FUNCTION fnc_generate_daily_stats();\n" +
+			"\n" +
+			"CREATE OR REPLACE FUNCTION fnc_generate_daily_stats()\n" +
+			"  RETURNS integer AS\n" +
+			"$BODY$BEGIN\n" +
+			"\n" +
+			"insert into advert_accesslist_daily(id, display_count, for_date, advert_entity)\n" +
+			"select \n" +
+			"nextval('advert_accesslist_daily_id_seq') as id, \n" +
+			"count(id) as display_count, \n" +
+			"'yesterday'::date as for_date,\n" +
+			"advert_id as advert_entity\n" +
+			"from advert_accesslist_actual\n" +
+			"where datecreated::date = 'yesterday'::date\n" +
+			"group by advert_id;\n" +
+			"\n" +
+			"\n" +
+			"delete from advert_accesslist_actual where datecreated::date = 'yesterday'::date;\n" +
+			"return 1;\n" +
+			"\n" +
+			"END;$BODY$\n" +
+			"  LANGUAGE plpgsql VOLATILE\n" +
+			"  COST 100;\n" +
+			"ALTER FUNCTION fnc_generate_daily_stats()\n" +
+			"  OWNER TO \"partner.kamoska.cz\";\n" +
+			"COMMENT ON FUNCTION fnc_generate_daily_stats() IS 'Generuje denni statistiky za predesly den';\n";
 }
