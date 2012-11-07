@@ -39,7 +39,7 @@
 			<h:form id="index_form">
 				<p:messages id="errors"/>
 				<h:panelGroup id="bundle-list">
-					<ui:repeat value="#{advertBundleModel.getAdvertBundlesForPartner(loggedInPartner.partner)}" var="bundle">
+					<ui:repeat value="#{advertBundleModel.advertBundlesForPartner}" var="bundle">
 						<div class="advert">
 							<div class="header">
 								<table>
@@ -63,7 +63,8 @@
 											</h:panelGroup>
 
 											<h:panelGroup rendered="#{bundle.validTo==null}">
-												<h:outputText value="#{i18n['inactive']}"/>
+												<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
+												<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
 											</h:panelGroup>
 
 										</td>
@@ -181,9 +182,16 @@
 
 				<div class="clear"/>
 
-				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
-								 styleClass="kamoska_button green small"
-								 value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
+				<h:panelGroup rendered="#{advertBundleModel.allPaid}">
+					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
+									 styleClass="kamoska_button green small"
+									 value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
+					<p:spacer width="10" height="1"/>
+					<h:outputText value="#{nextAPG.priceCzk}">
+						<f:convertNumber pattern="0"/>
+					</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
+
+				</h:panelGroup>
 
 			</h:form>
 

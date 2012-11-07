@@ -461,4 +461,6 @@ table.invoice-list tr.last td {
 
 }
 
-
+.bold {
+    font-weight: bold;
+}

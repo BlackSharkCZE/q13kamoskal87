@@ -13,6 +13,7 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:fnt="http://java.sun.com/jsp/jstl/functions"
 	  xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
 	  xmlns:f="http://java.sun.com/jsf/core">
 
@@ -26,19 +27,6 @@
 
 		<ui:define name="content">
 
-
-			<partner:menu/>
-
-
-			<div class="system-message-spacer">
-				<div class="system-message">
-					<p>
-						Reklamy v sadě: Sada reklam1 se nezobrazují. Důvod: zálohová faktura č. PK2478556 není uhrazena.
-					</p>
-				</div>
-			</div>
-
-
 			<h:form id="dialog_form">
 				<p:confirmDialog message="#{i18n['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
 					<h:inputHidden value="#{advertModel.advertEntity.id}"/>
@@ -48,10 +36,23 @@
 				</p:confirmDialog>
 			</h:form>
 
+			<partner:menu/>
+
+
+			<h:panelGroup rendered="!=null}">
+				<div class="system-message-spacer">
+					<div class="system-message">
+						<ui:repeat value="#{messageModel.findMessageEntityForLoggedInPartner('ALERT',0,5)}" var="alert">
+							<p>
+								<h:outputText value="#{alert.title}"/>
+							</p>
+						</ui:repeat>
+					</div>
+				</div>
+			</h:panelGroup>
+
 
 			<h:form id="index_form">
-
-
 
 				<div class="notification-spacer">
 					<p:messages id="errors"/>
@@ -61,27 +62,38 @@
 							<table>
 								<tr>
 									<th class="left">
-										<h:outputText value="#{i18n['notification']}"/> (0/2)
+										<h:outputText value="#{i18n['notification']}"/>
+										(<h:outputText value="#{messageModel.getMessageCountForLoggedInPartner('NOTIFICATION')}"/>/<h:outputText value="#{messageModel.getUnreadMessageCountForLoggedInPartner('NOTIFICATION')}"/>)
 									</th>
 									<th class="right">
-										<p:commandLink value="#{i18n['show-all-notification']}"/>
+										<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx">
+											<h:outputText value="#{i18n['show-all-notification']}"/>
+										</h:outputLink>
 									</th>
 								</tr>
 							</table>
 						</div>
 						<div class="content">
 							<table>
-								<tr>
-									<td class="left">12.9.2012</td>
-									<td class="right">
-										<p:commandLink value="Byla vám vystavena zálohová faktura č PK2478556" action="null"/>
-										- Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum
-									</td>
-								</tr>
-								<tr>
-									<td class="left">19.9.2012</td>
-									<td class="right">Vítejte v partnerském portálu Kámoška.cz - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis</td>
-								</tr>
+
+								<ui:repeat value="#{messageModel.findMessageEntityForLoggedInPartner('NOTIFICATION',0,3)}" var="msg">
+
+									<tr>
+										<td class="left">
+											<h:outputText value="#{msg.publishDate}">
+												<f:convertDateTime pattern="dd.MM.yyyy"/>
+											</h:outputText>
+										</td>
+										<td class="right">
+											<p:commandLink value="#{msg.title}" action="#{messageController.showMessageDetail}" styleClass="#{msg.read==null ? 'bold' : ''}">
+												<f:setPropertyActionListener value="#{msg}" target="#{messageModel.selectedMessage}"/>
+											</p:commandLink>
+											&nbsp;-&nbsp;
+											<h:outputText value="#{fnt:substring(msg.body, 0, 145 )}..."/>
+										</td>
+									</tr>
+
+								</ui:repeat>
 							</table>
 						</div>
 					</div>
@@ -89,7 +101,7 @@
 				</div>
 
 				<h:panelGroup id="bundle-list">
-					<ui:repeat value="#{advertBundleModel.getAdvertBundlesForPartner(loggedInPartner.partner)}" var="bundle">
+					<ui:repeat value="#{advertBundleModel.advertBundlesForPartner}" var="bundle">
 
 
 						<div class="advert">
@@ -117,7 +129,8 @@
 											</h:panelGroup>
 
 											<h:panelGroup rendered="#{bundle.validTo==null}">
-												<h:outputText value="#{i18n['inactive']}"/>
+												<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
+												<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
 											</h:panelGroup>
 
 										</td>
@@ -235,10 +248,17 @@
 
 				<div class="clear"/>
 
-				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
-								 styleClass="kamoska_button green small"
-								 value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
 
+				<h:panelGroup rendered="#{advertBundleModel.allPaid}">
+					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
+									 styleClass="kamoska_button green small"
+									 value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
+					<p:spacer width="10" height="1"/>
+					<h:outputText value="#{nextAPG.priceCzk}">
+						<f:convertNumber pattern="0"/>
+					</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
+
+				</h:panelGroup>
 			</h:form>
 
 			<p:spacer height="50px"/>

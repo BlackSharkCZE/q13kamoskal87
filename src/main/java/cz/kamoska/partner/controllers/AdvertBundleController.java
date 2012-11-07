@@ -1,13 +1,17 @@
 package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.FakturoidDao;
+import cz.kamoska.partner.beans.singletons.DefaultMessages;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
+import cz.kamoska.partner.dao.interfaces.MessageDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
+import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
+import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import org.apache.log4j.Logger;
@@ -40,6 +44,8 @@ public class AdvertBundleController implements Serializable {
 
 	@Inject
 	private LoggedInPartner loggedInPartner;
+	@Inject
+	private DefaultMessages defaultMessages;
 
 	@EJB
 	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
@@ -49,6 +55,9 @@ public class AdvertBundleController implements Serializable {
 	private FakturoidDao fakturoidDao;
 	@EJB
 	private PartnerDaoInterface partnerDaoInterface;
+
+	@EJB
+	private MessageDaoInterface messageDaoInterface;
 
 
 	public String createEmptyAdvertBundle(PartnerEntity partnerEntity) {
@@ -83,6 +92,27 @@ public class AdvertBundleController implements Serializable {
 			if (saveResult.success) {
 				logger.info("Advert bundle " + saveResult.item + " added to partner " + partnerEntity);
 				partnerEntity.getAdvertBundleEntityList().add(saveResult.item);
+
+
+				DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.FIRST_MESSAGE_BUNDLE);
+				message.replaceAll("{BUNDLE_NAME}", saveResult.item.getName());
+
+				MessageEntity messageEntity = new MessageEntity();
+				messageEntity.setBody(message.getBody());
+				messageEntity.setTitle(message.getTitle());
+				messageEntity.setMessageType(message.getMessageType());
+				messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
+				messageEntity.setPartner(loggedInPartner.getPartner());
+				messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+				SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
+				if (!messageSaveResult.success) {
+					logger.warn("Can not save system message " + messageEntity);
+				} else {
+					logger.info("Message " + messageEntity + " saved");
+				}
+
+
 				return "first-advert-bundle-created";
 			} else {
 				logger.error("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);

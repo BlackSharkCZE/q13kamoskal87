@@ -47,10 +47,31 @@
 		</navigation-case>
 
 		<navigation-case>
+			<from-outcome>show-message-detail</from-outcome>
+			<to-view-id>/partner/detail-zpravy.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>show-messages-list</from-outcome>
+			<to-view-id>/partner/zpravy.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
+		<navigation-case>
 			<from-outcome>edit-advert</from-outcome>
 			<to-view-id>/partner/upravit-tip.xhtml</to-view-id>
 		</navigation-case>
 
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/partner/prehled-tipu.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>show-message-detail</from-outcome>
+			<to-view-id>/partner/detail-zpravy.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>

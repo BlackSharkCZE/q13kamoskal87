@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:fnt="http://java.sun.com/jsp/jstl/functions"
+	  xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
+	  xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+
+		<ui:define name="content">
+
+			<partner:menu/>
+
+DETAIL ZPRAVY
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

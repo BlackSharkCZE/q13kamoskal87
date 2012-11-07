@@ -4,12 +4,14 @@ import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
 import cz.kamoska.partner.entities.AdvertEntity;
+import cz.kamoska.partner.entities.InvoiceEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.models.template.AbstractModel;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Iterator;
@@ -29,15 +31,29 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 	@EJB
 	private AdvertBundleDaoInterface advertBundleDaoInterface;
 
+	@Inject
+	private LoggedInPartner loggedInPartner;
+
+	private boolean allPaid = true;
 
 	public AdvertBundleModel() {
 		super(AdvertBundleEntity.class);
 	}
 
 
-	public List<AdvertBundleEntity> getAdvertBundlesForPartner(PartnerEntity partner) {
-		List<AdvertBundleEntity> allForPartner = advertBundleDaoInterface.findAllForPartner(partner);
+	public List<AdvertBundleEntity> getAdvertBundlesForPartner() {
+		List<AdvertBundleEntity> allForPartner = advertBundleDaoInterface.findAllForPartner(loggedInPartner.getPartner());
+		int invoiceCount = 0;
 		for (AdvertBundleEntity ab : allForPartner) {
+
+			for (InvoiceEntity invoiceEntity : ab.getInvoiceEntities()) {
+				invoiceCount++;
+				if (invoiceEntity.getPaid() == null) {
+					allPaid = false;
+					break;
+				}
+			}
+
 			if (ab.getAdvertEntityList()!=null && !ab.getAdvertEntityList().isEmpty()) {
 				Iterator<AdvertEntity> iterator = ab.getAdvertEntityList().iterator();
 				while (iterator.hasNext()) {
@@ -48,7 +64,19 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 				}
 			}
 		}
+		if (invoiceCount == 0) {
+			allPaid = false;
+		}
+
 		return allForPartner;
+	}
+
+	public boolean isAllPaid() {
+		return allPaid;
+	}
+
+	public void setAllPaid(boolean allPaid) {
+		this.allPaid = allPaid;
 	}
 
 	@Override

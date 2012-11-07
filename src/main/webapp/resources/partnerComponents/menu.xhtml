@@ -30,8 +30,8 @@
 						<h:outputText value="#{i18n['partner.menu.payments']}"/>
 					</h:outputLink>
 				</li>
-				<li class="item last">
-					<h:outputLink value="">
+				<li class="item last #{fnt:contains(request.requestURI, basicUrl.partnerNotification) ? 'current' : ''}">
+					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerNotification}">
 						<h:outputText value="#{i18n['partner.menu-notification']}"/>
 					</h:outputLink>
 				</li>
