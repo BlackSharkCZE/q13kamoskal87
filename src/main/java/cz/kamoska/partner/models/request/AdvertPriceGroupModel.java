@@ -27,12 +27,11 @@ public class AdvertPriceGroupModel {
 	@Inject
 	private LoggedInPartner loggedInPartner;
 
+
 	@Produces @RequestScoped
 	@Named(value = "nextAPG")
 	public AdvertPriceGroupEntity getNextAdvertPriceGroupForCurrentPartner() {
-
 		return advertPriceGroupDaoInterface.findNextForPartner(loggedInPartner.getPartner());
-
 	}
 
 }

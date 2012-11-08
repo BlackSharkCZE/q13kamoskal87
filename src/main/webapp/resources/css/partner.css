@@ -127,6 +127,25 @@ list-style: none;
     padding-bottom: 20px;
 }
 
+.notification .footer {
+    background: #EFEFEF;
+    border-top:1px solid #D9D9D9;
+}
+
+.notification .footer table {
+    width: 100%;
+}
+
+.notification .footer th {
+    padding: 8px 10px 8px 10px;
+}
+
+.notification .footer th.right {
+    text-align: right;
+}
+
+
+
 table.welcome td.left {
     font-size: 48px;
 
@@ -464,3 +483,50 @@ table.invoice-list tr.last td {
 .bold {
     font-weight: bold;
 }
+
+
+.ui-dialog.custom-dialog {
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border: 1px solid #D9D9D9
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-titlebar {
+    padding: 5px;
+    background: #C27BA0;
+    border-radius: 0;
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-title {
+    font-size: 12px;
+    color:black;
+    font-weight: normal;
+
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-titlebar-close {
+    margin: 0;
+}
+
+.ui-dialog.custom-dialog .ui-dialog-title-dialog {
+
+}
+
+.ui-dialog.ui-widget-content .ui-dialog-content {
+    padding: 2px;
+}
+
+.ui-panel.ui-widget.ui-widget-content.ui-corner-all.message-box {
+    font-size: 12px;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    padding: 2px;
+}
+
+  .message-box .ui-panel-content.ui-widget-content {
+    padding: 5px;
+}
+
+

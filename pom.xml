@@ -179,6 +179,21 @@
 			<version>4.1.1</version>
 		</dependency>
 
+<!--
+
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-impl</artifactId>
+			<version>2.1.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.myfaces.core</groupId>
+			<artifactId>myfaces-api</artifactId>
+			<version>2.1.9</version>
+		</dependency>
+-->
+
 
 
 

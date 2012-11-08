@@ -4,6 +4,8 @@
         "http://www.sun.com/software/appserver/dtds/sun-web-app_3_0-0.dtd">
 <sun-web-app>
 
+
+
     <context-root>/</context-root>
 
     <!-- SPRAVCE SYSTEMU - LUKAS/RADEK -->
@@ -19,5 +21,11 @@
     </security-role-mapping>
 
     <parameter-encoding default-charset="UTF-8"/>
+
+
+	<!--class-loader delegate="false" /-->
+	<!--property name="useMyFaces" value="true"/-->
+	<!--parameter-encoding default-charset="UTF-8"/-->
+
 
 </sun-web-app>

@@ -4,6 +4,7 @@ import cz.kamoska.partner.dao.interfaces.MessageDaoInterface;
 import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.enums.MessageType;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
+import cz.kamoska.partner.pojo.kamoska.Paginator;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -29,6 +30,14 @@ public class MessageModel {
 	private MessageDaoInterface messageDaoInterface;
 
 	private MessageEntity selectedMessage;
+	private Integer page;
+
+	private Paginator paginator;
+
+	public MessageModel() {
+		page = 0;
+		paginator = null;
+	}
 
 	/**
 	 * Vraci seznam zprav pro prihlaseneho partnera, dany typ zpravy a strankovani - Nepouziva Cache. Dotazy vola primo na DB
@@ -40,6 +49,32 @@ public class MessageModel {
 	 */
 	public List<MessageEntity> findMessageEntityForLoggedInPartner(MessageType messageType, int offset, int limit) {
 		return messageDaoInterface.findForPartner(loggedInPartner.getPartner(), messageType, offset, limit);
+	}
+
+
+	public void loadPaginator() {
+		paginator.setMessageEntityList(messageDaoInterface.findForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION, page * paginator.getPageSize(), paginator.getPageSize()));
+		Long count = messageDaoInterface.getMessageCountForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION);
+		Long unreadCount = messageDaoInterface.getUnreadMessageCountForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION);
+		paginator.setAllMessageCount(count.intValue());
+		paginator.setCurrentPage(page);
+		paginator.setMaxPage((int) Math.ceil(count / (double) paginator.getPageSize()));
+		paginator.setUnreadCount(unreadCount.intValue());
+		paginator.setNewCreated(false);
+	}
+
+
+	public String showMessageDetail(Integer id) {
+		return "show-message-detail";
+	}
+
+
+	public Paginator getPaginator() {
+		if (paginator == null) {
+			paginator = new Paginator();
+			loadPaginator();
+		}
+		return paginator;
 	}
 
 
@@ -63,5 +98,13 @@ public class MessageModel {
 
 	public void setSelectedMessage(MessageEntity selectedMessage) {
 		this.selectedMessage = selectedMessage;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
 	}
 }
