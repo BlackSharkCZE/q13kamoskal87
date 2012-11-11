@@ -42,7 +42,7 @@
 			<h:panelGroup rendered="!=null}">
 				<div class="system-message-spacer">
 					<div class="system-message">
-						<ui:repeat value="#{messageModel.findMessageEntityForLoggedInPartner('ALERT',0,5)}" var="alert">
+						<ui:repeat value="#{messageDaoModel.findMessageEntityForLoggedInPartner('ALERT',0,5)}" var="alert">
 							<p>
 								<h:outputText value="#{alert.title}"/>
 							</p>
@@ -63,7 +63,7 @@
 								<tr>
 									<th class="left">
 										<h:outputText value="#{i18n['notification']}"/>
-										(<h:outputText value="#{messageModel.getMessageCountForLoggedInPartner('NOTIFICATION')}"/>/<h:outputText value="#{messageModel.getUnreadMessageCountForLoggedInPartner('NOTIFICATION')}"/>)
+										(<h:outputText value="#{messageDaoModel.getMessageCountForLoggedInPartner('NOTIFICATION')}"/>/<h:outputText value="#{messageDaoModel.getUnreadMessageCountForLoggedInPartner('NOTIFICATION')}"/>)
 									</th>
 									<th class="right">
 										<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx">
@@ -76,7 +76,7 @@
 						<div class="content">
 							<table>
 
-								<ui:repeat value="#{messageModel.findMessageEntityForLoggedInPartner('NOTIFICATION',0,3)}" var="msg">
+								<ui:repeat value="#{messageDaoModel.findMessageEntityForLoggedInPartner('NOTIFICATION',0,3)}" var="msg">
 
 									<tr>
 										<td class="left">
@@ -86,7 +86,7 @@
 										</td>
 										<td class="right">
 											<p:commandLink value="#{msg.title}" action="#{messageController.showMessageDetail}" styleClass="#{msg.read==null ? 'bold' : ''}">
-												<f:setPropertyActionListener value="#{msg}" target="#{messageModel.selectedMessage}"/>
+												<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
 											</p:commandLink>
 											&nbsp;-&nbsp;
 											<h:outputText value="#{fnt:substring(msg.body, 0, 145 )}..."/>

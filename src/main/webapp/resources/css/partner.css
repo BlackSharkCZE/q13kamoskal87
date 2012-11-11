@@ -120,7 +120,7 @@ list-style: none;
 }
 
 .notification .content td a {
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .notification table.welcome td {
@@ -211,9 +211,14 @@ table.welcome td.left {
 }
 
 
+a.ui-commandlink.link {
+    color: #741B47 !important;
+    text-decoration: none !important;
+}
+
 a {
     color: #741B47;
-    text-decoration: none;
+    text-decoration: none ;
 }
 
 p {
@@ -484,7 +489,7 @@ table.invoice-list tr.last td {
     font-weight: bold;
 }
 
-
+/*
 .ui-dialog.custom-dialog {
     border-radius: 0;
     -moz-border-radius: 0;
@@ -527,6 +532,67 @@ table.invoice-list tr.last td {
 
   .message-box .ui-panel-content.ui-widget-content {
     padding: 5px;
+}
+
+*/
+
+
+
+.message-table table {
+    /*border:1px solid red;*/
+    /*#D9D9D9*/
+}
+
+.message-table table thead tr th.ui-paginator span {
+    text-align: center;
+}
+
+.message-table table thead tr th.ui-datatable-header {
+    text-align: left;
+    background: #EFEFEF;
+    border:1px solid #D9D9D9;
+    border-bottom:none;;
+
+
+}
+
+.message-table table thead tr th.ui-paginator {
+    text-align: right;
+    background: #EFEFEF;
+    border:1px solid #D9D9D9;
+    border-top:none;
+
+}
+
+.message-table table thead tr[role="row"] {
+    display:none;
+}
+
+.message-table table tfoot tr td.ui-paginator span {
+    text-align: center;
+}
+
+.message-table table tfoot tr td.ui-paginator {
+    text-align: right;
+    background: #EFEFEF;
+    border:1px solid #D9D9D9;
+
+}
+
+
+.message-table table tbody tr.ui-datatable-even {
+    border:none;
+}
+
+.message-table table tbody tr td[role="gridcell"] {
+    border:none;
+    background: white;
+}
+
+
+.message-table table tbody tr.ui-datatable-odd {
+    border:none;
+    background: white;
 }
 
 

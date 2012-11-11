@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
+
+	  xmlns:f="http://java.sun.com/jsf/core"
+		>
+
+
+<h:head>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+
+		<ui:define name="content">
+
+			<partner:menu/>
+
+			<div class="navigation">
+				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
+				>
+				<h:outputLink value="/partner/zpravy.jspx"><h:outputText value="#{i18n['message-list']}"/></h:outputLink>
+				>
+				<span class="text"><h:outputText value="#{messageDaoModel.selectedMessage.title}"/></span>
+			</div>
+
+			<p:spacer height="20" width="10"/>
+
+
+			<h:form id="frm">
+
+
+				<div class="notification">
+					<div class="header">
+						<table>
+							<tr>
+								<th class="left">
+									<h:outputText value="#{messageDaoModel.selectedMessage.publishDate}">
+										<f:convertDateTime pattern="dd.MM.yyyy' - 'HH:mm"/>
+									</h:outputText>
+									&nbsp;
+									<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx">
+										<h:outputText value="#{i18n['back.to.messages-list']}"/>
+									</h:outputLink>
+								</th>
+							</tr>
+						</table>
+					</div>
+					<div class="content">
+
+						<h3>
+							<h:outputText value="#{messageDaoModel.selectedMessage.title}"/>
+						</h3>
+
+						<pre>
+							<h:outputText value="#{messageDaoModel.selectedMessage.body}"/>
+						</pre>
+
+					</div>
+
+				</div>
+
+
+			</h:form>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

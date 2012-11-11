@@ -1,16 +1,20 @@
-package cz.kamoska.partner.models.request;
+package cz.kamoska.partner.models.dao;
 
 import cz.kamoska.partner.dao.interfaces.MessageDaoInterface;
 import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.enums.MessageType;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
-import cz.kamoska.partner.pojo.kamoska.Paginator;
+import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.SortOrder;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,8 +24,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @Named
-@RequestScoped
-public class MessageModel {
+@SessionScoped
+public class MessageDaoModel implements Serializable {
 
 	@Inject
 	private LoggedInPartner loggedInPartner;
@@ -30,13 +34,23 @@ public class MessageModel {
 	private MessageDaoInterface messageDaoInterface;
 
 	private MessageEntity selectedMessage;
-	private Integer page;
+	private LazyDataModel<MessageEntity> lazyDataModel;
 
-	private Paginator paginator;
+	private Integer allMessages;
+	private Integer unreadMessages;
 
-	public MessageModel() {
-		page = 0;
-		paginator = null;
+	public MessageDaoModel() {
+
+		lazyDataModel = new LazyDataModel<MessageEntity>() {
+			@Override
+			public List<MessageEntity> load(int offset, int limit, String s, SortOrder sortOrder, Map<String, String> stringStringMap) {
+				setRowCount(getMessageCountForLoggedInPartner(MessageType.NOTIFICATION).intValue());
+				allMessages = getRowCount();
+				unreadMessages = getUnreadMessageCountForLoggedInPartner(MessageType.NOTIFICATION).intValue();
+				return findMessageEntityForLoggedInPartner(MessageType.NOTIFICATION, offset, limit);
+			}
+		};
+
 	}
 
 	/**
@@ -50,33 +64,6 @@ public class MessageModel {
 	public List<MessageEntity> findMessageEntityForLoggedInPartner(MessageType messageType, int offset, int limit) {
 		return messageDaoInterface.findForPartner(loggedInPartner.getPartner(), messageType, offset, limit);
 	}
-
-
-	public void loadPaginator() {
-		paginator.setMessageEntityList(messageDaoInterface.findForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION, page * paginator.getPageSize(), paginator.getPageSize()));
-		Long count = messageDaoInterface.getMessageCountForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION);
-		Long unreadCount = messageDaoInterface.getUnreadMessageCountForPartner(loggedInPartner.getPartner(), MessageType.NOTIFICATION);
-		paginator.setAllMessageCount(count.intValue());
-		paginator.setCurrentPage(page);
-		paginator.setMaxPage((int) Math.ceil(count / (double) paginator.getPageSize()));
-		paginator.setUnreadCount(unreadCount.intValue());
-		paginator.setNewCreated(false);
-	}
-
-
-	public String showMessageDetail(Integer id) {
-		return "show-message-detail";
-	}
-
-
-	public Paginator getPaginator() {
-		if (paginator == null) {
-			paginator = new Paginator();
-			loadPaginator();
-		}
-		return paginator;
-	}
-
 
 	/**
 	 * Vraci celkovy pocet zprav pro prihlaseneho partnera partnera
@@ -100,11 +87,27 @@ public class MessageModel {
 		this.selectedMessage = selectedMessage;
 	}
 
-	public Integer getPage() {
-		return page;
+	public LazyDataModel<MessageEntity> getLazyDataModel() {
+		return lazyDataModel;
 	}
 
-	public void setPage(Integer page) {
-		this.page = page;
+	public void setLazyDataModel(LazyDataModel<MessageEntity> lazyDataModel) {
+		this.lazyDataModel = lazyDataModel;
+	}
+
+	public Integer getAllMessages() {
+		return allMessages;
+	}
+
+	public void setAllMessages(Integer allMessages) {
+		this.allMessages = allMessages;
+	}
+
+	public Integer getUnreadMessages() {
+		return unreadMessages;
+	}
+
+	public void setUnreadMessages(Integer unreadMessages) {
+		this.unreadMessages = unreadMessages;
 	}
 }
