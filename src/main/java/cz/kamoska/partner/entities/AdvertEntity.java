@@ -23,6 +23,32 @@ import java.util.List;
 		@NamedQuery(name = "AdvertEntity.findAllWaitingToACK", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.WAITING_TO_ACK ORDER BY a.dateCreated ASC"),
 		@NamedQuery(name = "AdvertEntity.countInState", query = "SELECT COUNT(a) FROM AdvertEntity a WHERE a.state=:state ")
 })
+
+
+@NamedNativeQueries({
+		@NamedNativeQuery(
+				name = "AdvertEntity.native.findLessUsedBySection",
+				query = "select a.* from advert a left join \n" +
+						"(select \n" +
+						"  sum (display_count) as display_count, advert_entity \n" +
+						"  from (\n" +
+						"select dl.display_count, dl.advert_entity from advert_accesslist_daily dl \n" +
+						"union\n" +
+						"select count(al.id) as display_count, al.advert_id as advert_entity from advert_accesslist_actual al group by advert_id    \n" +
+						") as s\n" +
+						"group by s.advert_entity) foo on a.id = foo.advert_entity\n" +
+						"  join advert_bundle ab on a.bundle_id = ab.id\n" +
+						"  join advert_section asct on asct.advertentity_id = a.id\n" +
+						"  join section sec on sec.id = asct.sectionentitylist_id\n" +
+						"  where a.accept_date is not null\n" +
+						"  and ab.status='ACTIVE'\n" +
+						"  and a.state='ACTIVE'\n" +
+						"  and sec.url_name = #sectionUrlName\n" +
+						"  and ab.valid_to > now()\n" +
+						"  order by foo.display_count asc\n" +
+						"  ",
+				resultClass = AdvertEntity.class)
+})
 public class AdvertEntity {
 
 	@Id

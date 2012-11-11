@@ -71,6 +71,16 @@ public class SectionEntity {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "SectionEntity{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", urlName='" + urlName + '\'' +
+				", alwaysSelected=" + alwaysSelected +
+				'}';
+	}
+
 	public Integer getId() {
 		return id;
 	}

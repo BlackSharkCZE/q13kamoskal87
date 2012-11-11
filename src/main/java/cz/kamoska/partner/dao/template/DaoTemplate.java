@@ -117,7 +117,7 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 	public List<T> findListByNamedQuery(String namedQuery, int offset, int limit, Map<String, Object> params) {
 		List<T> res;
 
-		if (namedQuery != null) {
+ 		if (namedQuery != null) {
 			Query q = em.createNamedQuery(namedQuery);
 			if (params != null) {
 				for (String key : params.keySet()) {

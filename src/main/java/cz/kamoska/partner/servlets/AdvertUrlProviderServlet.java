@@ -45,7 +45,7 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 			if (advertId != null) {
 				AdvertEntity advert = advertDaoInterface.findByPrimaryKey(AdvertEntity.class, advertId);
 				if (advert != null) {
-					response.sendRedirect(advert.getUrl());
+					response.sendRedirect(advert.getUrl().startsWith("http://") ? advert.getUrl() : "http://"+advert.getUrl() );
 				} else {
 					logger.error("Can not find advert with ID "+ advertId);
 					response.setStatus(HttpServletResponse.SC_NO_CONTENT);

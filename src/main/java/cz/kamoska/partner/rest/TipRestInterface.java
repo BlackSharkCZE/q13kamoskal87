@@ -1,14 +1,17 @@
 package cz.kamoska.partner.rest;
 
+import cz.kamoska.partner.beans.singletons.AdvertProviderModel;
 import cz.kamoska.partner.enums.AdvertDisplayStyle;
-import cz.kamoska.partner.models.application.AdvertProviderModel;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,11 +27,37 @@ public class TipRestInterface {
 	@EJB
 	private AdvertProviderModel advertProviderModel;
 
+	/*
+	@Context
+	private Application app;
+	@Context
+	private UriInfo uri;
+	@Context
+	private HttpHeaders headers;
+	@Context
+	private Request request;
+	@Context
+	private ServletContext context;
+	*/
+
+
+
 	@GET()
 	@Produces(value = "text/javascript")
 	@Path("{section}/{type}/{count}")
-	public String getTips(final @PathParam(value = "section") String section, final @PathParam(value = "type")AdvertDisplayStyle type, final @PathParam(value = "count") Integer count) {
-		return "var s=\"Hello World;\"";
+	public String getTips(
+			final @PathParam(value = "section") String section,
+			final @PathParam(value = "type") AdvertDisplayStyle type,
+			final @PathParam(value = "count") Integer count,
+			@Context HttpServletRequest request) {
+
+		StringBuilder urlBase = new StringBuilder(128);
+		urlBase.append(request.getScheme()).append("://").append(request.getServerName());
+		if (request.getServerPort() != 80 && request.getServerPort()!=443) {
+			urlBase.append(":").append(request.getServerPort());
+		}
+		urlBase.append(request.getServletContext().getContextPath());
+		return advertProviderModel.getAdvertJavaScript(section, type, count).replace("#{pageContext.request.contextPath}",urlBase);
 	}
 
 }

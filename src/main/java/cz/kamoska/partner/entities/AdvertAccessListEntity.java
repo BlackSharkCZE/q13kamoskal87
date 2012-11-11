@@ -33,6 +33,13 @@ public class AdvertAccessListEntity {
 	@Column(name = "referrer", length = 1024)
 	private String referrer;
 
+	public AdvertAccessListEntity() {
+	}
+
+	public AdvertAccessListEntity(AdvertEntity advertEntity, Date dateCreated) {
+		this.advertEntity = advertEntity;
+		this.dateCreated = dateCreated;
+	}
 
 	public Integer getId() {
 		return id;

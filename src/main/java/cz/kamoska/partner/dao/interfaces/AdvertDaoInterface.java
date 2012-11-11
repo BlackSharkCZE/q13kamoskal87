@@ -21,4 +21,6 @@ public interface AdvertDaoInterface extends DaoInterface<AdvertEntity> {
 
 	Long getAdvertCountInState(AdvertState state);
 
+	List<AdvertEntity> findLessUsedBySection(String section, int count);
+
 }

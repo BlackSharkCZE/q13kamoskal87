@@ -7,7 +7,9 @@ import cz.kamoska.partner.enums.AdvertState;
 import org.apache.log4j.Logger;
 
 import javax.ejb.Stateless;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,5 +38,12 @@ public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements
 			logger.error("Can not read Advert Count in state " + state, e);
 		}
 		return -1L;
+	}
+
+	@Override
+	public List<AdvertEntity> findLessUsedBySection(String section, int count) {
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("sectionUrlName", section);
+		return findListByNamedQuery("AdvertEntity.native.findLessUsedBySection", 0, count, params);
 	}
 }
