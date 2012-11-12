@@ -137,7 +137,7 @@
 								<h:panelGroup>
 									<p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
 									<h:outputText value="Souhlasím s "/>
-									<h:outputLink value="">všeobecnýmí obchodními podmínkami</h:outputLink>
+									<h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnýmí obchodními podmínkami</h:outputLink>
 								</h:panelGroup>
 								&nbsp;
 

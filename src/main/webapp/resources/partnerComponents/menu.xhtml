@@ -20,8 +20,8 @@
 						<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
 					</h:outputLink>
 				</li>
-				<li class="item">
-					<h:outputLink value="">
+				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerAccountSetting) ? 'current' : ''}">
+					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerAccountSetting}">
 						<h:outputText value="#{i18n['partner.menu.account']}"/>
 					</h:outputLink>
 				</li>

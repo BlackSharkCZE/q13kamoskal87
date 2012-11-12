@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: blackshark
+  Date: 25.7.11
+  Time: 14:07
+-->
+<!DOCTYPE html
+		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents" xmlns:c="http://java.sun.com/jsf/html"
+
+		>
+
+
+<h:head>
+	<title><h:outputText value="#{i18n['web_title']}"/></title>
+</h:head>
+
+<h:body>
+
+	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+
+		<ui:define name="content">
+
+			<partner:menu/>
+
+			<div class="navigation">
+				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
+				>
+				<span class="text"><h:outputText value="#{i18n['partner.menu.account']}"/></span>
+			</div>
+
+
+			<h2><h:outputText value="#{i18n['edit.login']}"/></h2>
+
+			<div class="edit-form">
+
+				<h:form id="update-login-form">
+
+					<p:messages id="errors" closable="true"/>
+
+
+					<h:panelGrid columns="2">
+						<h:outputText value="#{i18n['partner.edit.email']}: "/>
+						<h:panelGroup>
+							<p:inputText value="#{updateLoginModel.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/> <!-- todo kontrolovat zda e-mail zmenil a pokud ano, tak zda je nove vybrany volny -->
+							&nbsp;<h:outputText value="#{i18n['partner.edit.email.info']}" styleClass="info"/>
+						</h:panelGroup>
+
+						<h:outputText value="#{i18n['partner.edit.old-password']}: "/>
+						<p:inputText value="#{updateLoginModel.oldPassword}" required="true" requiredMessage="#{i18n['partner.edit.old-password.missing']}"/>
+
+
+						<h:outputText value="#{i18n['partner.edit.new-password']}: "/>
+						<p:password value="#{updateLoginModel.newPassword}" id="pwd1" label="#{i18n['partner.edit.new-password']}" required="true" requiredMessage="#{i18n['partner.edit.new-password.missing']}"/>
+
+						<h:outputText value="#{i18n['partner.edit.new-password.again']}: "/>
+						<p:password value="#{updateLoginModel.newPassword}" id="pwd2" match="pwd1" label="Zopakování hesla"/>
+
+						<h:outputText value="&nbsp;"/>
+						<p:commandButton value="#{i18n['partner.edit.save-new-password']}" action="null" styleClass="kamoska_button violet" update="@form"/> <!-- todo add actin method to update account -->
+
+					</h:panelGrid>
+				</h:form>
+			</div>
+
+
+			<p:spacer width="1" height="20"/>
+
+			<h2><h:outputText value="#{i18n['edit.company']}"/></h2>
+
+			<div class="edit-form">
+
+				<h:form id="update-company-form">
+
+					<p:messages />
+
+					<h:panelGrid columns="2" styleClass="form-table">
+
+						<h:outputText value="#{i18n['company-name']}: "/>
+						<p:inputText value="#{updateCompanyModel.company}" required="true" requiredMessage="#{i18n['register.company.required']}"/>
+
+						<h:outputText value="#{i18n['ic']}: "/>
+						<p:inputText value="#{updateCompanyModel.ic}" required="true" requiredMessage="#{i18n['register.ic.required']}"/>
+
+						<h:outputText value="-"/>
+						<h:panelGroup>
+							<p:selectBooleanCheckbox value="#{updateCompanyModel.vatPayer}">
+								<p:ajax event="change" update="dic"/>
+							</p:selectBooleanCheckbox>
+							&nbsp;
+							<h:outputText value="#{i18n['vat-payer']}"/>
+						</h:panelGroup>
+
+						<h:outputText value="#{i18n['dic']}: "/>
+						<p:inputText value="#{updateCompanyModel.dic}" id="dic" disabled="#{updateCompanyModel.vatPayer==false}"/>
+
+						<h:outputText value="#{i18n['street']}: "/>
+						<p:inputText value="#{updateCompanyModel.street}" required="true" requiredMessage="#{i18n['register.street.required']}"/>
+
+						<h:outputText value="#{i18n['city']}: "/>
+						<p:inputText value="#{updateCompanyModel.city}" required="true" requiredMessage="#{i18n['register.city.required']}"/>
+
+						<h:outputText value="#{i18n['postcode']}: "/>
+						<p:inputText value="#{updateCompanyModel.psc}" required="true" requiredMessage="#{i18n['register.postcode.required']}"/>
+
+						<h:outputText value="#{i18n['phone-number']}: "/>
+						<p:inputText value="#{updateCompanyModel.phone}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
+
+						&nbsp;
+						<p:commandButton value="#{i18n['partner.edit.save-new-company']}" action="null" styleClass="kamoska_button violet" update="@form"  /> <!-- todo implement action to update comapny -->
+
+					</h:panelGrid>
+				</h:form>
+
+			</div>
+
+		</ui:define>
+
+
+	</ui:composition>
+
+</h:body>
+
+</html>

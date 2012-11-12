@@ -103,12 +103,18 @@
 										<h:outputText value="#{i18n['advert.description']}:"/>
 									</td>
 									<td class="second">
-										<p:inputTextarea id="body" value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{i18n['advert.body.required']}" validatorMessage="#{i18n['advert.body.too-long']}">
+										<p:inputTextarea id="body"
+														 counter="counter"
+														 counterTemplate="{0} znaků zbývá"
+														 maxlength="90"
+														 value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{i18n['advert.body.required']}" validatorMessage="#{i18n['advert.body.too-long']}">
 											<f:validateLength maximum="90"/>
 											<p:ajax event="keyup" update="link-tip1-body link-tip2-body"/>
 										</p:inputTextarea>
 
-										<div class="counter" id="body_counter">(0/90)</div>
+										<div class="counter" id="body_counter">
+											<h:outputText id="counter" />
+										</div>
 									</td>
 								</tr>
 								<tr>

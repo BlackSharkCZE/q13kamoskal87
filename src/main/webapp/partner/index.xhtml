@@ -187,7 +187,7 @@
 
 										</td>
 										<td class="state">
-											<h:outputText value="#{message[advert.state]}" styleClass="#{advert.state}" rendered="#{advert.state=='WAITING_TO_ACK' or advert.state=='REJECTED'}"/>
+											<h:outputText value="#{i18n[advert.state]}" styleClass="#{advert.state}" rendered="#{advert.state=='WAITING_TO_ACK' or advert.state=='REJECTED'}"/>
 											<p:selectOneMenu value="#{advert.state}" rendered="#{advert.state=='ACTIVE' or advert.state=='SUSPEND'}">
 												<f:selectItems value="#{enumModel.allPartnerState}"/>
 												<p:ajax event="change" listener="#{advertController.changeState(advert)}" partialSubmit="true" process="@form"/>

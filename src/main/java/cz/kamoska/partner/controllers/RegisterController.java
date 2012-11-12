@@ -1,21 +1,26 @@
 package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.singletons.MailerBean;
+import cz.kamoska.partner.beans.stateless.EmailValidator;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.RegisterAccountModel;
+import cz.kamoska.partner.support.FacesMessageCreate;
+import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.facelets.FaceletContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.InterceptorBinding;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,11 +47,15 @@ public class RegisterController {
 
 	@Inject
 	private RegisterAccountModel registerAccountModel;
+	@Inject
+	private FacesMessageProvider facesMessageProvider;
 
 	@EJB
 	private PartnerDaoInterface partnerDao;
 	@EJB
 	private MailerBean mailerBean;
+	@EJB
+	private EmailValidator emailValidator;
 
 
 	public String registerNewAccount() {
@@ -54,29 +63,44 @@ public class RegisterController {
 
 		PartnerEntity partnerEntity = registerAccountModel.getPartnerEntity();
 		if (partnerEntity != null) {
-			textPassword = partnerEntity.getPassword();
-			partnerEntity.setRoles(Arrays.asList(new String[]{PartnerGroups.GROUP_PARTNER.toString()}));
-			partnerEntity.setPassword(MD5.md5hexa(partnerEntity.getPassword()).toUpperCase());
-		}
 
-		SaveDomainResult<PartnerEntity> saveResult = partnerDao.save(partnerEntity);
-		if (saveResult.success) {
-			logger.info("Save new partner with ID:" + saveResult.item.getId());
-			sendConfirmationEmail(saveResult.item, textPassword);
+			if (registerAccountModel.isEulaAgreement()) {
+				if (!emailValidator.isEmailUsed(partnerEntity.getEmail())) {
+					textPassword = partnerEntity.getPassword();
+					partnerEntity.setRoles(Arrays.asList(new String[]{PartnerGroups.GROUP_PARTNER.toString()}));
+					partnerEntity.setPassword(MD5.md5hexa(partnerEntity.getPassword()).toUpperCase());
 
-			Path path = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH,saveResult.item.getId()+"/src");
-			try {
-				Files.createDirectories(path);
-			} catch (IOException e) {
-				logger.error("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
+					SaveDomainResult<PartnerEntity> saveResult = partnerDao.save(partnerEntity);
+					if (saveResult.success) {
+						logger.info("Save new partner with ID:" + saveResult.item.getId());
+						sendConfirmationEmail(saveResult.item, textPassword);
+
+						Path path = FileSystems.getDefault().getPath(MainConfig.IMAGE_STORE_ROOT_PATH,saveResult.item.getId()+"/src");
+						try {
+							Files.createDirectories(path);
+						} catch (IOException e) {
+							logger.error("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
+						}
+
+						return REGISTER_SUCCESSFUL_OUTCOME;
+					} else {
+						logger.error("Can not save Partner " + partnerEntity);
+						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
+					}
+				} else {
+					logger.warn("Email " + partnerEntity.getEmail() + " already used!");
+					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.email.used"), FacesContext.getCurrentInstance());
+				}
+			} else {
+				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("eula-agreement"), FacesContext.getCurrentInstance());
 			}
 
 
-			return REGISTER_SUCCESSFUL_OUTCOME;
 		} else {
-			logger.info("Can not save Partner " + partnerEntity);
-			//todo vyplnit hlasku, ze se registrace nezdarila
+			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
+			logger.error("Can not save Partner because partnerEntity is null ");
 		}
+
 		return null;
 	}
 

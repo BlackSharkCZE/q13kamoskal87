@@ -26,10 +26,12 @@
 				<div class="title">partner.kamoska.cz</div>
 				<div class="login">
 					<div class="content">
+						<h:form id="logout-command-link-form">
 						<h:outputText value="#{loggedInPartner.partner.email}" styleClass="light-gray"/>
 						&nbsp;
 						&nbsp;
-						<p:commandLink action="#{loginController.logout}" value="#{i18n['logout']}"/>
+							<p:commandLink action="#{loginController.logout}" value="#{i18n['logout']}"/>
+						</h:form>
 					</div>
 				</div>
 				<div class="clear"/>

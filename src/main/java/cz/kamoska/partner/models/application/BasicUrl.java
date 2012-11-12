@@ -18,6 +18,7 @@ public class BasicUrl {
 	private final String partnerInvoices = "/partner/prehled-faktur.jspx";
 	private final String partnerTipsList = "/partner/prehled-tipu.jspx";
 	private final String partnerNotification = "/partner/zpravy.jspx";
+	private final String partnerAccountSetting = "/partner/ucet.jspx";
 
 
 	public String getPartnerHomePage() {
@@ -34,5 +35,9 @@ public class BasicUrl {
 
 	public String getPartnerInvoices() {
 		return partnerInvoices;
+	}
+
+	public String getPartnerAccountSetting() {
+		return partnerAccountSetting;
 	}
 }

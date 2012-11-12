@@ -72,6 +72,13 @@
 			<to-view-id>/partner/detail-zpravy.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
+
+		<navigation-case>
+			<from-outcome>create-new-advert</from-outcome>
+			<to-view-id>/partner/pridat-tip.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+
 	</navigation-rule>
 
 	<navigation-rule>
