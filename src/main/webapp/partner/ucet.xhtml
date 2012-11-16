@@ -58,13 +58,13 @@
 
 
 						<h:outputText value="#{i18n['partner.edit.new-password']}: "/>
-						<p:password value="#{updateLoginModel.newPassword}" id="pwd1" label="#{i18n['partner.edit.new-password']}" required="true" requiredMessage="#{i18n['partner.edit.new-password.missing']}"/>
+						<p:password value="#{updateLoginModel.newPassword}" id="pwd1" match="pwd2" label="#{i18n['partner.edit.new-password']}" />
 
 						<h:outputText value="#{i18n['partner.edit.new-password.again']}: "/>
-						<p:password value="#{updateLoginModel.newPassword}" id="pwd2" match="pwd1" label="Zopakování hesla"/>
+						<p:password value="#{updateLoginModel.newPassword}" id="pwd2" label="Zopakování hesla"/>
 
 						<h:outputText value="&nbsp;"/>
-						<p:commandButton value="#{i18n['partner.edit.save-new-password']}" action="null" styleClass="kamoska_button violet" update="@form"/> <!-- todo add actin method to update account -->
+						<p:commandButton value="#{i18n['partner.edit.save-new-password']}" action="#{accountController.updatePassword}" styleClass="kamoska_button violet" update="@form"/> <!-- todo add actin method to update account -->
 
 					</h:panelGrid>
 				</h:form>
@@ -114,7 +114,7 @@
 						<p:inputText value="#{updateCompanyModel.phone}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
 
 						&nbsp;
-						<p:commandButton value="#{i18n['partner.edit.save-new-company']}" action="null" styleClass="kamoska_button violet" update="@form"  /> <!-- todo implement action to update comapny -->
+						<p:commandButton value="#{i18n['partner.edit.save-new-company']}" action="#{accountController.updateCompany}" styleClass="kamoska_button violet" update="@form"  /> <!-- todo implement action to update comapny -->
 
 					</h:panelGrid>
 				</h:form>

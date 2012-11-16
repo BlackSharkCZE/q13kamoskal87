@@ -26,4 +26,10 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 		params.put("partnerID", partnerEntity.getId());
 		return findListByNamedQuery("InvoiceEntity.findAllForPartner", 0, -1, params);
 	}
+
+	@Override
+	public List<InvoiceEntity> findNotPaid(int limit, int offset) {
+		return findListByNamedQuery("InvoiceEntity.findNotPaid", offset, limit, null);
+
+	}
 }

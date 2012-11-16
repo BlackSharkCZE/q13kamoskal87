@@ -1,8 +1,6 @@
 package cz.kamoska.partner.entities;
 
 
-import com.sun.istack.internal.Nullable;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

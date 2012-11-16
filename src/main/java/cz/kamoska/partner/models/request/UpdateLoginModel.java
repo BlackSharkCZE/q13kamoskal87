@@ -3,8 +3,11 @@ package cz.kamoska.partner.models.request;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +17,7 @@ import javax.inject.Inject;
  * To change this template use File | Settings | File Templates.
  */
 @Model
-public class UpdateLoginModel {
+public class UpdateLoginModel implements Serializable {
 
 	@Inject
 	private LoggedInPartner loggedInPartner;

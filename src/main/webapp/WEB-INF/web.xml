@@ -93,6 +93,7 @@
     <context-param>
         <param-name>javax.faces.CONFIG_FILES</param-name>
         <param-value>
+            /WEB-INF/faces-config/navigation-public.xml,
             /WEB-INF/faces-config/navigation-admin.xml,
             /WEB-INF/faces-config/navigation-partner.xml
         </param-value>

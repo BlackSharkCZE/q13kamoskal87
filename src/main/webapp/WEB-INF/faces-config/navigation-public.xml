@@ -14,4 +14,12 @@
 
     </navigation-rule>
 
+	<!--navigation-rule>
+		<from-view-id>/registrace.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>register_successful</from-outcome>
+			<to-view-id>/registrace-done.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule-->
+
 </faces-config>

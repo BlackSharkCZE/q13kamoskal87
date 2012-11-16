@@ -19,7 +19,8 @@ import java.util.Date;
 @Table(name ="invoices")
 
 @NamedQueries({
-		@NamedQuery(name = "InvoiceEntity.findAllForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID ORDER BY i.dateCreated DESC")
+		@NamedQuery(name = "InvoiceEntity.findAllForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID ORDER BY i.dateCreated DESC"),
+		@NamedQuery(name = "InvoiceEntity.findNotPaid", query = "SELECT i FROM InvoiceEntity i WHERE i.paid IS NULL")
 })
 
 public class InvoiceEntity {
