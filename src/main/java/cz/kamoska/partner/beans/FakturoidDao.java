@@ -7,9 +7,9 @@ import cz.kamoska.partner.entities.InvoiceEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.pojo.fakturoid.Subject;
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
@@ -41,6 +41,59 @@ public class FakturoidDao {
 	private CustomHttpClient customHttpClient;
 
 
+	public Invoice findById(Integer id) {
+
+		final String url = MainConfig.FAKTUROID_API_URL + "invoices/"+id+".json";
+		HttpGet get = null;
+		HttpEntity entity = null;
+		logger.info("Create GET with URL: "+ url);
+		get = new HttpGet(url);
+
+		try {
+			logger.info("Call URL: " + url);
+			get.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), get));
+			get.setHeader("Content-type", "application/json");
+			get.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
+		} catch (Exception e) {
+			logger.error("Can not read Invoice from URL " + url, e);
+			if (get != null) {
+				get.abort();
+			}
+			return null;
+		}
+
+		DefaultHttpClient client = customHttpClient.getClient();
+
+		try {
+			HttpResponse response = client.execute(get);
+			int statusCode = response.getStatusLine().getStatusCode();
+			switch (statusCode) {
+				case HttpServletResponse.SC_OK:
+					entity = response.getEntity();
+					final String strResponse = EntityUtils.toString(entity);
+					logger.info("Incoming data: " + strResponse);
+					Invoice in = (Invoice) jsonMapper.deserialize(strResponse, Invoice.class);
+					return in;
+				default:
+					logger.warn("Invoice can not been read. StatusCode: " + statusCode);
+					break;
+			}
+		} catch (Exception e) {
+			logger.error("Can not read invoice, because can not call URL: " + url, e);
+		} finally {
+			if (entity != null) {
+				try {
+					EntityUtils.consume(entity);
+				} catch (IOException e) {
+				}
+			}
+			if (get != null) {
+				get.abort();
+			}
+		}
+		return null;
+	}
+
 	public Integer registerPartner(PartnerEntity partnerEntity) {
 		Subject subject = new Subject(partnerEntity);
 
@@ -48,16 +101,16 @@ public class FakturoidDao {
 		HttpPost post = null;
 		HttpEntity entity = null;
 		if (serializedData != null) {
-			final String url = MainConfig.FAKTUROID_API_URL+"subjects.json";
+			final String url = MainConfig.FAKTUROID_API_URL + "subjects.json";
 			logger.info("Create Subject on URL: " + url);
-			 post = new HttpPost(url);
+			post = new HttpPost(url);
 
 			try {
 				logger.info("Post data: " + serializedData);
 				post.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), post));
-				post.setHeader("Content-type","application/json");
+				post.setHeader("Content-type", "application/json");
 				post.setEntity(new StringEntity(serializedData));
-				post.setHeader("User-Agent","partnerkamoska (sticha@kamoska.cz)");
+				post.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
 			} catch (Exception e) {
 				logger.error("Can not add Subject entity to POST", e);
 				if (post != null) {
@@ -114,16 +167,16 @@ public class FakturoidDao {
 		HttpPost post = null;
 		HttpEntity entity = null;
 		if (serializedData != null) {
-			final String url = MainConfig.FAKTUROID_API_URL+"invoices.json";
+			final String url = MainConfig.FAKTUROID_API_URL + "invoices.json";
 			logger.info("Create Invoice on URL: " + url);
 			post = new HttpPost(url);
 
 			try {
 				logger.info("Post data: " + serializedData);
 				post.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), post));
-				post.setHeader("Content-type","application/json");
+				post.setHeader("Content-type", "application/json");
 				post.setEntity(new StringEntity(serializedData));
-				post.setHeader("User-Agent","partnerkamoska (sticha@kamoska.cz)");
+				post.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
 			} catch (Exception e) {
 				logger.error("Can not add Invoice entity to POST", e);
 				if (post != null) {
@@ -147,7 +200,7 @@ public class FakturoidDao {
 						Invoice respInvoice = (Invoice) jsonMapper.deserialize(strResponse, Invoice.class);
 						res.setFakturoidUrl(respInvoice.getPublicHtmlUrl());
 						res.setNumber(respInvoice.getNumber());
-						if (respInvoice!=null) res.setFakturoidId(respInvoice.getId());
+						if (respInvoice != null) res.setFakturoidId(respInvoice.getId());
 						res.setDateCreated(Calendar.getInstance().getTime());
 
 						if (res.getFakturoidUrl() != null && res.getFakturoidId() != null) {

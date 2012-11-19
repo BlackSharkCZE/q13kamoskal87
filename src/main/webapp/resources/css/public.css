@@ -129,6 +129,23 @@ form.register-form input[type="text"], form.register-form input[type="password"]
 }
 
 
+#page .ui-messages-error {
+    background: #990000;
+    border: 1px solid #660000;
+    color:white;
+    border-radius: 0;
+    font-size: 11px;
+}
+
+#page .ui-messages-error .ui-messages-error-icon  {
+    background: none;
+}
+
+#page input.ui-state-error { border:1px solid #990000; color: black;}
+#page textarea.ui-state-error { border:1px solid #990000;color:black;}
+
+
+
 #register-form .ui-messages-error {
     font-size: 12px;
     background: #990000;

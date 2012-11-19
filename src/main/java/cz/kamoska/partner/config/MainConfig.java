@@ -53,4 +53,7 @@ public class MainConfig {
 	public static final String EMAIL_SMTP_PASSWORD = "";
 	public static final boolean EMAIL_SMTP_TLS = false;
 	public static final String EMAIL_FROM = "partner@kamoska.cz";
+
+	public static final String EMAIL_NEW_PASSWORD_SUBJECT = "Zapomenute heslo: partner.kamoska.cz";
+	public static final String EMAIL_REGISTER_SUBJECT = "Registrace: partner.kamoska.cz";
 }

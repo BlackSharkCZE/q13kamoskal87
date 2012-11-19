@@ -66,6 +66,7 @@ public class LoginController implements Serializable {
 		HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		try {
 			request.logout();
+			request.getSession().invalidate();
 			return LOGOUT_SUCCESSFUL_OUTCOME;
 		} catch (Exception e) {
 			logger.warn("Can not logout user: " + request.getUserPrincipal().getName());

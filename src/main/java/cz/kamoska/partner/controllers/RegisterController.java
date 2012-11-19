@@ -10,6 +10,7 @@ import cz.kamoska.partner.enums.PartnerGroups;
 import cz.kamoska.partner.models.request.RegisterAccountModel;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
+import cz.kamoska.partner.support.FileTemplateLoader;
 import net.airtoy.encryption.MD5;
 import org.apache.log4j.Logger;
 
@@ -49,6 +50,9 @@ public class RegisterController {
 	private RegisterAccountModel registerAccountModel;
 	@Inject
 	private FacesMessageProvider facesMessageProvider;
+
+	@Inject
+	private FileTemplateLoader fileTemplateLoader;
 
 	@EJB
 	private PartnerDaoInterface partnerDao;
@@ -117,27 +121,28 @@ public class RegisterController {
 		confirmUrl.append("/activate/").append(partnerEntity.getEmailConfirmationHash());
 
 		final String body = template.replace("{LOGIN}", partnerEntity.getEmail()).replace("{PASSWORD}", textPassword).replace("{CONFIRM_URL}", confirmUrl);
-		mailerBean.sendEmail(body, "Registrace: partner.kamoska.cz", Arrays.asList(new String[] {partnerEntity.getEmail()}), "partner@kamoska.cz",null, true);
+		mailerBean.sendEmail(body, MainConfig.EMAIL_REGISTER_SUBJECT, Arrays.asList(new String[] {partnerEntity.getEmail()}), "partner@kamoska.cz",null, true);
 
 	}
 
 	private String loadEmailTemplate() {
-
-		StringBuilder template = new StringBuilder(1024);
-		String line;
-		try (
-				InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("/registration-email-template.html");
-				InputStreamReader istr = new InputStreamReader(resourceAsStream);
-				BufferedReader reader = new BufferedReader(istr);
-		) {
-			while ((line = reader.readLine()) != null) {
-				template.append(line);
-			}
-		} catch (Exception e) {
-			logger.info("Can not read e-mail template", e);
-		}
-		return template.toString();
-
+		return fileTemplateLoader.loadFileFromResources("/registration-email-template.html");
+		/*
+		  StringBuilder template = new StringBuilder(1024);
+		  String line;
+		  try (
+				  InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("/registration-email-template.html");
+				  InputStreamReader istr = new InputStreamReader(resourceAsStream);
+				  BufferedReader reader = new BufferedReader(istr);
+		  ) {
+			  while ((line = reader.readLine()) != null) {
+				  template.append(line);
+			  }
+		  } catch (Exception e) {
+			  logger.info("Can not read e-mail template", e);
+		  }
+		  return template.toString();
+  */
 	}
 
 }

@@ -20,6 +20,7 @@ import java.util.Date;
 
 @NamedQueries({
 		@NamedQuery(name = "InvoiceEntity.findAllForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID ORDER BY i.dateCreated DESC"),
+		@NamedQuery(name = "InvoiceEntity.findAllProformaForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID AND i.invoiceType=cz.kamoska.partner.enums.InvoiceType.PROFORMA ORDER BY i.dateCreated DESC"),
 		@NamedQuery(name = "InvoiceEntity.findNotPaid", query = "SELECT i FROM InvoiceEntity i WHERE i.paid IS NULL")
 })
 
@@ -180,4 +181,5 @@ public class InvoiceEntity {
 	public void setInvoice(InvoiceEntity invoice) {
 		this.invoice = invoice;
 	}
+
 }

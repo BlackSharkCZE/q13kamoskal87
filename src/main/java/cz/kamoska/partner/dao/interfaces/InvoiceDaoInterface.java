@@ -17,6 +17,8 @@ import java.util.List;
 @Local
 public interface InvoiceDaoInterface extends DaoInterface<InvoiceEntity> {
 
+	public List<InvoiceEntity> findAllProformaForPartner(PartnerEntity partnerEntity);
+
 	public List<InvoiceEntity> findAllForPartner(PartnerEntity partnerEntity);
 
 	public List<InvoiceEntity> findNotPaid(int limit, int offset);

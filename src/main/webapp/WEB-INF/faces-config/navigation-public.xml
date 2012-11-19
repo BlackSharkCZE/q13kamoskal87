@@ -14,12 +14,12 @@
 
     </navigation-rule>
 
-	<!--navigation-rule>
-		<from-view-id>/registrace.xhtml</from-view-id>
+	<navigation-rule>
+		<from-view-id>/zapomenute-heslo.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>register_successful</from-outcome>
-			<to-view-id>/registrace-done.xhtml</to-view-id>
+			<from-outcome>password-sent</from-outcome>
+			<to-view-id>/heslo-sent.xhtml</to-view-id>
 		</navigation-case>
-	</navigation-rule-->
+	</navigation-rule>
 
 </faces-config>

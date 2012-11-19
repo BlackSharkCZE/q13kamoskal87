@@ -460,11 +460,9 @@ table.invoice-list th.right {
     border-right: 1px solid #D9D9D9;
 }
 
-
-
 table.invoice-list td {
     text-align: left;
-    padding: 5px 0px 15px 8px;
+    padding: 2px 0px 2px 8px;
     border-bottom: 1px solid #EFEFEF;
     border-left: 1px solid #D9D9D9;
 }

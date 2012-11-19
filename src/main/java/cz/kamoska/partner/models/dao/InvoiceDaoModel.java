@@ -33,7 +33,7 @@ public class InvoiceDaoModel  implements Serializable {
 
 
 	public void loadCacheFor(PartnerEntity partner) {
-		cache = invoiceDaoInterface.findAllForPartner(partner);
+		cache = invoiceDaoInterface.findAllProformaForPartner(partner);
 		cacheForPartner = partner;
 	}
 

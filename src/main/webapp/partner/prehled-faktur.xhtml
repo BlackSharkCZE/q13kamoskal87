@@ -24,6 +24,7 @@
 	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
 		<ui:define name="content">
 			<partner:menu/>
+
 			<div class="navigation">
 				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
 				>
@@ -40,11 +41,11 @@
 						<th><h:outputText value="#{i18n['table.invoice.row-title.invoice-type']}"/></th>
 						<th><h:outputText value="#{i18n['table.invoice.row-title.invoice-number']}"/></th>
 						<th><h:outputText value="#{i18n['table.invoice.row-title.summary']}"/></th>
-						<th><h:outputText value="#{i18n['table.invoice.row-title.summary-inc-vat']}"/></th>
+
 						<th class="right"><h:outputText value="#{i18n['table.invoice.row-title.state']}"/></th>
 					</tr>
 					<ui:repeat value="#{invoiceDaoModel.getAllInvoiceForPartner(loggedInPartner.partner)}" var="in" varStatus="status">
-						<tr class="#{status.last ? 'last' : ''}">
+						<tr class="#{status.last and in.invoice==null ? 'last' : ''}">
 							<td class="left #{in.invoice==null ? '' : 'no-line'}">
 								<h:outputText value="#{in.dateCreated}">
 									<f:convertDateTime pattern="dd.MM.yyyy"/>
@@ -64,16 +65,42 @@
 									<f:convertNumber maxFractionDigits="0"/>
 								</h:outputText> Kč
 							</td>
-							<td class="#{in.invoice==null ? '' : 'no-line'}">
-								<h:outputText value="#{in.priceIncVat}">
-									<f:convertNumber maxFractionDigits="0"/>
-								</h:outputText> Kč
-							</td>
+
 							<td class="right #{in.invoice==null ? '' : 'no-line'}">
 								<h:outputText value="#{i18n['ok']}" rendered="#{in.paid!=null}" styleClass="success"/>
 								<h:outputText value="#{i18n['not-payed']}" rendered="#{in.paid==null}" styleClass="error"/>
 							</td>
 						</tr>
+
+
+						<h:panelGroup rendered="#{in.invoice!=null}">
+							<tr class="#{status.last ? 'last' : ''}">
+								<td class="left">
+									<h:outputText value="#{in.invoice.dateCreated}">
+										<f:convertDateTime pattern="dd.MM.yyyy"/>
+									</h:outputText>
+								</td>
+								<td>
+									<strong>
+									<h:outputText value="#{i18n['faktura']}" rendered="#{in.invoice.invoiceType=='FAKTURA'}"/>
+									</strong>
+								</td>
+								<td>
+									<h:outputLink value="#{in.invoice.fakturoidUrl}" target="__blank">
+										<h:outputText value="#{in.invoice.number}"/>
+									</h:outputLink>
+								</td>
+								<td class="#{in.invoice==null ? '' : 'no-line'}">
+									&nbsp;
+								</td>
+
+								<td class="right #{in.invoice==null ? '' : 'no-line'}">
+									&nbsp;
+								</td>
+							</tr>
+						</h:panelGroup>
+
+
 					</ui:repeat>
 				</table>
 			</h:form>

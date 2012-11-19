@@ -21,6 +21,13 @@ import java.util.Map;
 public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implements InvoiceDaoInterface {
 
 	@Override
+	public List<InvoiceEntity> findAllProformaForPartner(PartnerEntity partnerEntity) {
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("partnerID", partnerEntity.getId());
+		return findListByNamedQuery("InvoiceEntity.findAllProformaForPartner", 0, -1, params);
+	}
+
+	@Override
 	public List<InvoiceEntity> findAllForPartner(PartnerEntity partnerEntity) {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("partnerID", partnerEntity.getId());
