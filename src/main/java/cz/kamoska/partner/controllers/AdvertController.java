@@ -1,13 +1,11 @@
 package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.FakturoidDao;
+import cz.kamoska.partner.beans.singletons.DefaultMessages;
 import cz.kamoska.partner.beans.singletons.MailerBean;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
-import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
-import cz.kamoska.partner.dao.interfaces.InvoiceDaoInterface;
-import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
-import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
+import cz.kamoska.partner.dao.interfaces.*;
 import cz.kamoska.partner.entities.*;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.enums.InvoiceType;
@@ -16,6 +14,7 @@ import cz.kamoska.partner.models.request.AdvertModel;
 import cz.kamoska.partner.models.sessions.AdvertBundleModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.pojo.fakturoid.Invoice;
+import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.PictureUtils;
@@ -79,6 +78,10 @@ public class AdvertController implements Serializable {
 	private MailerBean mailerBean;
 	@EJB
 	private InvoiceDaoInterface invoiceDaoInterface;
+	@Inject
+	private DefaultMessages defaultMessages;
+	@EJB
+	private MessageDaoInterface messageDaoInterface;
 
 
 	private PictureEntity pictureEntity;
@@ -271,6 +274,27 @@ public class AdvertController implements Serializable {
 							invoiceEntity.setPrice(invoicePrice);
 							//TODO zde se musi spravne urcovat DPH a spravne prepocitavat castka. Musi dodat Radek
 							invoiceEntity.setPriceIncVat(invoicePrice.multiply(BigDecimal.valueOf(1.2)));
+
+
+							DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.TIPS_PROFORMA_CREATED);
+							message.replaceAll("{BUNDLE_NAME}", save.item.getBundleEntity().getName());
+							message.replaceAll("{INVOICE_NUMBER}", invoiceEntity.getNumber());
+
+							MessageEntity messageEntity = new MessageEntity();
+							messageEntity.setBody(message.getBody());
+							messageEntity.setTitle(message.getTitle());
+							messageEntity.setMessageType(message.getMessageType());
+							messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
+							messageEntity.setPartner(loggedInPartner.getPartner());
+							messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+							SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
+							if (!messageSaveResult.success) {
+								logger.warn("Can not save system message " + messageEntity);
+							} else {
+								logger.info("Message " + messageEntity + " saved");
+							}
+
 
 							SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
 							if (!saveResult.success) {

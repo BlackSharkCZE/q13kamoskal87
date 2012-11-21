@@ -23,4 +23,17 @@ public interface InvoiceDaoInterface extends DaoInterface<InvoiceEntity> {
 
 	public List<InvoiceEntity> findNotPaid(int limit, int offset);
 
+	/**
+	 * Hleda faktury, ktere jsou nezaplacene a v dusledku jejich nezaplaceni neni zobrazena nejaka sada reklam
+	 * @return seznam faktur kvuli jejich nezaplaceni se nezobrazuji reklamy ze sady
+	 */
+	List<InvoiceEntity> findNotPaidForBundleNotDisplay(Integer partnerID);
+
+	/**
+	 * Vraci seznam faktur, ktere nejsou zaplacene a kvuli jejich nezaplaceni se prestanou zobrazovat reklamy v prirazenem AdvertBundle za mene nez 16 dni
+	 * @param partnerID partner pro ktereho hledat faktury
+	 * @return seznam faktur
+	 */
+	List<InvoiceEntity> findEndingNotPaid(Integer partnerID);
+
 }

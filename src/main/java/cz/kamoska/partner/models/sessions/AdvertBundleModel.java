@@ -11,6 +11,7 @@ import cz.kamoska.partner.models.template.AbstractModel;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -39,7 +40,6 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 	public AdvertBundleModel() {
 		super(AdvertBundleEntity.class);
 	}
-
 
 	public List<AdvertBundleEntity> getAdvertBundlesForPartner() {
 		List<AdvertBundleEntity> allForPartner = advertBundleDaoInterface.findAllForPartner(loggedInPartner.getPartner());

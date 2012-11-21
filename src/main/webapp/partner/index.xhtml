@@ -39,14 +39,31 @@
 			<partner:menu/>
 
 
-			<h:panelGroup rendered="!=null}">
+			<h:panelGroup rendered="#{not empty findNotPaidToNotDisplayAdvertBundle or not empty findEndingNotPaid}">
 				<div class="system-message-spacer">
 					<div class="system-message">
-						<ui:repeat value="#{messageDaoModel.findMessageEntityForLoggedInPartner('ALERT',0,5)}" var="alert">
+						<ui:repeat value="#{findNotPaidToNotDisplayAdvertBundle}" var="invoice">
 							<p>
-								<h:outputText value="#{alert.title}"/>
+								Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se nezobrazují. Důvod: proforma faktura č.
+								<h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
+								<h:outputText value="#{invoice.number}"/>
+								</h:outputLink> není uhrazená.
 							</p>
 						</ui:repeat>
+
+						<ui:repeat value="#{findEndingNotPaid}" var="invoice">
+							<p>
+								Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se přestanou
+								<h:outputText value="#{invoice.advertBundleEntity.validTo}">
+									<f:convertDateTime pattern="d.M.yyyy"/>
+								</h:outputText>
+								zobrazovat.
+								Důvod: proforma faktura č. <h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
+								<h:outputText value="#{invoice.number}"/>
+							</h:outputLink> není uhrazená.
+							</p>
+						</ui:repeat>
+
 					</div>
 				</div>
 			</h:panelGroup>

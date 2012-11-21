@@ -39,4 +39,19 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 		return findListByNamedQuery("InvoiceEntity.findNotPaid", offset, limit, null);
 
 	}
+
+	@Override
+	public List<InvoiceEntity> findNotPaidForBundleNotDisplay(Integer partnerID) {
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("partnerID", partnerID);
+		return findListByNamedQuery("InvoiceEntity.findNotPaidForBundleNotDisplay", 0, -1, params);
+	}
+
+	@Override
+	public List<InvoiceEntity> findEndingNotPaid(Integer partnerID) {
+		Map<String, Object> params = new HashMap<>(1);
+		params.put("partnerID", partnerID);
+		return findListByNamedQuery("InvoiceEntity.native.findEndigNotPaid", 0, -1, params);
+	}
+
 }

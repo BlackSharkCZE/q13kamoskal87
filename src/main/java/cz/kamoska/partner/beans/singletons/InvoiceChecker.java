@@ -42,6 +42,7 @@ public class InvoiceChecker {
 	@Schedule(hour = "*", minute = "15", second = "10")
 	public void process() {
 		try {
+			//todo zapnout pred produkcni buildem
 //			internalProcess();
 		} catch (Exception e) {
 			logger.error("Exception in process method on InvoiceChecker", e);

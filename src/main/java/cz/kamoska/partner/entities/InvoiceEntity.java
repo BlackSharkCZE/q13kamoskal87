@@ -16,12 +16,27 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name ="invoices")
+@Table(name = "invoices")
 
 @NamedQueries({
 		@NamedQuery(name = "InvoiceEntity.findAllForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID ORDER BY i.dateCreated DESC"),
 		@NamedQuery(name = "InvoiceEntity.findAllProformaForPartner", query = "SELECT i FROM InvoiceEntity i WHERE i.advertBundleEntity.partnerEntity.id=:partnerID AND i.invoiceType=cz.kamoska.partner.enums.InvoiceType.PROFORMA ORDER BY i.dateCreated DESC"),
-		@NamedQuery(name = "InvoiceEntity.findNotPaid", query = "SELECT i FROM InvoiceEntity i WHERE i.paid IS NULL")
+		@NamedQuery(name = "InvoiceEntity.findNotPaid", query = "SELECT i FROM InvoiceEntity i WHERE i.paid IS NULL"),
+
+		@NamedQuery(name = "InvoiceEntity.findNotPaidForBundleNotDisplay",
+				query = "SELECT i FROM InvoiceEntity i " +
+						"WHERE i.invoiceType=cz.kamoska.partner.enums.InvoiceType.PROFORMA " +
+						"AND i.paid IS NULL " +
+						"AND ( i.advertBundleEntity.validTo IS NULL OR i.advertBundleEntity.validTo < CURRENT_TIMESTAMP ) " +
+						"AND i.advertBundleEntity.partnerEntity.id = :partnerID")
+})
+
+
+@NamedNativeQueries({
+		@NamedNativeQuery(
+				name = "InvoiceEntity.native.findEndigNotPaid",
+				query = "select i.*  from advert_bundle ab join invoices i on i.advert_bundle_id = ab.id where i.invoicetype='PROFORMA' and i.paid is null and (   (ab.valid_to - now()) < '15 day' ) and ab.partnerentity_id = #partnerID",
+				resultClass = InvoiceEntity.class)
 })
 
 public class InvoiceEntity {
@@ -69,7 +84,7 @@ public class InvoiceEntity {
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "invoice_id")
-	private InvoiceEntity invoice = null;		// zakladem je proforma faktura, a k ni je po zaplaceni dostupna normalni faktura
+	private InvoiceEntity invoice = null;        // zakladem je proforma faktura, a k ni je po zaplaceni dostupna normalni faktura
 
 
 	@PrePersist

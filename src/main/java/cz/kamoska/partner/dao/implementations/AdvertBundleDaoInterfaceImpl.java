@@ -22,10 +22,9 @@ public class AdvertBundleDaoInterfaceImpl extends DaoTemplate<AdvertBundleEntity
 
 	@Override
 	public List<AdvertBundleEntity> findAllForPartner(PartnerEntity partner) {
-
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("partnerID", partner.getId());
 		return findListByNamedQuery("AdvertBundleEntity.findByPartnerId", 0, -1, params);
-
 	}
+
 }

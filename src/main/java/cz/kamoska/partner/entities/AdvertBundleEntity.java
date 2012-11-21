@@ -19,6 +19,7 @@ import java.util.List;
 
 @NamedQueries({
 		@NamedQuery(name = "AdvertBundleEntity.findByPartnerId", query = "SELECT a FROM AdvertBundleEntity a where a.partnerEntity.id = :partnerID")
+
 })
 public class AdvertBundleEntity {
 
