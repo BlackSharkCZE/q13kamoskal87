@@ -24,11 +24,16 @@
 	<ui:composition template="/WEB-INF/templates/public_template.xhtml">
 
 		<ui:define name="header">
-			<h1>partner.kamoska.cz</h1>
 
-			<h2>
+			<div>
+				<a href="http://partner.kamoska.cz">
+					<img width="338" height="84" src="/resources/img/logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" />
+				</a>
+			</div>
+
+			<!--h2>
 				<h:outputText value="#{i18n['create-account']}"/>
-			</h2>
+			</h2-->
 		</ui:define>
 
 		<ui:define name="content">
@@ -49,9 +54,9 @@
 
 				<div class="content_bar">
 					<div class="inner_content">
-						<h3> Vytvořte si účet partner.kamoska.cz </h3>
+						<h5>Vytvořte si účet partner.kamoska.cz</h5>
 
-						<div class="text">
+						<div class="text" style="margin-top: 5px; ">
 							Vítejte v reklamním systému partner.kamoska.cz. Jsme rádi, že jste se k nám připojili a že máte zájem s námi spolupracovat. Potřebujeme pouze vědět několik údajů, abychom vám mohli založit účet. Všechny údaje jsou povinné.
 						</div>
 						<p:spacer height="20px"/>
@@ -63,12 +68,16 @@
 							</h:outputLink>
 						</div>
 
-						<p:spacer height="30px"/>
+						<p:spacer height="20px"/>
+
+
+
+
 						<h:form id="register-form" styleClass="register-form">
 
 							<p:messages id="errors" autoUpdate="false" closable="true" />
 
-							<h3>Příhlašovací údaje</h3>
+							<h5 style="margin-bottom: 10px;">Příhlašovací údaje</h5>
 
 							<h:panelGrid columns="3" styleClass="form-table">
 
@@ -86,7 +95,7 @@
 
 							</h:panelGrid>
 
-							<h3>Firemní údaje</h3>
+							<h5 style="margin: 15px 0 10px 0;">Firemní údaje</h5>
 
 							<h:panelGrid columns="3" styleClass="form-table">
 
@@ -133,7 +142,7 @@
 								<h:panelGroup>
 									<p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
 									<h:outputText value="Souhlasím s "/>
-									<h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnýmí obchodními podmínkami</h:outputLink>
+									<h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnými obchodními podmínkami</h:outputLink>
 								</h:panelGroup>
 								&nbsp;
 
@@ -141,7 +150,7 @@
 
 
 							<div class="align-right" style="padding: 20px 0">
-								<p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button" ajax="false"/>
+								<p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button"/>
 							</div>
 
 						</h:form>

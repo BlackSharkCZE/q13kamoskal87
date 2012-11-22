@@ -6,14 +6,25 @@ body {
     /*background: yellow;*/
     margin: 0;
     padding: 0;
-    font-size: 12px;
+    font-size: 14px;
+    font-family: Arial;
 }
 
 a {
-    color:#741B47;
+    color: #482744;
+    /*color: #741B47;*/
     text-decoration: none;
 }
 
+a:hover {
+    color: #482744;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #4D9433;
+    text-decoration: underline;
+}
 
 h1 {
     color:#4C1130;
@@ -24,7 +35,7 @@ h1 {
 
 h2 {
     color:black;
-    font-size: 12px;
+    font-size: 14px;
     margin: 0;
     padding: 0;
 }
@@ -49,7 +60,6 @@ h5 {
     font-size: 14px;
     margin: 0;
     font-weight: normal;
-
     padding: 0;
 }
 
