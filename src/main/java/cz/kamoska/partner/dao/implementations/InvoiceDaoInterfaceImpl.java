@@ -54,4 +54,26 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 		return findListByNamedQuery("InvoiceEntity.native.findEndigNotPaid", 0, -1, params);
 	}
 
+	@Override
+	public Long getProformaCount() {
+		try {
+			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountOfProforma").getSingleResult();
+			return res;
+		} catch (Exception e) {
+			logger.error("Can not read count of proforma. ", e);
+		}
+		return -1L;
+	}
+
+	@Override
+	public Long getPaidProformaCount() {
+		try {
+			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountPaidProforma").getSingleResult();
+			return res;
+		} catch (Exception e) {
+			logger.error("Can not read count of paid proforma. ", e);
+		}
+		return -1L;
+	}
+
 }

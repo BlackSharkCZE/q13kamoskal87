@@ -7,9 +7,13 @@
 	<version>1.0</version>
 	<name>Partner Kamoska Web</name>
 	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<dependencies>
-
-
 		<dependency>
 			<groupId>AirtoyLib</groupId>
 			<artifactId>AirtoyLib</artifactId>
@@ -151,12 +155,6 @@
 		<!-- JSON -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.0.6</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.1.0</version>
 		</dependency>
@@ -274,6 +272,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
+					<compilerArgument>-XDignore.symbol.file</compilerArgument>
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>

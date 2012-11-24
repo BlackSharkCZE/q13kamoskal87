@@ -39,11 +39,10 @@ public class InvoiceChecker {
 	@EJB
 	private AdvertBundleDaoInterface advertBundleDaoInterface;
 
-	@Schedule(hour = "*", minute = "15", second = "10")
+	@Schedule(hour = "23", minute = "15", second = "10")
 	public void process() {
 		try {
-			//todo zapnout pred produkcni buildem
-//			internalProcess();
+			internalProcess();
 		} catch (Exception e) {
 			logger.error("Exception in process method on InvoiceChecker", e);
 		}

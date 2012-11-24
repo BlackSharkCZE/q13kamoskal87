@@ -13,6 +13,9 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "advert_accesslist_actual")
+@NamedQueries({
+		@NamedQuery(name = "AdvertAccessListEntity.getDisplayCountByFromDateAndToDate", query = "SELECT COUNT(a) FROM AdvertAccessListEntity a WHERE a.dateCreated>=:fromDate AND a.dateCreated<:toDate")
+})
 public class AdvertAccessListEntity {
 
 	@Id

@@ -22,4 +22,8 @@ public class PartnerDaoModel {
 		return partnerDaoInterface.getPartnerCountOfActivatedPartners();
 	}
 
+	public Long getPayingPartnerCount() {
+		return partnerDaoInterface.getPayingPartnerCount();
+	}
+
 }

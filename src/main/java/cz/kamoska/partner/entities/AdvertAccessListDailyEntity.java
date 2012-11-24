@@ -13,6 +13,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "advert_accesslist_daily")
+
+@NamedQueries({
+		@NamedQuery(name = "AdvertAccessListDailyEntity.getDisplayCountByFromDateAndToDate", query = "SELECT SUM(a.displayCount) FROM AdvertAccessListDailyEntity a WHERE a.forDate>=:fromDate AND a.forDate < :toDate")
+}
+)
+
 public class AdvertAccessListDailyEntity {
 
 	@Id

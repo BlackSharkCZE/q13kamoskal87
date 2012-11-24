@@ -28,7 +28,10 @@ import java.util.Date;
 						"WHERE i.invoiceType=cz.kamoska.partner.enums.InvoiceType.PROFORMA " +
 						"AND i.paid IS NULL " +
 						"AND ( i.advertBundleEntity.validTo IS NULL OR i.advertBundleEntity.validTo < CURRENT_TIMESTAMP ) " +
-						"AND i.advertBundleEntity.partnerEntity.id = :partnerID")
+						"AND i.advertBundleEntity.partnerEntity.id = :partnerID"),
+
+		@NamedQuery(name = "InvoiceEntity.getCountOfProforma", query = "SELECT COUNT(i) FROM InvoiceEntity i WHERE i.invoiceType = cz.kamoska.partner.enums.InvoiceType.PROFORMA"),
+		@NamedQuery(name = "InvoiceEntity.getCountPaidProforma", query = "SELECT COUNT(i) FROM InvoiceEntity i WHERE i.invoiceType = cz.kamoska.partner.enums.InvoiceType.PROFORMA AND i.paid IS NOT NULL"),
 })
 
 

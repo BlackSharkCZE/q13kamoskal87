@@ -81,10 +81,10 @@
 								<h:outputText value="#{advertDaoModel.getCountInState('WAITING_TO_ACK')}"/>
 							</span>
 						</div>
-						<div>
+						<!--div>
 							<span><h:outputText value="#{i18n['xml-waiting-to-pass']}"/></span>
 							<span class="count">55 </span>
-						</div>
+						</div-->
 
 					</div>
 				</div>
@@ -108,7 +108,9 @@
 
 						<div>
 							<span><h:outputText value="#{i18n['stats.monthly-tips-display']}: "/></span>
-							<span class="count">44</span>
+							<span class="count">
+								<h:outputText value="#{advertStatsDaoModel.displayAllCountCurrentMonth}"/>
+							</span>
 						</div>
 						<div>
 							<span><h:outputText value="#{i18n['stats.number-of-registered-partners']}"/></span>
@@ -117,14 +119,20 @@
 							</span>
 
 							<span><h:outputText value="#{i18n['stats.number-of-payers']}"/></span>
-							<span class="count">55</span>
+							<span class="count">
+								<h:outputText value="#{partnerDaoModel.payingPartnerCount}"/>
+							</span>
 						</div>
 
 						<div>
 							<span><h:outputText value="#{i18n['stats.promo-invoice-count']}"/></span>
-							<span class="count">55</span>
+							<span class="count">
+								<h:outputText value="#{invoiceDaoModel.countOfProforma}"/>
+							</span>
 							<span><h:outputText value="#{i18n['stats.promo.invoice-payed']}"/></span>
-							<span class="count">55</span>
+							<span class="count">
+								<h:outputText value="#{invoiceDaoModel.countOfPaidProforma}"/>
+							</span>
 						</div>
 
 					</div>

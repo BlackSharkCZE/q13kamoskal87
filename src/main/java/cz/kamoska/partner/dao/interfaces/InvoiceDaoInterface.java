@@ -36,4 +36,17 @@ public interface InvoiceDaoInterface extends DaoInterface<InvoiceEntity> {
 	 */
 	List<InvoiceEntity> findEndingNotPaid(Integer partnerID);
 
+
+	/**
+	 * Vraci pocet vystavenych proforma faktur
+	 * @return pocet vystavenych proforma faktur
+	 */
+	Long getProformaCount();
+
+	/**
+	 * Vtaci pocet zaplacenych proforma faktur
+	 * @return poceet zaplacenych proforma faktur
+	 */
+	Long getPaidProformaCount();
+
 }

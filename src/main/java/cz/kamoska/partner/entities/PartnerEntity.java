@@ -24,7 +24,8 @@ import java.util.List;
 })
 
 @NamedNativeQueries({
-		@NamedNativeQuery(name = "PartnerEntity.createRoleView", query = "create or replace  view v_partner_role_cross as select p.email as login, r.role as role  from partner p join roles r on r.partnerentity_id = p.id")
+		@NamedNativeQuery(name = "PartnerEntity.createRoleView", query = "create or replace  view v_partner_role_cross as select p.email as login, r.role as role  from partner p join roles r on r.partnerentity_id = p.id"),
+		@NamedNativeQuery(name = "PartnerEntity.native.getCountOfPaying", query = "select count (distinct p.*) as platici from invoices i join advert_bundle ab on ab.id = i.advert_bundle_id join partner p on p.id = ab.partnerentity_id where i.invoicetype = 'FAKTURA' and i.paid IS NOT NULL")
 })
 
 @Entity

@@ -48,4 +48,10 @@ public interface PartnerDaoInterface extends DaoInterface<PartnerEntity> {
 	 * @return pocet aktivnich uzivatelu
 	 */
 	Long getPartnerCountOfActivatedPartners();
+
+	/**
+	 * Vraci pocet platicich zakazniku (alespon jednou platicich)
+	 * @return pocet alespon jednou platicich zakazniku
+	 */
+	Long getPayingPartnerCount();
 }

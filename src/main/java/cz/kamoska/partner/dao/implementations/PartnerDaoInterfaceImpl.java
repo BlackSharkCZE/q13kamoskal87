@@ -57,6 +57,18 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 	}
 
 	@Override
+	public Long getPayingPartnerCount() {
+		try {
+			Long res = (Long) em.createNamedQuery("PartnerEntity.native.getCountOfPaying").getSingleResult();
+			em.flush();
+			return res;
+		} catch (Exception e) {
+			logger.error("Can not read count of paying partners.", e);
+		}
+		return -1L;
+	}
+
+	@Override
 	public PartnerEntity findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("email", email);

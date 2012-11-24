@@ -53,6 +53,13 @@ public class InvoiceDaoModel  implements Serializable {
 		return res;
 	}
 
+	public Long getCountOfProforma() {
+		return invoiceDaoInterface.getProformaCount();
+	}
+
+	public Long getCountOfPaidProforma() {
+		return invoiceDaoInterface.getPaidProformaCount();
+	}
 
 
 	public void loadCacheFor(PartnerEntity partner) {
