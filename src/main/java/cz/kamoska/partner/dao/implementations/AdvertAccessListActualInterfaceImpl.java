@@ -1,9 +1,10 @@
 package cz.kamoska.partner.dao.implementations;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertAccessListActualInterface;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Date;
 @Stateless
 public class AdvertAccessListActualInterfaceImpl extends DaoTemplate<AdvertAccessListEntity> implements AdvertAccessListActualInterface {
 
-	private final Logger logger = Logger.getLogger(AdvertAccessListActualInterfaceImpl.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@Override
 	public Long getDisplayCountByFromDateAndToDate(Date fromDate, Date toDate) {
@@ -26,9 +27,10 @@ public class AdvertAccessListActualInterfaceImpl extends DaoTemplate<AdvertAcces
 			Long res = (Long) em.createNamedQuery("AdvertAccessListEntity.getDisplayCountByFromDateAndToDate")
 					.setParameter("fromDate", fromDate)
 					.setParameter("toDate", toDate).getSingleResult();
-			return res;
+			return res == null ? 0 : res;
 		} catch (Exception e) {
-			logger.error("Can not read count of advert display by from date and to date", e);
+			logger.severe("Can not read count of advert display by from date and to date");
+			logger.throwing(this.getClass().getSimpleName(), "getDisplayCountByFromDateAndToDate", e);
 		}
 		return -1L;
 	}

@@ -3,7 +3,7 @@ package cz.kamoska.partner.servlets;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
 import cz.kamoska.partner.entities.PictureEntity;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ import java.io.OutputStream;
 @WebServlet(name = "PictureProviderServlet", urlPatterns = "/images/*")
 public class PictureProviderServlet extends HttpServlet {
 
-	private final Logger logger = Logger.getLogger(PictureProviderServlet.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 	
 	@EJB
 	private PictureDaoInterface pictureDaoInterface;
@@ -43,7 +43,7 @@ public class PictureProviderServlet extends HttpServlet {
 			try {
 				pictureId = Integer.parseInt(pictureStrId);
 			} catch (NumberFormatException e) {
-				logger.error("Invalid picture ID: " + pictureStrId);
+				logger.severe("Invalid picture ID: " + pictureStrId);
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
 
@@ -66,14 +66,14 @@ public class PictureProviderServlet extends HttpServlet {
 						}
 						ostr.flush();
 					} else {
-						logger.error("Can not find picture "+ path);
+						logger.severe("Can not find picture "+ path);
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					}
 				}
 			}
 
 		} else {
-			logger.error("Can not return picture with missing ID in URL");
+			logger.severe("Can not return picture with missing ID in URL");
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
 		

@@ -3,7 +3,9 @@ package cz.kamoska.partner.support;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import org.apache.log4j.Logger;
+import cz.kamoska.partner.config.MainConfig;
+
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,7 +24,7 @@ import java.io.InputStream;
  */
 public class PictureUtils {
 
-	private final static Logger logger = Logger.getLogger(PictureUtils.class);
+	private final static Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	public static Image createImageFromBytes(byte[] bytes) {
 		return Toolkit.getDefaultToolkit().createImage(bytes);
@@ -33,7 +35,8 @@ public class PictureUtils {
 			BufferedImage bi = ImageIO.read(inputStream);
 			return bi;
 		} catch (IOException e) {
-			logger.error("Can not read InputStream to create BufferedImage. ", e);
+			logger.severe("Can not read InputStream to create BufferedImage. ");
+			logger.throwing(PictureUtils.class.getSimpleName(), "createFormInputStream", e);
 			return null;
 		}
 	}
@@ -52,7 +55,8 @@ public class PictureUtils {
 			encoder.encode(bufferedImage);
 			return true;
 		} catch (Exception e) {
-			logger.error("Can not save Image " + file, e);
+			logger.severe("Can not save Image " + file);
+			logger.throwing(PictureUtils.class.getSimpleName(), "saveAsJPG", e);
 		}
 		return false;
 	}

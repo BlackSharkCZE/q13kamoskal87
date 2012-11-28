@@ -19,7 +19,10 @@ import java.util.List;
 
 @NamedQueries({
 		@NamedQuery(name = "AdvertBundleEntity.findByPartnerId", query = "SELECT a FROM AdvertBundleEntity a where a.partnerEntity.id = :partnerID")
+})
 
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "select ab.* from advert_bundle ab join invoices i on i.advert_bundle_id = ab.id where i.invoicetype = 'PROFORMA' and i.paid is not null and (now() - ab.valid_to)::interval <= '14 day'", resultClass = AdvertBundleEntity.class)
 })
 public class AdvertBundleEntity {
 

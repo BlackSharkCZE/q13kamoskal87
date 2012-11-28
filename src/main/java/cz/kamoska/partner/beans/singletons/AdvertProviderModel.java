@@ -9,7 +9,7 @@ import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.AdvertDisplayStyle;
 import cz.kamoska.partner.pojo.kamoska.AdvertViewWrapper;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -32,7 +32,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 @Startup
 public class AdvertProviderModel implements Serializable {
 
-	private final Logger logger = Logger.getLogger(AdvertProviderModel.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	private final Integer LIFE = 100;
 
@@ -71,7 +71,8 @@ public class AdvertProviderModel implements Serializable {
 			reader.close();
 			hInputStream.close();
 		} catch (IOException e) {
-			logger.error("Can not load template for tip-template-h.html", e);
+			logger.severe("Can not load template for tip-template-h.html");
+			logger.throwing(this.getClass().getSimpleName(), "postConstruct", e);
 			horizontalAdvertTemplate = "<div style='font-weight:bold;color:red'>Can not load tip-template-h.html template</div>";
 		}
 
@@ -88,7 +89,8 @@ public class AdvertProviderModel implements Serializable {
 			reader.close();
 			hInputStream.close();
 		} catch (IOException e) {
-			logger.error("Can not load template for tip-template-h.html", e);
+			logger.severe("Can not load template for tip-template-h.html");
+			logger.throwing(this.getClass().getSimpleName(), "postConstruct", e);
 			verticalAdvertTemplate = "<div style='font-weight:bold;color:red'>Can not load tip-template-v.html template</div>";
 		}
 
@@ -98,7 +100,7 @@ public class AdvertProviderModel implements Serializable {
 			advertsCache.put(section.getUrlName(), new ArrayBlockingQueue<AdvertViewWrapper>(MainConfig.ADVERT_CACHE_SIZE));
 			List<AdvertEntity> advertEntities = advertDaoInterface.findLessUsedBySection(section.getUrlName(), MainConfig.ADVERT_CACHE_SIZE);
 			if (advertEntities.isEmpty()) {
-				logger.warn("There is not adverts for section : " + section);
+				logger.warning("There is not adverts for section : " + section);
 			} else {
 				logger.info("Add " + advertEntities.size() + " adverts to cache " + section.getName());
 				for (AdvertEntity ae : advertEntities) {
@@ -126,13 +128,13 @@ public class AdvertProviderModel implements Serializable {
 				} else {
 					av.viewCount++;
 					if (!adv.add(av)) {
-						logger.error("Can not return back " + adv);
+						logger.severe("Can not return back " + adv);
 					}
 					res = av.advertEntity;
 					accessListBean.save(new AdvertAccessListEntity(av.advertEntity, Calendar.getInstance().getTime()));
 				}
 			} else {
-				logger.error("Can not poll Advert from cache for section " + sectionUrlName);
+				logger.severe("Can not poll Advert from cache for section " + sectionUrlName);
 				reloadCacheForSection(sectionUrlName);
 			}
 		}

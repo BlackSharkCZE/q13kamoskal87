@@ -216,10 +216,7 @@
 											<p:commandButton value="#{i18n['edit']}" action="#{advertController.editAdvert}" styleClass="kamoska_button pink">
 												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
 											</p:commandButton>
-
 											&nbsp;
-
-
 											<p:commandButton value="Delete" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog">
 												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
 											</p:commandButton>

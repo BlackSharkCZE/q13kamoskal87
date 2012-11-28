@@ -1,9 +1,10 @@
 package cz.kamoska.partner.beans;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertAccessListActualInterface;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
@@ -19,7 +20,7 @@ import javax.ejb.Stateless;
 @Stateless
 public class AccessListBean {
 
-	private final Logger logger = Logger.getLogger(AccessListBean.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@EJB
 	private AdvertAccessListActualInterface advertAccessListActualInterface;
@@ -29,7 +30,7 @@ public class AccessListBean {
 	public void save(AdvertAccessListEntity aale) {
 		SaveDomainResult<AdvertAccessListEntity> saveResult = advertAccessListActualInterface.save(aale);
 		if (!saveResult.success) {
-			logger.error("Can not save access record to DDB form " + aale);
+			logger.severe("Can not save access record to DDB form " + aale);
 		}
 	}
 

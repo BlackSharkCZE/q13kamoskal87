@@ -19,4 +19,10 @@ public interface AdvertBundleDaoInterface extends DaoInterface<AdvertBundleEntit
 
 	List<AdvertBundleEntity> findAllForPartner(PartnerEntity partner);
 
+	/**
+	 * Hleda vsechny AdvertBundle, ke kterym je treba vystavit novou proforma-fakturu
+	 * @return
+	 */
+	List<AdvertBundleEntity> findAllRequiredNewProforma();
+
 }

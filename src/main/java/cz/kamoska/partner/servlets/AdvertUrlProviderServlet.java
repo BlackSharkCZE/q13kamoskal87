@@ -1,8 +1,9 @@
 package cz.kamoska.partner.servlets;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.entities.AdvertEntity;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -22,7 +23,7 @@ import java.io.IOException;
 @WebServlet(name = "AdvertUrlProviderServlet", urlPatterns = {"/advert"})
 public class AdvertUrlProviderServlet extends HttpServlet {
 
-	private final Logger logger = Logger.getLogger(AdvertUrlProviderServlet.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@EJB
 	private AdvertDaoInterface advertDaoInterface;
@@ -30,7 +31,7 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if (request.getParameter("id") == null || request.getParameter("id").isEmpty()) {
-			logger.warn("Can not redirect to advert link, because missing ID parameter in Request!");
+			logger.warning("Can not redirect to advert link, because missing ID parameter in Request!");
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		} else {
 
@@ -38,7 +39,7 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 			try {
 				advertId = Integer.parseInt(request.getParameter("id"));
 			} catch (NumberFormatException e) {
-				logger.warn("Can not redirect to advert link, because invalid ID ("+request.getParameter("id")+") in request!");
+				logger.warning("Can not redirect to advert link, because invalid ID (" + request.getParameter("id") + ") in request!");
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			}
 
@@ -47,7 +48,7 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 				if (advert != null) {
 					response.sendRedirect(advert.getUrl().startsWith("http://") ? advert.getUrl() : "http://"+advert.getUrl() );
 				} else {
-					logger.error("Can not find advert with ID "+ advertId);
+					logger.severe("Can not find advert with ID "+ advertId);
 					response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 				}
 			}

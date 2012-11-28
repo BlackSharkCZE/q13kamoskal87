@@ -9,7 +9,7 @@ import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
@@ -60,7 +60,7 @@ public class AccountController {
 				loggedInPartner.setPartner(update.item);
 			} else {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.login.failed"), facesContext);
-				logger.warn("Can not change login credentials for partner " + loggedInPartner.getPartner());
+				logger.warning("Can not change login credentials for partner " + loggedInPartner.getPartner());
 			}
 		}
 		return null;
@@ -85,7 +85,7 @@ public class AccountController {
 					loggedInPartner.setPartner(update.item);
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.success"), facesContext);
 				} else {
-					logger.warn("Can not update partner");
+					logger.warning("Can not update partner");
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("partner.edit.error"), facesContext);
 				}
 

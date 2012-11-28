@@ -1,9 +1,10 @@
 package cz.kamoska.partner.servlets;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -27,7 +28,7 @@ public class EmailConfirmationServlet extends HttpServlet {
 	private static final String ACTIVATE_ERROR_PAGE = "/activate-email-error.jspx";
 	private static final String ACTIVATE_SUCCESS_PAGE = "/activate-email-success.jspx";
 
-	private final Logger logger = Logger.getLogger(EmailConfirmationServlet.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@EJB
 	private PartnerDaoInterface partnerDaoInterface;
@@ -49,11 +50,11 @@ public class EmailConfirmationServlet extends HttpServlet {
 					request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 				}
 			} else {
-				logger.warn("Can not find Partner by Confirmation Hash " + cHash);
+				logger.warning("Can not find Partner by Confirmation Hash " + cHash);
 				request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 			}
 		} else {
-			logger.warn("Can not activate partner with null or emepty confirmation Hash. Request: "+ request.getRequestURI());
+			logger.warning("Can not activate partner with null or emepty confirmation Hash. Request: " + request.getRequestURI());
 			request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 		}
 

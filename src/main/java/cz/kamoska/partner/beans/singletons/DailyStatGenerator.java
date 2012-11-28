@@ -1,6 +1,8 @@
 package cz.kamoska.partner.beans.singletons;
 
-import org.apache.log4j.Logger;
+import cz.kamoska.partner.config.MainConfig;
+
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
@@ -21,7 +23,7 @@ import java.sql.SQLException;
 @Singleton
 public class DailyStatGenerator {
 
-	private final Logger logger = Logger.getLogger(DailyStatGenerator.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@Resource(name = "jdbc/kamoska")
 	private DataSource dataSource;
@@ -35,7 +37,8 @@ public class DailyStatGenerator {
 			processInternal();
 			logger.info("Generate daily stats - DONE");
 		} catch (Exception e) {
-			logger.error("Error executing generateDailyStats", e);
+			logger.severe("Error executing generateDailyStats");
+			logger.throwing(this.getClass().getSimpleName(), "generateDailyStats", e);
 		}
 
 	}
@@ -49,19 +52,20 @@ public class DailyStatGenerator {
 				rs.next();
 				res = rs.getInt(1);
 				if (rs.wasNull()) {
-					logger.error("Can not generate dailyStats. ResultSet column 0 is NULL");
+					logger.severe("Can not generate dailyStats. ResultSet column 0 is NULL");
 				} else {
 					if (res > 0) {
-						logger.error("Executing SQL function to generate daily stats successful");
+						logger.severe("Executing SQL function to generate daily stats successful");
 					} else {
-						logger.error("Executing SQL function to generate daily stats return unexpected value: " + res + ". Should be 1");
+						logger.severe("Executing SQL function to generate daily stats return unexpected value: " + res + ". Should be 1");
 					}
 				}
 			} else {
-				logger.error("Can not generate dailyStats. ResultSet for query " + query + " is null.");
+				logger.severe("Can not generate dailyStats. ResultSet for query " + query + " is null.");
 			}
 		} catch (Exception e) {
-			logger.error("Can not execute query " + query, e);
+			logger.severe("Can not execute query " + query);
+			logger.throwing(this.getClass().getSimpleName(), "processInternal", e);
 		} finally {
 			if (rs != null) {
 				try {

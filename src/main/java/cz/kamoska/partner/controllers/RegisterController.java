@@ -12,7 +12,7 @@ import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.FileTemplateLoader;
 import net.airtoy.encryption.MD5;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -42,7 +42,7 @@ import java.util.Arrays;
 @Named
 @RequestScoped
 public class RegisterController {
-	private final Logger logger = Logger.getLogger(RegisterController.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	private final String REGISTER_SUCCESSFUL_OUTCOME = "register_successful";
 
@@ -83,16 +83,16 @@ public class RegisterController {
 						try {
 							Files.createDirectories(path);
 						} catch (IOException e) {
-							logger.error("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
+							logger.severe("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
 						}
 
 						return REGISTER_SUCCESSFUL_OUTCOME;
 					} else {
-						logger.error("Can not save Partner " + partnerEntity);
+						logger.severe("Can not save Partner " + partnerEntity);
 						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
 					}
 				} else {
-					logger.warn("Email " + partnerEntity.getEmail() + " already used!");
+					logger.warning("Email " + partnerEntity.getEmail() + " already used!");
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.email.used"), FacesContext.getCurrentInstance());
 				}
 			} else {
@@ -102,7 +102,7 @@ public class RegisterController {
 
 		} else {
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
-			logger.error("Can not save Partner because partnerEntity is null ");
+			logger.severe("Can not save Partner because partnerEntity is null ");
 		}
 
 		return null;

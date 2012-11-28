@@ -28,7 +28,8 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 			Long count = (Long) query.getSingleResult();
 			return count.intValue();
 		} catch (Exception e) {
-			logger.info("Can not obtain partner count in role " + PartnerGroups.GROUP_ADMIN, e);
+			logger.info("Can not obtain partner count in role " + PartnerGroups.GROUP_ADMIN);
+			logger.throwing(this.getClass().getSimpleName(), "getPartnerCountByGroup", e);
 		}
 		return 0;
 	}
@@ -51,7 +52,8 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 		try {
 			return (Long)em.createNamedQuery("PartnerEntity.countOfAllActivatedPartners").getSingleResult();
 		} catch (Exception e) {
-			logger.error("Can not obtain count of activated partners", e);
+			logger.severe("Can not obtain count of activated partners");
+			logger.throwing(this.getClass().getSimpleName(), "getPartnerCountOfActivatedPartners", e);
 		}
 		return -1L;
 	}
@@ -63,7 +65,8 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 			em.flush();
 			return res;
 		} catch (Exception e) {
-			logger.error("Can not read count of paying partners.", e);
+			logger.severe("Can not read count of paying partners.");
+			logger.throwing(this.getClass().getSimpleName(), "getPayingPartnerCount", e);
 		}
 		return -1L;
 	}

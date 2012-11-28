@@ -1,6 +1,6 @@
 package cz.kamoska.partner.support;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,7 +35,8 @@ public class FileTemplateLoader implements Serializable {
 				template.append(line);
 			}
 		} catch (Exception e) {
-			logger.info("Can not read file "+fileName+" template", e);
+			logger.info("Can not read file "+fileName+" template");
+			logger.throwing(this.getClass().getSimpleName(), "loadFileFromResources", e);
 		}
 		return template.toString();
 

@@ -1,10 +1,11 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.MessageDaoInterface;
 import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.models.dao.MessageDaoModel;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -23,7 +24,7 @@ import java.util.Calendar;
 @RequestScoped
 public class MessageController {
 
-	private final Logger logger = Logger.getLogger(MessageController.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@Inject
 	private MessageDaoModel messageDaoModel;
@@ -38,7 +39,7 @@ public class MessageController {
 				if (updateResult.success) {
 					messageDaoModel.setSelectedMessage(updateResult.item);
 				} else {
-					logger.warn("Can not mark message "  + messageDaoModel.getSelectedMessage() + " as READ");
+					logger.warning("Can not mark message " + messageDaoModel.getSelectedMessage() + " as READ");
 				}
 			}
 		}

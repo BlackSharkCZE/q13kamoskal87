@@ -1,5 +1,6 @@
 package cz.kamoska.partner.beans;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
@@ -9,7 +10,7 @@ import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import net.airtoy.encryption.MD5;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ import java.util.List;
 @Singleton
 public class InitBean implements Serializable {
 
-	private final Logger logger = Logger.getLogger(InitBean.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	private static final String DEFAULT_LOGIN = "admin@kamoska.cz";
 	private static final String DEFAULT_PASSWORD = "adminadmin";
@@ -79,7 +80,7 @@ public class InitBean implements Serializable {
 			if (saveResult.success) {
 				logger.info("Default partner " + partnerEntity + " created with password: " + DEFAULT_PASSWORD + " and login: " + DEFAULT_LOGIN);
 			} else {
-				logger.fatal("There is not ADMIN in database and it is not possible to create admin!");
+				logger.severe("There is not ADMIN in database and it is not possible to create admin!");
 			}
 		}
 
@@ -96,7 +97,7 @@ public class InitBean implements Serializable {
 			if (save.success) {
 				logger.info("Default APGE created: " + save.item);
 			} else {
-				logger.error("Can not save default APGE: " + apge);
+				logger.severe("Can not save default APGE: " + apge);
 			}
 
 		}
@@ -119,7 +120,7 @@ public class InitBean implements Serializable {
 		s1.setUrlName("sex");
 		SaveDomainResult<SectionEntity> saveResult = sectionDaoInterface.save(s1);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s1);
+			logger.severe("Can not create Section " + s1);
 		}
 		SectionEntity s2 = new SectionEntity();
 		s2.setAlwaysSelected(false);
@@ -128,7 +129,7 @@ public class InitBean implements Serializable {
 
 		saveResult = sectionDaoInterface.save(s2);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s2);
+			logger.severe("Can not create Section " + s2);
 		}
 		SectionEntity s3 = new SectionEntity();
 		s3.setAlwaysSelected(false);
@@ -136,7 +137,7 @@ public class InitBean implements Serializable {
 		s3.setUrlName("fashion");
 		saveResult = sectionDaoInterface.save(s3);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s3);
+			logger.severe("Can not create Section " + s3);
 		}
 		SectionEntity s4 = new SectionEntity();
 		s4.setAlwaysSelected(false);
@@ -144,7 +145,7 @@ public class InitBean implements Serializable {
 		s4.setUrlName("bloggers");
 		saveResult = sectionDaoInterface.save(s4);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s4);
+			logger.severe("Can not create Section " + s4);
 		}
 		SectionEntity s5 = new SectionEntity();
 		s5.setAlwaysSelected(false);
@@ -152,7 +153,7 @@ public class InitBean implements Serializable {
 		s5.setUrlName("healthy");
 		saveResult = sectionDaoInterface.save(s5);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s5);
+			logger.severe("Can not create Section " + s5);
 		}
 		SectionEntity s6 = new SectionEntity();
 		s6.setAlwaysSelected(true);
@@ -160,7 +161,7 @@ public class InitBean implements Serializable {
 		s6.setUrlName("main-page");
 		saveResult = sectionDaoInterface.save(s6);
 		if (!saveResult.success) {
-			logger.error("Can not create Section " + s6);
+			logger.severe("Can not create Section " + s6);
 		}
 
 
@@ -176,7 +177,8 @@ public class InitBean implements Serializable {
 			int res = ps.executeUpdate();
 			logger.info("Function to generate daily stats create successful");
 		} catch (Exception e) {
-			logger.error("Can not execute query " + query, e);
+			logger.severe("Can not execute query " + query);
+			logger.throwing(this.getClass().getSimpleName(), "initDatabaseFunctions", e);
 		}
 	}
 

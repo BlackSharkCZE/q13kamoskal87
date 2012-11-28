@@ -2,7 +2,9 @@ package cz.kamoska.partner.config;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.log4j.Logger;
+
+import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,11 +15,18 @@ import org.apache.log4j.Logger;
  */
 public class MainConfig {
 
-	private static final Logger logger = Logger.getLogger(MainConfig.class);
+	/*
+	private static final Logger logger = Logger.getLogger\(.*\);
+	 */
+//	private static final Logger logger = Logger.getLogger(MainConfig.class);
+	private static final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+
 
 	public static final String SRC_FILE_FOLDER = "src";
 	public static String IMAGE_STORE_ROOT_PATH = "/srv/partner.kamoska.cz/images";
 	public static final int ADVERT_CACHE_SIZE = 100;
+
+	public static final String LOGGER_NAME = "KAMOSKA_LOGGER";
 
 	static {
 
@@ -26,7 +35,7 @@ public class MainConfig {
 			PropertiesConfiguration configuration = new PropertiesConfiguration("main-config.properties");
 			IMAGE_STORE_ROOT_PATH = configuration.getString("IMAGE_STORE_ROOT_PATH", "/srv/partner.kamoska.cz/images");
 		} catch (ConfigurationException e) {
-			logger.error("Can not load configuration. ", e);
+			logger.severe("Can not load configuration. ", e);
 		}
 	*/
 	}

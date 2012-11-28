@@ -27,4 +27,9 @@ public class AdvertBundleDaoInterfaceImpl extends DaoTemplate<AdvertBundleEntity
 		return findListByNamedQuery("AdvertBundleEntity.findByPartnerId", 0, -1, params);
 	}
 
+	@Override
+	public List<AdvertBundleEntity> findAllRequiredNewProforma() {
+		return findListByNamedQuery("AdvertBundleEntity.native.findRequiredNewProforma", 0, -1, null);
+	}
+
 }

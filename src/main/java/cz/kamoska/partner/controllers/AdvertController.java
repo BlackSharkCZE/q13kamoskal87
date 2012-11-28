@@ -18,13 +18,12 @@ import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.PictureUtils;
-import org.apache.log4j.Logger;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -39,9 +38,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,10 +50,10 @@ import java.util.List;
  * Kontroler pro navigaci pri zakladani nove reklamy
  */
 @Named
-@RequestScoped
+@SessionScoped
 public class AdvertController implements Serializable {
 
-	private final Logger logger = Logger.getLogger(AdvertController.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@Inject
 	private AdvertModel advertModel;
@@ -97,7 +96,7 @@ public class AdvertController implements Serializable {
 	public void changeState(AdvertEntity entity) {
 		AdvertEntity e = entity;
 		if (e == null) {
-			logger.error("Advert entity is null");
+			logger.severe("Advert entity is null");
 		} else {
 			advertDaoInterface.update(entity);
 		}
@@ -111,9 +110,27 @@ public class AdvertController implements Serializable {
 			SaveDomainResult<AdvertEntity> updateResult = advertDaoInterface.update(advertEntity);
 			if (!updateResult.success) {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.accept.failed"), FacesContext.getCurrentInstance());
+			} else {
+				DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.ADVERT_ACCEPT);
+				message.replaceAll("{ADVERT_TITLE}", advertEntity.getTitle());
+
+				MessageEntity messageEntity = new MessageEntity();
+				messageEntity.setBody(message.getBody());
+				messageEntity.setTitle(message.getTitle());
+				messageEntity.setMessageType(message.getMessageType());
+				messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
+				messageEntity.setPartner(advertEntity.getBundleEntity().getPartnerEntity());
+				messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+				SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
+				if (!messageSaveResult.success) {
+					logger.warning("Can not save system message " + messageEntity);
+				} else {
+					logger.info("Message " + messageEntity + " saved");
+				}
 			}
 		} else {
-			logger.warn("Can not accept null advertEntity");
+			logger.warning("Can not accept null advertEntity");
 		}
 		return null;
 	}
@@ -130,6 +147,24 @@ public class AdvertController implements Serializable {
 			SaveDomainResult<AdvertEntity> update = advertDaoInterface.update(advertModel.getAdvertEntity());
 			if (!update.success) {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.reject.failed"), FacesContext.getCurrentInstance());
+			} else {
+				DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.ADVERT_REJECT);
+				message.replaceAll("{ADVERT_TITLE}", advertModel.getAdvertEntity().getTitle());
+
+				MessageEntity messageEntity = new MessageEntity();
+				messageEntity.setBody(message.getBody());
+				messageEntity.setTitle(message.getTitle());
+				messageEntity.setMessageType(message.getMessageType());
+				messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
+				messageEntity.setPartner(advertModel.getAdvertEntity().getBundleEntity().getPartnerEntity());
+				messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+				SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
+				if (!messageSaveResult.success) {
+					logger.warning("Can not save system message " + messageEntity);
+				} else {
+					logger.info("Message " + messageEntity + " saved");
+				}
 			}
 		}
 		return null;
@@ -148,13 +183,15 @@ public class AdvertController implements Serializable {
 			try {
 				Files.deleteIfExists(thumbs);
 			} catch (IOException e) {
-				logger.error("Can not delete ThumbBile " + thumbs, e);
+				logger.severe("Can not delete ThumbBile " + thumbs);
+				logger.throwing(this.getClass().getSimpleName(), "dropAdvert", e);
 			}
 
 			try {
 				Files.deleteIfExists(origFile);
 			} catch (IOException e) {
-				logger.error("Can not delete OrigFile: " + origFile, e);
+				logger.severe("Can not delete OrigFile: " + origFile);
+				logger.throwing(this.getClass().getSimpleName(), "dropAdvert", e);
 
 			}
 
@@ -163,10 +200,10 @@ public class AdvertController implements Serializable {
 
 			if (!update.success) {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.drop.failed"), FacesContext.getCurrentInstance());
-				logger.error("Can not drop advert: " + advertModel.getAdvertEntity());
+				logger.severe("Can not drop advert: " + advertModel.getAdvertEntity());
 			}
 		} else {
-			logger.warn("Can not drop advert of other user. Current advert is owned by " + advertModel.getAdvertEntity().getBundleEntity().getPartnerEntity() + " but current partner is " + loggedInPartner.getPartner());
+			logger.warning("Can not drop advert of other user. Current advert is owned by " + advertModel.getAdvertEntity().getBundleEntity().getPartnerEntity() + " but current partner is " + loggedInPartner.getPartner());
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.drop.failed-partner-is-not-owner"), FacesContext.getCurrentInstance());
 		}
 
@@ -216,18 +253,20 @@ public class AdvertController implements Serializable {
 
 				if (save.success) {
 					logger.info("Advert Entity updated. " + save.item);
+					advertModel.setAdvertEntity(new AdvertEntity());
+					setPictureEntity(new PictureEntity());
 					res = "update-advert-successful";
 				} else {
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
-					logger.error("Update advert " + advertModel.getAdvertEntity() + " failed.");
+					logger.severe("Update advert " + advertModel.getAdvertEntity() + " failed.");
 				}
 
 			} else {
-				logger.warn("Can not find picture entity by ID: " + pictureEntity.getId());
+				logger.warning("Can not find picture entity by ID: " + pictureEntity.getId());
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
 			}
 		} else {
-			logger.warn("Can not update, becouse advertModel.getAdvertEntity() is null");
+			logger.warning("Can not update, becouse advertModel.getAdvertEntity() is null");
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
 
 		}
@@ -266,7 +305,7 @@ public class AdvertController implements Serializable {
 						Invoice invoice = new Invoice(loggedInPartner.getPartner().getFakturoidId(), invoicePrice);
 						InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
 						if (invoiceEntity == null) {
-							logger.warn("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
+							logger.warning("Invoice for partner " + loggedInPartner.getPartner() + " for advertBundle " + advertModel.getAdvertEntity() + " was not created!");
 							//todo odeslat email klukum, ze nebyla vystavena faktura
 						} else {
 							invoiceEntity.setAdvertBundleEntity(save.item.getBundleEntity());
@@ -290,7 +329,7 @@ public class AdvertController implements Serializable {
 
 							SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 							if (!messageSaveResult.success) {
-								logger.warn("Can not save system message " + messageEntity);
+								logger.warning("Can not save system message " + messageEntity);
 							} else {
 								logger.info("Message " + messageEntity + " saved");
 							}
@@ -298,25 +337,26 @@ public class AdvertController implements Serializable {
 
 							SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
 							if (!saveResult.success) {
-								logger.error("Can not save InvoiceEntity: " + invoiceEntity );
+								logger.severe("Can not save InvoiceEntity: " + invoiceEntity);
 							} else {
 								logger.info("InvoiceEntity saved: " + saveResult.item);
 							}
 						}
 					}
-
+					advertModel.setAdvertEntity(new AdvertEntity());
+					setPictureEntity(new PictureEntity());
 					res = "save-advert-successful";
 				} else {
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.db-error"), FacesContext.getCurrentInstance());
-					logger.error("Save advert " + advertModel.getAdvertEntity() + " failed.");
+					logger.severe("Save advert " + advertModel.getAdvertEntity() + " failed.");
 				}
 
 			} else {
-				logger.warn("Can not find picture entity by ID: " + pictureEntity.getId());
+				logger.warning("Can not find picture entity by ID: " + pictureEntity.getId());
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.missing-picture"), FacesContext.getCurrentInstance());
 			}
 		} else {
-			logger.warn("Can not save new Advert, becouse advertModel.getAdvertEntity() is null");
+			logger.warning("Can not save new Advert, becouse advertModel.getAdvertEntity() is null");
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert.save.error.advert-model-null"), FacesContext.getCurrentInstance());
 
 		}
@@ -345,7 +385,8 @@ public class AdvertController implements Serializable {
 			bi = PictureUtils.createFormInputStream(uFile.getInputstream());
 
 		} catch (IOException e) {
-			logger.error("Can not read image ", e);
+			logger.severe("Can not read image ");
+			logger.throwing(this.getClass().getSimpleName(), "handleFileUpload", e);
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, fmp.getLocalizedMessage("image.upload.failed.can-not-read-image-data"), FacesContext.getCurrentInstance());
 		}
 
@@ -379,26 +420,27 @@ public class AdvertController implements Serializable {
 
 							SaveDomainResult<PictureEntity> saveResult = pictureDaoInterface.save(pictureEntity);
 							if (!saveResult.success) {
-								logger.warn("Can not save " + pictureEntity + " to DB!");
+								logger.warning("Can not save " + pictureEntity + " to DB!");
 							}
 
 						} catch (Exception e) {
-							logger.error("Can not save SRC file for file " + pictureEntity, e);
+							logger.severe("Can not save SRC file for file " + pictureEntity);
+							logger.throwing(this.getClass().getSimpleName(), "handleFileUpload", e);
 						}
 
 						logger.info("New file saved!");
 					} else {
-						logger.error("Can not save uploaded image");
+						logger.severe("Can not save uploaded image");
 					}
 				} else {
-					logger.error("Can not resize image");
+					logger.severe("Can not resize image");
 				}
 			} else {
-				logger.error("Can not crop IMAGE");
+				logger.severe("Can not crop IMAGE");
 			}
 
 		} else {
-			logger.error("Can not create buffered Image");
+			logger.severe("Can not create buffered Image");
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, fmp.getLocalizedMessage("image.upload.failed.can-not-create-image"), FacesContext.getCurrentInstance());
 		}
 

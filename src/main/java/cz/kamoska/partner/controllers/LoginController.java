@@ -1,5 +1,6 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
@@ -8,7 +9,7 @@ import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -43,7 +44,7 @@ public class LoginController implements Serializable {
 	private final String LOGOUT_FAILED_OUTCOME = "logout_failed";
 
 
-	private final Logger logger = Logger.getLogger(LoginController.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@Inject
 	private LoginModel loginModel;
@@ -69,7 +70,7 @@ public class LoginController implements Serializable {
 			request.getSession().invalidate();
 			return LOGOUT_SUCCESSFUL_OUTCOME;
 		} catch (Exception e) {
-			logger.warn("Can not logout user: " + request.getUserPrincipal().getName());
+			logger.warning("Can not logout user: " + request.getUserPrincipal().getName());
 			return LOGOUT_FAILED_OUTCOME;
 		}
 	}
@@ -92,7 +93,8 @@ public class LoginController implements Serializable {
 					try {
 						request.logout();
 					} catch (ServletException e) {
-						logger.warn("Can not logout current user: " + request.getUserPrincipal().getName());
+						logger.warning("Can not logout current user: " + request.getUserPrincipal().getName());
+						logger.throwing(this.getClass().getSimpleName(), "login", e);
 					} finally {
 						loggedInPartner.setLoggedInTimestamp(null);
 						loggedInPartner.setPartner(null);
@@ -102,10 +104,12 @@ public class LoginController implements Serializable {
 				try {
 					request.login(loginModel.getLogin(), loginModel.getPassword());
 				} catch (ServletException e) {
-					logger.info("Can not login partner "+loginModel.getLogin(), e);
+					logger.severe("Can not login partner " + loginModel.getLogin() + ": " + e.getMessage() );
+					logger.throwing(this.getClass().getSimpleName(), "login", e);
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 					return null;
 				}
+				logger.info("Logged in partner: " + loginModel.getLogin());
 				loggedInPartner.setPartner(partnerByEmail);
 				loggedInPartner.setLoggedInTimestamp(Calendar.getInstance().getTime());
 				return loggedInPartner.getPartner().getRoles().contains(PartnerGroups.GROUP_ADMIN.toString()) ? ADMIN_LOGIN_SUCCESSFUL_OUTCOME :  LOGIN_SUCCESSFUL_OUTCOME;

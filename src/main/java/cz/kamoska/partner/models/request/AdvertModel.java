@@ -7,9 +7,11 @@ import org.primefaces.model.UploadedFile;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,8 +20,9 @@ import javax.inject.Named;
  * Time: 17:57
  * To change this template use File | Settings | File Templates.
  */
-@Model
-public class AdvertModel {
+@Named
+@SessionScoped
+public class AdvertModel implements Serializable {
 
 	@EJB
 	private SectionDaoInterface sectionDaoInterface;

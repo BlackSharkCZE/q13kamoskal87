@@ -116,10 +116,12 @@
 
 										</td>
 										<td class="section">
+
 											<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
-												<h:outputText value="#{message[section.name]}"/>
+												<h:outputText value="#{i18n[section.name]}"/>
 												<h:outputText value="#{status.last?'':','}"/>
 											</ui:repeat>
+
 
 										</td>
 										<td class="state">

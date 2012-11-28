@@ -60,7 +60,8 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountOfProforma").getSingleResult();
 			return res;
 		} catch (Exception e) {
-			logger.error("Can not read count of proforma. ", e);
+			logger.severe("Can not read count of proforma. ");
+			logger.throwing(this.getClass().getSimpleName(), "getProformaCount", e);
 		}
 		return -1L;
 	}
@@ -71,7 +72,8 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountPaidProforma").getSingleResult();
 			return res;
 		} catch (Exception e) {
-			logger.error("Can not read count of paid proforma. ", e);
+			logger.severe("Can not read count of paid proforma. ");
+			logger.throwing(this.getClass().getSimpleName(), "getPaidProformaCount", e);
 		}
 		return -1L;
 	}

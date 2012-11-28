@@ -15,7 +15,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -33,7 +33,7 @@ import java.util.Calendar;
 @Stateless
 public class FakturoidDao {
 
-	private final Logger logger = Logger.getLogger(FakturoidDao.class);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	@EJB
 	private JSONMapper jsonMapper;
@@ -55,7 +55,8 @@ public class FakturoidDao {
 			get.setHeader("Content-type", "application/json");
 			get.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
 		} catch (Exception e) {
-			logger.error("Can not read Invoice from URL " + url, e);
+			logger.severe("Can not read Invoice from URL " + url);
+			logger.throwing(this.getClass().getSimpleName(), "findById", e);
 			if (get != null) {
 				get.abort();
 			}
@@ -75,11 +76,12 @@ public class FakturoidDao {
 					Invoice in = (Invoice) jsonMapper.deserialize(strResponse, Invoice.class);
 					return in;
 				default:
-					logger.warn("Invoice can not been read. StatusCode: " + statusCode);
+					logger.warning("Invoice can not been read. StatusCode: " + statusCode);
 					break;
 			}
 		} catch (Exception e) {
-			logger.error("Can not read invoice, because can not call URL: " + url, e);
+			logger.severe("Can not read invoice, because can not call URL: " + url);
+			logger.throwing(this.getClass().getSimpleName(), "findById", e);
 		} finally {
 			if (entity != null) {
 				try {
@@ -112,7 +114,8 @@ public class FakturoidDao {
 				post.setEntity(new StringEntity(serializedData));
 				post.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
 			} catch (Exception e) {
-				logger.error("Can not add Subject entity to POST", e);
+				logger.severe("Can not add Subject entity to POST");
+				logger.throwing(this.getClass().getSimpleName(), "registerPartner", e);
 				if (post != null) {
 					post.abort();
 				}
@@ -134,15 +137,16 @@ public class FakturoidDao {
 						if (savedSubject != null) {
 							return savedSubject.getId();
 						} else {
-							logger.error("Can not parse response from fakturoid: " + strResponse);
+							logger.severe("Can not parse response from fakturoid: " + strResponse);
 						}
 						break;
 					default:
-						logger.warn("Subject (" + subject + ") was not created! Response status code: " + statusCode);
+						logger.warning("Subject (" + subject + ") was not created! Response status code: " + statusCode);
 						break;
 				}
 			} catch (Exception e) {
-				logger.error("Can not register partner, because can not post data " + serializedData + " to URL: " + url, e);
+				logger.severe("Can not register partner, because can not post data " + serializedData + " to URL: " + url);
+				logger.throwing(this.getClass().getSimpleName(), "registerPartner", e);
 			} finally {
 				if (entity != null) {
 					try {
@@ -156,7 +160,7 @@ public class FakturoidDao {
 			}
 
 		} else {
-			logger.error("Can not register partner, because can not serialize Subject: " + subject);
+			logger.severe("Can not register partner, because can not serialize Subject: " + subject);
 		}
 		return 0;
 	}
@@ -178,7 +182,8 @@ public class FakturoidDao {
 				post.setEntity(new StringEntity(serializedData));
 				post.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
 			} catch (Exception e) {
-				logger.error("Can not add Invoice entity to POST", e);
+				logger.severe("Can not add Invoice entity to POST");
+				logger.throwing(this.getClass().getSimpleName(), "createInvoice", e);
 				if (post != null) {
 					post.abort();
 				}
@@ -206,15 +211,16 @@ public class FakturoidDao {
 						if (res.getFakturoidUrl() != null && res.getFakturoidId() != null) {
 							return res;
 						} else {
-							logger.error("Can not parse response for Invoice from fakturoid: " + strResponse);
+							logger.severe("Can not parse response for Invoice from fakturoid: " + strResponse);
 						}
 						break;
 					default:
-						logger.warn("Subject (" + invoice + ") was not created! Response status code: " + statusCode);
+						logger.warning("Subject (" + invoice + ") was not created! Response status code: " + statusCode);
 						break;
 				}
 			} catch (Exception e) {
-				logger.error("Can not create Invoice because can not POST data!" + serializedData + " to URL: " + url, e);
+				logger.severe("Can not create Invoice because can not POST data!" + serializedData + " to URL: " + url);
+				logger.throwing(this.getClass().getSimpleName(), "createInvoice", e);
 			} finally {
 				if (entity != null) {
 					try {
@@ -228,7 +234,7 @@ public class FakturoidDao {
 			}
 
 		} else {
-			logger.error("Can not create Invoice because can not serialize data: " + invoice);
+			logger.severe("Can not create Invoice because can not serialize data: " + invoice);
 		}
 		return null;
 	}

@@ -61,6 +61,7 @@
 		<navigation-case>
 			<from-outcome>edit-advert</from-outcome>
 			<to-view-id>/partner/upravit-tip.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 
 	</navigation-rule>

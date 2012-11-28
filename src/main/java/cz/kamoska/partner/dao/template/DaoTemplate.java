@@ -3,9 +3,10 @@ package cz.kamoska.partner.dao.template;
 //import
 
 import cz.kamoska.partner.commons.Constants;
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.QueryResult;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,7 +24,7 @@ import java.util.*;
  */
 public abstract class DaoTemplate<T> implements DaoInterface<T> {
 
-	protected final Logger logger = Logger.getLogger(DaoTemplate.class);
+	protected final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
 	protected Object dateFormatLock;
 	protected SimpleDateFormat dateFormat;
@@ -49,7 +50,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 				em.flush();
 				return true;
 			} catch (Exception e) {
-				logger.error("Can not drop object: " + value, e);
+				logger.severe("Can not drop object: " + value);
+				logger.throwing(this.getClass().getSimpleName(), "drop", e);
 			}
 		}
 		return false;
@@ -61,14 +63,15 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 		res.item = value;
 		res.success = false;
 		if (value == null) {
-			logger.warn("Can not save NULL object to database.");
+			logger.warning("Can not save NULL object to database.");
 		} else {
 			try {
 				em.persist(value);
 				em.flush();
 				res.success = true;
 			} catch (Exception e) {
-				logger.error("Can not save object " + value, e);
+				logger.severe("Can not save object " + value);
+				logger.throwing(this.getClass().getSimpleName(), "save", e);
 			}
 		}
 		return res;
@@ -89,10 +92,11 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 				res.item = value;
 				res.success = true;
 			} catch (Exception e) {
-				logger.error("Can not update " + value, e);
+				logger.severe("Can not update " + value);
+				logger.throwing(this.getClass().getSimpleName(), "update", e);
 			}
 		} else {
-			logger.warn("Can not update NULL object.");
+			logger.warning("Can not update NULL object.");
 		}
 		return res;
 	}
@@ -105,10 +109,11 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 				T t = (T) em.find(entityClass, primaryKey);
 				return t;
 			} catch (Exception e) {
-				logger.error("Can not find " + entityClass.getName() + " for primary key " + primaryKey, e);
+				logger.severe("Can not find " + entityClass.getName() + " for primary key " + primaryKey);
+				logger.throwing(this.getClass().getSimpleName(), "findByPrimaryKey", e);
 			}
 		} else {
-			logger.warn("Can not find Entity " + entityClass.getName() + " for NULL primary key.");
+			logger.warning("Can not find Entity " + entityClass.getName() + " for NULL primary key.");
 		}
 		return res;
 	}
@@ -133,10 +138,11 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 				em.flush();
 				return res;
 			} catch (Exception e) {
-				logger.error("Can not find any result for namedQuery: " + namedQuery, e);
+				logger.severe("Can not find any result for namedQuery: " + namedQuery);
+				logger.throwing(this.getClass().getSimpleName(), "findListByNamedQuery", e);
 			}
 		} else {
-			logger.warn("Can not find List  for namedQuery " + namedQuery);
+			logger.warning("Can not find List  for namedQuery " + namedQuery);
 		}
 
 		return Collections.emptyList();
@@ -160,10 +166,11 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 					return tmp.get(0);
 				}
 			} catch (Exception e) {
-				logger.error("Can not find any Entity for namedQuery: " + namedQuery, e);
+				logger.severe("Can not find any Entity for namedQuery: " + namedQuery);
+				logger.throwing(this.getClass().getSimpleName(), "findSingleByNamedQuery", e);
 			}
 		} else {
-			logger.warn("Can not find any Entity  for namedQuery " + namedQuery);
+			logger.warning("Can not find any Entity  for namedQuery " + namedQuery);
 		}
 
 		return null;
@@ -204,7 +211,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 										try {
 											predicates.add(criteriaBuilder.equal(entityRoot.<Date>get(key), dateFormat.parse(value)));
 										} catch (ParseException e) {
-											logger.error("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT, e);
+											logger.severe("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT);
+											logger.throwing(this.getClass().getSimpleName(), "getPredicate", e);
 										}
 									}
 								}
@@ -279,7 +287,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 										try {
 											predicates.add(criteriaBuilder.equal(entityRoot.<Date>get(key), dateFormat.parse(value)));
 										} catch (ParseException e) {
-											logger.error("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT, e);
+											logger.severe("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT);
+											logger.throwing(this.getClass().getSimpleName(), "getObjectList", e);
 										}
 									}
 								}
@@ -314,7 +323,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			res = findQuery.setFirstResult(offset).setMaxResults(limit).getResultList();
 			em.flush();
 		} catch (Exception e) {
-			logger.error("Can not find " + rootClass.getName() + " due to error.", e);
+			logger.severe("Can not find " + rootClass.getName() + " due to error.");
+			logger.throwing(this.getClass().getSimpleName(), "getObjectList", e);
 			res = Collections.emptyList();
 		}
 		return res == null ? (List<T>) Collections.emptyList() : res;
@@ -361,7 +371,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 										try {
 											predicates.add(criteriaBuilder.equal(entityRoot.<Date>get(key), dateFormat.parse(value)));
 										} catch (ParseException e) {
-											logger.error("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT, e);
+											logger.severe("Can not parse " + value + " as Date with pattern: " + Constants.DATE_FORMAT);
+											logger.throwing(this.getClass().getSimpleName(), "getObjectListCount", e);
 										}
 									}
 								}
@@ -386,7 +397,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			count = em.createQuery(countCq).getSingleResult();
 			em.flush();
 		} catch (Exception e) {
-			logger.error("Can not obtain record count for " + rootClass.getName() + " List", e);
+			logger.severe("Can not obtain record count for " + rootClass.getName() + " List");
+			logger.throwing(this.getClass().getSimpleName(), "getObjectListCount", e);
 			count = 0L;
 		}
 
@@ -406,7 +418,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			em.flush();
 			return res;
 		} catch (Exception e) {
-			logger.error("Can not execute update by namedQuery " + namedQuery, e);
+			logger.severe("Can not execute update by namedQuery " + namedQuery);
+			logger.throwing(this.getClass().getSimpleName(), "executeUpdateNamedQuery", e);
 			return 0;
 		}
 	}
@@ -418,7 +431,8 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			value = em.merge(value);
 			em.refresh(value);
 		} catch (Exception e) {
-			logger.error("Can not refresh object " + value, e);
+			logger.severe("Can not refresh object " + value);
+			logger.throwing(this.getClass().getSimpleName(), "refresh", e);
 		}
 		return value;
 	}
