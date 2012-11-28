@@ -24,9 +24,11 @@
 	<ui:composition template="/WEB-INF/templates/public_template.xhtml">
 
 		<ui:define name="header">
-			<h1>partner.kamoska.cz</h1>
-
-			<h2>Přihlášení k účtu</h2>
+            <div>
+                <a href="http://partner.kamoska.cz">
+                    <img width="338" height="84" src="/resources/img/logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" />
+                </a>
+            </div>
 		</ui:define>
 
 		<ui:define name="content">
@@ -71,6 +73,12 @@ Activate EMAIL SUCCESS
 				<ct:login />
 
 			</div>
+
+            <!-- Priprava pro footer-->
+            <div class="clear" style="margin: 20px 0 40px 0; color: gray; text-align: right; ">
+                <span>Copyright &copy; 2009 - 2013  <a href="http://www.kamoska.cz/" title="Kámoška.cz - Tvoje lepší kamarádka" alt="Kámoška.cz - Tvoje lepší kamarádka">Kámoška.cz  - tvoje lepší kamarádka</a></span> | <a href="http://partner.kamoska.cz/eula.jspx" title="Všeobecné obchodní podmínky" alt="Všeobecné obchodní podmínky">Všeobecné obchodní podmínky</a>
+            </div>
+            <!-- End footer-->
 
 		</ui:define>
 

@@ -24,11 +24,11 @@
 	<ui:composition template="/WEB-INF/templates/public_template.xhtml">
 
 		<ui:define name="header">
-			<h1>partner.kamoska.cz</h1>
-
-			<h2>
-				<h:outputText value="#{i18n['create-account']}"/>
-			</h2>
+            <div>
+                <a href="http://partner.kamoska.cz">
+                    <img width="338" height="84" src="/resources/img/logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" />
+                </a>
+            </div>
 		</ui:define>
 
 		<ui:define name="content">
@@ -38,10 +38,7 @@
 				<div class="menu_left_bar">
 					<ul class="menu_left">
 						<li class="menu_left_item current">
-							<h:outputText value="#{i18n['partner-registration']}"/>
-						</li>
-						<li class="menu_left_item last">
-							<h:outputText value="#{i18n['registration-confirm']}"/>
+							<h:outputText value="Zapomenuté heslo"/>
 						</li>
 					</ul>
 				</div>
@@ -50,16 +47,26 @@
 				<div class="content_bar">
 					<div class="inner_content">
 
-						<h2>Zapomenute heslo</h2>
+                        <h5>Zapomenuté heslo</h5>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum. Lorem ipsum lolor sit amet, consectetur elit. Praesent dictum convallis ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare.</p>
 
-						<h:form id="send-new-password-form">
+                        <div class="space_10"/>
+                        <div class="space_10"/>
+
+                        <h:form id="send-new-password-form">
 
 							<p:messages />
 
 							<h:panelGrid columns="2">
-								<h:outputText value="#{i18n['partner.edit.email']}: "/>
-								<p:inputText value="#{newPasswordModel.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/>
-							</h:panelGrid>
+
+                                <h:outputText value="#{i18n['partner.edit.email']}: &nbsp;"/>
+                                <p:inputText value="#{newPasswordModel.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/>
+
+                            </h:panelGrid>
+
+                            <div class="space_10"/>
+                            <div class="space_10"/>
+
 							<p:commandButton value="#{i18n['new.password.send-button']}" action="#{newPasswordController.sendNewPassword}" styleClass="kamoska_button" update="@form"/>
 
 						</h:form>
@@ -72,6 +79,12 @@
 			<div class="right">
 				<ct:login/>
 			</div>
+
+            <!-- Priprava pro footer-->
+            <div class="clear" style="margin: 20px 0 40px 0; color: gray; text-align: right; ">
+                <span>Copyright &copy; 2009 - 2013  <a href="http://www.kamoska.cz/" title="Kámoška.cz - Tvoje lepší kamarádka" alt="Kámoška.cz - Tvoje lepší kamarádka">Kámoška.cz  - tvoje lepší kamarádka</a></span> | <a href="http://partner.kamoska.cz/eula.jspx" title="Všeobecné obchodní podmínky" alt="Všeobecné obchodní podmínky">Všeobecné obchodní podmínky</a>
+            </div>
+            <!-- End footer-->
 
 		</ui:define>
 
