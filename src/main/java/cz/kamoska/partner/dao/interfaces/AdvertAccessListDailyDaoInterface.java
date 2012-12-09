@@ -18,4 +18,6 @@ public interface AdvertAccessListDailyDaoInterface extends DaoInterface<AdvertAc
 
 	Long getDisplayCountByFromDateAndToDate(Date fromDate, Date toDate);
 
+	Long getDisplayCountByFromDateAndToDateAndPartnerID(Date fromDate, Date toDate, Integer partnerID);
+
 }

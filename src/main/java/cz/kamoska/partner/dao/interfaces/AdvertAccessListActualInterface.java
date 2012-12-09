@@ -1,7 +1,6 @@
 package cz.kamoska.partner.dao.interfaces;
 
 import cz.kamoska.partner.dao.template.DaoInterface;
-import cz.kamoska.partner.entities.AdvertAccessListDailyEntity;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
 
 import javax.ejb.Local;
@@ -18,5 +17,8 @@ import java.util.Date;
 public interface AdvertAccessListActualInterface extends DaoInterface<AdvertAccessListEntity> {
 
 	Long getDisplayCountByFromDateAndToDate(Date fromDate, Date toDate);
+
+	Long getDisplayCountByFromDateAndToDateAndPartnerID(Date fromDate, Date toDate, Integer partnerID);
+
 
 }

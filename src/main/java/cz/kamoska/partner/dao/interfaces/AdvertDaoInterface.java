@@ -23,4 +23,5 @@ public interface AdvertDaoInterface extends DaoInterface<AdvertEntity> {
 
 	List<AdvertEntity> findLessUsedBySection(String section, int count);
 
+
 }

@@ -6,16 +6,16 @@
   Time: 14:07
 -->
 <!DOCTYPE html
-		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:fnt="http://java.sun.com/jsp/jstl/functions"
-	  xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
-	  xmlns:f="http://java.sun.com/jsf/core">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:fnt="http://java.sun.com/jsp/jstl/functions"
+		xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
+		xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
 	<title><h:outputText value="#{i18n['web_title']}"/></title>
@@ -23,264 +23,331 @@
 
 <h:body>
 
-	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
+<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
 
-		<ui:define name="content">
+<ui:define name="content">
 
-			<h:form id="dialog_form">
-				<p:confirmDialog message="#{i18n['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
-					<h:inputHidden value="#{advertModel.advertEntity.id}"/>
-					<p:commandButton id="confirm" value="#{i18n['yes']}" update=":index_form" oncomplete="confirmation.hide()"
-									 actionListener="#{advertController.dropAdvert}"/>
-					<p:commandButton id="decline" value="#{i18n['no']}" onclick="confirmation.hide()" type="button"/>
-				</p:confirmDialog>
-			</h:form>
+<h:form id="dialog_form">
+	<p:confirmDialog message="#{i18n['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
+		<h:inputHidden value="#{advertModel.advertEntity.id}"/>
+		<p:commandButton id="confirm" value="#{i18n['yes']}" update=":index_form" oncomplete="confirmation.hide()"
+							  actionListener="#{advertController.dropAdvert}"/>
+		<p:commandButton id="decline" value="#{i18n['no']}" onclick="confirmation.hide()" type="button"/>
+	</p:confirmDialog>
+</h:form>
 
-			<partner:menu/>
-
-
-			<h:panelGroup rendered="#{not empty findNotPaidToNotDisplayAdvertBundle or not empty findEndingNotPaid}">
-				<div class="system-message-spacer">
-					<div class="system-message">
-						<ui:repeat value="#{findNotPaidToNotDisplayAdvertBundle}" var="invoice">
-							<p>
-								Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se nezobrazují. Důvod: proforma faktura č.
-								<h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
-								<h:outputText value="#{invoice.number}"/>
-								</h:outputLink> není uhrazená.
-							</p>
-						</ui:repeat>
-
-						<ui:repeat value="#{findEndingNotPaid}" var="invoice">
-							<p>
-								Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se přestanou
-								<h:outputText value="#{invoice.advertBundleEntity.validTo}">
-									<f:convertDateTime pattern="d.M.yyyy"/>
-								</h:outputText>
-								zobrazovat.
-								Důvod: proforma faktura č. <h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
-								<h:outputText value="#{invoice.number}"/>
-							</h:outputLink> není uhrazená.
-							</p>
-						</ui:repeat>
-
-					</div>
-				</div>
-			</h:panelGroup>
+<partner:menu/>
 
 
-			<h:form id="index_form">
+<div class="stats_overview">
 
-				<div class="notification-spacer">
-					<p:messages id="errors"/>
+	<h:form id="stats-form">
 
-					<div class="notification">
-						<div class="header">
-							<table>
-								<tr>
-									<th class="left">
-										<h:outputText value="#{i18n['notification']}"/>
-										(<h:outputText value="#{messageDaoModel.getMessageCountForLoggedInPartner('NOTIFICATION')}"/>/<h:outputText value="#{messageDaoModel.getUnreadMessageCountForLoggedInPartner('NOTIFICATION')}"/>)
-									</th>
-									<th class="right">
-										<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx">
-											<h:outputText value="#{i18n['show-all-notification']}"/>
-										</h:outputLink>
-									</th>
-								</tr>
-							</table>
+		<p:spacer width="1" height="10" />
+
+		<table width="100%">
+			<tr>
+				<th style="text-align: left">
+					<h:outputText value="#{i18n['actual-statistic']}"/>
+				</th>
+
+				<th style="text-align: left">
+					<h:outputText value="#{i18n['kamoska.cz']}"/>
+				</th>
+			</tr>
+			<tr>
+				<td style="text-align: left;">
+					<div>
+						<div class="stat-box">
+							<div class="title">
+								<h:outputText value="#{i18n['advert.display-count.title']}"/>
+							</div>
+							<div class="content">
+								<h:outputText value="#{partnerStatsModel.advertDisplayCount}" id="display-count"/>
+							</div>
 						</div>
-						<div class="content">
-							<table>
+						<div class="stat-box" style="border-left:none">
+							<div class="title">
+								<h:outputText value="#{i18n['period']}"/>
+							</div>
+							<div class="content small">
 
-								<ui:repeat value="#{messageDaoModel.findMessageEntityForLoggedInPartner('NOTIFICATION',0,3)}" var="msg">
-
+								<table width="100%">
 									<tr>
-										<td class="left">
-											<h:outputText value="#{msg.publishDate}">
-												<f:convertDateTime pattern="dd.MM.yyyy"/>
-											</h:outputText>
-										</td>
-										<td class="right">
-											<p:commandLink value="#{msg.title}" action="#{messageController.showMessageDetail}" styleClass="#{msg.read==null ? 'bold' : ''}">
-												<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
-											</p:commandLink>
-											&nbsp;-&nbsp;
-											<h:outputText value="#{fnt:substring(msg.body, 0, 145 )}..."/>
-										</td>
-									</tr>
-
-								</ui:repeat>
-							</table>
-						</div>
-					</div>
-
-				</div>
-
-				<h:panelGroup id="bundle-list">
-					<ui:repeat value="#{advertBundleModel.advertBundlesForPartner}" var="bundle">
-
-
-						<div class="advert">
-							<div class="header">
-								<table>
-									<tr>
-										<td class="left">
-											<p:inplace editor="true">
-												<p:inputText value="#{bundle.name}" required="true" requiredMessage="#{i18n['bundle.name.required']}"/>
-												<p:ajax event="save" listener="#{advertBundleController.updateBundleName(bundle)}"/>
-											</p:inplace>
-
-											&nbsp;
-
-											(<h:outputText value="#{bundle.advertCount}"/>/5)
-										</td>
-										<td class="right">
-
-											<h:panelGroup rendered="#{bundle.validTo!=null}">
-												<h:outputText value="#{i18n['valid-until']}"/>
-												&nbsp;
-												<h:outputText value="#{bundle.validTo}">
-													<f:convertDateTime pattern="d.M.yyyy"/>
-												</h:outputText>
-											</h:panelGroup>
-
-											<h:panelGroup rendered="#{bundle.validTo==null}">
-												<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
-												<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
-											</h:panelGroup>
-
-										</td>
+										<td><p:calendar locale="cs" value="#{partnerStatsModel.fromDate}" id="fromDateCalendar" pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
+										<td><p:calendar  locale="cs" value="#{partnerStatsModel.toDate}"  pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
+										<td><p:commandButton value="Zobrazit" styleClass="kamoska_button light-green" update="display-count" /></td>
 									</tr>
 								</table>
+
 							</div>
-
-							<table class="tips">
-								<tr>
-									<th>Sponozorovany tip</th>
-									<th>Sekce</th>
-									<th>Stav</th>
-									<th>Akce</th>
-								</tr>
-
-
-								<ui:repeat value="#{bundle.advertEntityList}" var="advert">
-									<tr>
-										<td class="tip-preview">
-											<div class="image">
-												<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
-											</div>
-											<div class="text">
-												<h1>
-													<h:outputLink target="_blank" value="http://#{advert.url}">
-														<h:outputText value="#{advert.title}"/>
-													</h:outputLink>
-												</h1>
-
-												<p>
-													<h:outputText value="#{advert.body}"/>
-												</p>
-											</div>
-											<div class="clear"/>
-
-											<h:panelGroup rendered="#{advert.state=='REJECTED'}">
-												<p:spacer width="5px" height="10px"/>
-
-												<div class="reject-message">
-													<div class="title">
-														<h:outputText value="#{i18n['advert-reject-title']}:"/></div>
-													<div>
-														<h:outputText value="#{advert.rejectMessage}"/>
-													</div>
-												</div>
-											</h:panelGroup>
-
-										</td>
-										<td class="section">
-											<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
-												<h:outputText value="#{i18n[section.name]}"/>
-												<h:outputText value="#{status.last?'':','}"/>
-											</ui:repeat>
-
-										</td>
-										<td class="state">
-											<h:outputText value="#{i18n[advert.state]}" styleClass="#{advert.state}" rendered="#{advert.state=='WAITING_TO_ACK' or advert.state=='REJECTED'}"/>
-											<p:selectOneMenu value="#{advert.state}" rendered="#{advert.state=='ACTIVE' or advert.state=='SUSPEND'}">
-												<f:selectItems value="#{enumModel.allPartnerState}"/>
-												<p:ajax event="change" listener="#{advertController.changeState(advert)}" partialSubmit="true" process="@form"/>
-											</p:selectOneMenu>
-
-										</td>
-										<td class="action">
-
-											<p:commandButton value="#{i18n['edit']}" action="#{advertController.editAdvert}" styleClass="kamoska_button pink">
-												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
-											</p:commandButton>
-											&nbsp;
-											<p:commandButton value="Delete" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog">
-												<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
-											</p:commandButton>
-
-
-										</td>
-									</tr>
-								</ui:repeat>
-
-
-								<ui:repeat value="#{bundle.advertSpacer}" var="s">
-									<tr>
-										<td class="tip-preview">
-											<div class="image"></div>
-											<div class="text">
-												<h1>
-													Lorem ipsum dolor sit amet
-												</h1>
-
-												<p>
-													Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare.
-												</p>
-											</div>
-											<div class="clear"/>
-										</td>
-										<td class="section">&nbsp;</td>
-										<td class="state">&nbsp;</td>
-										<td class="action">
-											<p:commandButton value="#{i18n['new-advert']}" action="#{advertController.createNewAdvert}" styleClass="kamoska_button light-green">
-												<f:setPropertyActionListener value="#{bundle}" target="#{advertBundleModel.currentItem}"/>
-											</p:commandButton>
-										</td>
-
-									</tr>
-								</ui:repeat>
-
-							</table>
-
 						</div>
-						<p:spacer height="20px"/>
-					</ui:repeat>
-				</h:panelGroup>
+					</div>
+				</td>
 
-				<div class="clear"/>
+				<td style="text-align: right">
+					<div style="text-align: left;">
+
+						<div class="stat-box">
+							<div class="title">
+								<h:outputText value="#{i18n['advert-this-month']}"/>
+							</div>
+							<div class="content small">
+								<h:outputText value="#{partnerStatsModel.advertDisplayCountBySystem}"/>
+							</div>
+						</div>
+
+					</div>
+				</td>
+			</tr>
+		</table>
+	</h:form>
+
+</div>
 
 
-				<h:panelGroup rendered="#{advertBundleModel.allPaid}">
-					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
-									 styleClass="kamoska_button green small"
-									 value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
-					<p:spacer width="10" height="1"/>
-					<h:outputText value="#{nextAPG.priceCzk}">
-						<f:convertNumber pattern="0"/>
-					</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
+<h:panelGroup rendered="#{not empty findNotPaidToNotDisplayAdvertBundle or not empty findEndingNotPaid}">
+	<div class="system-message-spacer">
+		<div class="system-message">
+			<ui:repeat value="#{findNotPaidToNotDisplayAdvertBundle}" var="invoice">
+				<p>
+					Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se nezobrazují. Důvod: proforma faktura č.
+					<h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
+						<h:outputText value="#{invoice.number}"/>
+					</h:outputLink> není uhrazená.
+				</p>
+			</ui:repeat>
 
-				</h:panelGroup>
-			</h:form>
+			<ui:repeat value="#{findEndingNotPaid}" var="invoice">
+				<p>
+					Reklamy v sadě <strong><h:outputText value="#{invoice.advertBundleEntity.name}"/></strong> se přestanou
+					<h:outputText value="#{invoice.advertBundleEntity.validTo}">
+						<f:convertDateTime pattern="d.M.yyyy"/>
+					</h:outputText>
+					zobrazovat.
+					Důvod: proforma faktura č. <h:outputLink value="#{invoice.fakturoidUrl}" target="_blank">
+					<h:outputText value="#{invoice.number}"/>
+				</h:outputLink> není uhrazená.
+				</p>
+			</ui:repeat>
 
-			<p:spacer height="50px"/>
+		</div>
+	</div>
+</h:panelGroup>
 
-		</ui:define>
+
+<h:form id="index_form">
+
+<div class="notification-spacer">
+	<p:messages id="errors"/>
+
+	<div class="notification">
+		<div class="header">
+			<table>
+				<tr>
+					<th class="left">
+						<h:outputText value="#{i18n['notification']}"/>
+						(<h:outputText value="#{messageDaoModel.getMessageCountForLoggedInPartner('NOTIFICATION')}"/>/<h:outputText value="#{messageDaoModel.getUnreadMessageCountForLoggedInPartner('NOTIFICATION')}"/>)
+					</th>
+					<th class="right">
+						<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx">
+							<h:outputText value="#{i18n['show-all-notification']}"/>
+						</h:outputLink>
+					</th>
+				</tr>
+			</table>
+		</div>
+		<div class="content">
+			<table>
+
+				<ui:repeat value="#{messageDaoModel.findMessageEntityForLoggedInPartner('NOTIFICATION',0,3)}" var="msg">
+
+					<tr>
+						<td class="left">
+							<h:outputText value="#{msg.publishDate}">
+								<f:convertDateTime pattern="dd.MM.yyyy"/>
+							</h:outputText>
+						</td>
+						<td class="right">
+							<p:commandLink value="#{msg.title}" action="#{messageController.showMessageDetail}" styleClass="#{msg.read==null ? 'bold' : ''}">
+								<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
+							</p:commandLink>
+							&nbsp;-&nbsp;
+							<h:outputText value="#{fnt:substring(msg.body, 0, 145 )}..."/>
+						</td>
+					</tr>
+
+				</ui:repeat>
+			</table>
+		</div>
+	</div>
+
+</div>
+
+<h:panelGroup id="bundle-list">
+	<ui:repeat value="#{advertBundleModel.advertBundlesForPartner}" var="bundle">
 
 
-	</ui:composition>
+		<div class="advert">
+			<div class="header">
+				<table>
+					<tr>
+						<td class="left">
+							<p:inplace editor="true">
+								<p:inputText value="#{bundle.name}" required="true" requiredMessage="#{i18n['bundle.name.required']}"/>
+								<p:ajax event="save" listener="#{advertBundleController.updateBundleName(bundle)}"/>
+							</p:inplace>
+
+							&nbsp;
+
+							(<h:outputText value="#{bundle.advertCount}"/>/5)
+						</td>
+						<td class="right">
+
+							<h:panelGroup rendered="#{bundle.validTo!=null}">
+								<h:outputText value="#{i18n['valid-until']}"/>
+								&nbsp;
+								<h:outputText value="#{bundle.validTo}">
+									<f:convertDateTime pattern="d.M.yyyy"/>
+								</h:outputText>
+							</h:panelGroup>
+
+							<h:panelGroup rendered="#{bundle.validTo==null}">
+								<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
+								<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
+							</h:panelGroup>
+
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<table class="tips">
+				<tr>
+					<th>Sponozorovany tip</th>
+					<th>Sekce</th>
+					<th>Stav</th>
+					<th>Akce</th>
+				</tr>
+
+
+				<ui:repeat value="#{bundle.advertEntityList}" var="advert">
+					<tr>
+						<td class="tip-preview">
+							<div class="image">
+								<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
+							</div>
+							<div class="text">
+								<h1>
+									<h:outputLink target="_blank" value="http://#{advert.url}">
+										<h:outputText value="#{advert.title}"/>
+									</h:outputLink>
+								</h1>
+
+								<p>
+									<h:outputText value="#{advert.body}"/>
+								</p>
+							</div>
+							<div class="clear"/>
+
+							<h:panelGroup rendered="#{advert.state=='REJECTED'}">
+								<p:spacer width="5px" height="10px"/>
+
+								<div class="reject-message">
+									<div class="title">
+										<h:outputText value="#{i18n['advert-reject-title']}:"/></div>
+									<div>
+										<h:outputText value="#{advert.rejectMessage}"/>
+									</div>
+								</div>
+							</h:panelGroup>
+
+						</td>
+						<td class="section">
+							<ui:repeat value="#{advert.sectionEntityList}" var="section" varStatus="status">
+								<h:outputText value="#{i18n[section.name]}"/>
+								<h:outputText value="#{status.last?'':','}"/>
+							</ui:repeat>
+
+						</td>
+						<td class="state">
+							<h:outputText value="#{i18n[advert.state]}" styleClass="#{advert.state}" rendered="#{advert.state=='WAITING_TO_ACK' or advert.state=='REJECTED'}"/>
+							<p:selectOneMenu value="#{advert.state}" rendered="#{advert.state=='ACTIVE' or advert.state=='SUSPEND'}">
+								<f:selectItems value="#{enumModel.allPartnerState}"/>
+								<p:ajax event="change" listener="#{advertController.changeState(advert)}" partialSubmit="true" process="@form"/>
+							</p:selectOneMenu>
+
+						</td>
+						<td class="action">
+
+							<p:commandButton value="#{i18n['edit']}" action="#{advertController.editAdvert}" styleClass="kamoska_button pink">
+								<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
+							</p:commandButton>
+							&nbsp;
+							<p:commandButton value="Delete" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog">
+								<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
+							</p:commandButton>
+
+
+						</td>
+					</tr>
+				</ui:repeat>
+
+
+				<ui:repeat value="#{bundle.advertSpacer}" var="s">
+					<tr>
+						<td class="tip-preview">
+							<div class="image"></div>
+							<div class="text">
+								<h1>
+									Lorem ipsum dolor sit amet
+								</h1>
+
+								<p>
+									Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare.
+								</p>
+							</div>
+							<div class="clear"/>
+						</td>
+						<td class="section">&nbsp;</td>
+						<td class="state">&nbsp;</td>
+						<td class="action">
+							<p:commandButton value="#{i18n['new-advert']}" action="#{advertController.createNewAdvert}" styleClass="kamoska_button light-green">
+								<f:setPropertyActionListener value="#{bundle}" target="#{advertBundleModel.currentItem}"/>
+							</p:commandButton>
+						</td>
+
+					</tr>
+				</ui:repeat>
+
+			</table>
+
+		</div>
+		<p:spacer height="20px"/>
+	</ui:repeat>
+</h:panelGroup>
+
+<div class="clear"/>
+
+
+<h:panelGroup rendered="#{advertBundleModel.allPaid}">
+	<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
+						  styleClass="kamoska_button green small"
+						  value="#{i18n['add-advert-group']}" update="errors bundle-list"/>
+	<p:spacer width="10" height="1"/>
+	<h:outputText value="#{nextAPG.priceCzk}">
+		<f:convertNumber pattern="0"/>
+	</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
+
+</h:panelGroup>
+</h:form>
+
+<p:spacer height="50px"/>
+
+</ui:define>
+
+
+</ui:composition>
 
 </h:body>
 

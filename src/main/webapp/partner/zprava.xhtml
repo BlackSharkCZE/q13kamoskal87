@@ -32,9 +32,9 @@
 			<partner:menu/>
 
 			<div class="navigation">
-				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
+				<h:outputLink value="#{request.servletContext.contextPath}/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
 				>
-				<h:outputLink value="/partner/zpravy.jspx"><h:outputText value="#{i18n['message-list']}"/></h:outputLink>
+				<h:outputLink value="#{request.servletContext.contextPath}/partner/zpravy.jspx"><h:outputText value="#{i18n['message-list']}"/></h:outputLink>
 				>
 				<span class="text"><h:outputText value="#{messageDaoModel.selectedMessage.title}"/></span>
 			</div>

@@ -19,6 +19,15 @@ import java.util.Date;
 }
 )
 
+@NamedNativeQueries({
+	 @NamedNativeQuery(name="AdvertAccessListDailyEntity.native.getDisplatCoutByFromDateAndToDateAndPartnerID",
+		  query = "select sum(acd.display_count) from advert_accesslist_daily acd\n" +
+				"  join advert a on a.id = acd.advert_entity\n" +
+				"  join advert_bundle ab on ab.id = a.bundle_id\n" +
+				"  join partner p on p.id = ab.partnerentity_id\n" +
+				"  where acd.for_date>=#fromDate and acd.for_date < #toDate and p.id = #partnerID")
+})
+
 public class AdvertAccessListDailyEntity {
 
 	@Id

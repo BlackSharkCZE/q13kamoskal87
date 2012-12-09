@@ -14,8 +14,16 @@ import java.util.Date;
 @Entity
 @Table(name = "advert_accesslist_actual")
 @NamedQueries({
-		@NamedQuery(name = "AdvertAccessListEntity.getDisplayCountByFromDateAndToDate", query = "SELECT COUNT(a) FROM AdvertAccessListEntity a WHERE a.dateCreated>=:fromDate AND a.dateCreated<:toDate")
+	 @NamedQuery(name = "AdvertAccessListEntity.getDisplayCountByFromDateAndToDate", query = "SELECT COUNT(a) FROM AdvertAccessListEntity a WHERE a.dateCreated>=:fromDate AND a.dateCreated<:toDate")
 })
+
+@NamedNativeQueries({@NamedNativeQuery(name = "AdvertAccessListEntity.native.getDisplayCountByFromDateAndToDateAndPartnerID",
+	 query = "select count(aaa.id) from advert_accesslist_actual aaa\n" +
+		  "  join advert a on a.id = aaa.advert_id\n" +
+		  "  join advert_bundle ab on ab.id = a.bundle_id\n" +
+		  "  join partner p on p.id = ab.partnerentity_id\n" +
+		  "  where aaa.datecreated>=#fromDate and aaa.datecreated < #toDate and p.id = #partnerID")})
+
 public class AdvertAccessListEntity {
 
 	@Id
