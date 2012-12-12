@@ -25,8 +25,16 @@
 
 		<div id="header">
 			<ui:insert name="header">
-				<div class="title">partner.kamoska.cz</div>
-				<div class="login">
+
+                <div class="title">
+                    <a href="http://partner.kamoska.cz/partner/index.jspx">
+                        <h:graphicImage library="img" name="logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" width="338" height="84" />
+                    </a>
+                </div>
+
+
+
+                <div class="login">
 					<div class="content">
 						<h:form id="logout-command-link-form">
 						<h:outputText value="#{loggedInPartner.partner.email}" styleClass="light-gray"/>
@@ -49,7 +57,7 @@
 
 		<div id="footer">
 			<ui:insert name="footer">
-				<h:outputText value="#{i18n['web_default_footer']}"/>
+                Copyright &copy; 2009 - 2013  &nbsp;<a href="http://www.glaceo.cz/" title="Glaceo s.r.o.">Glaceo s.r.o.</a>&nbsp; | &nbsp;<a href="http://www.kamoska.cz/" title="Kámoška.cz - Tvoje lepší kamarádka">Kámoška.cz  - tvoje lepší kamarádka</a>&nbsp; | &nbsp;<a href="http://partner.kamoska.cz/eula.jspx" title="Všeobecné obchodní podmínky">Všeobecné obchodní podmínky</a>
 			</ui:insert>
 		</div>
 	</div>

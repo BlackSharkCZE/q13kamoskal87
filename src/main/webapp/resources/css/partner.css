@@ -1,19 +1,20 @@
 #page {
     width:1150px;
-    margin: 0 auto;
+    margin: 10px auto;
     padding: 0;
-    font-size: 12px;
+	font-size: 12px;
+	font-family: Arial;
 }
 
 #header {
     width:1150px;
-    height: 40px;
+    height: 110px;
 }
 
 #header .title {
     float:left;
     width:575px;
-    height: 40px;
+    height: 110px;
     text-align: left;
     font-size: 18px;
     color:black;
@@ -680,4 +681,16 @@ table.invoice-list tr.last td {
 
 .ui-datepicker .ui-datepicker-today {
 	background: #FFF6E0;
+}
+
+#footer {
+	width:1150px;
+	height: 40px;
+	margin: 0 0 20px 0;
+	text-align: right;
+	font-size: 14px;
+}
+
+#footer .footer {
+	color: gray;
 }
