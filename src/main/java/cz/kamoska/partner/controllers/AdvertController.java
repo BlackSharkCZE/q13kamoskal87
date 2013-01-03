@@ -312,7 +312,8 @@ public class AdvertController implements Serializable {
 							invoiceEntity.setInvoiceType(InvoiceType.PROFORMA);
 							invoiceEntity.setPrice(invoicePrice);
 							//TODO zde se musi spravne urcovat DPH a spravne prepocitavat castka. Musi dodat Radek
-							invoiceEntity.setPriceIncVat(invoicePrice.multiply(BigDecimal.valueOf(1.2)));
+							invoiceEntity.setPriceIncVat(invoicePrice);
+//							invoiceEntity.setPriceIncVat(invoicePrice.multiply(BigDecimal.valueOf(1.2)));
 
 
 							DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.TIPS_PROFORMA_CREATED);

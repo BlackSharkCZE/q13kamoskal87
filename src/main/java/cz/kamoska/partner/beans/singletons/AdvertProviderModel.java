@@ -9,7 +9,6 @@ import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.AdvertDisplayStyle;
 import cz.kamoska.partner.pojo.kamoska.AdvertViewWrapper;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -19,6 +18,7 @@ import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -141,7 +141,7 @@ public class AdvertProviderModel implements Serializable {
 		return res;
 	}
 
-	private void reloadCacheForSection(String sectionUrlName) {
+	public void reloadCacheForSection(String sectionUrlName) {
 		Queue<AdvertViewWrapper> adv = advertsCache.get(sectionUrlName);
 		List<AdvertEntity> ade = advertDaoInterface.findLessUsedBySection(sectionUrlName, MainConfig.ADVERT_CACHE_SIZE - adv.size());
 		for (AdvertEntity ae : ade) {

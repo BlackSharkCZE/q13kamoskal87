@@ -1,8 +1,5 @@
 package cz.kamoska.partner.config;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
-
 import java.util.logging.Logger;
 //import java.util.logging.Logger;
 
@@ -51,9 +48,14 @@ public class MainConfig {
 	public static final String FAKTUROID_API_URL = "https://partnerkamoska.fakturoid.cz/api/v1/";
 //	public static final String FAKTUROID_API_URL = "http://seznam.cz";
 	public static final String FAKTUROID_API_TOKEN = "a44432585a05b2d162d703a9044ebaa88ef3412f";
+
+
 	public static final String INVOICE_LINE_NAME = "Sada 5ti reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.";
 	public static final Integer INVOICE_VAT_RATE = 20;
-	public static final boolean INVOICE_WITH_VAT = true;
+	public static final boolean INVOICE_WITH_VAT = false;
+
+
+
 	public static final String EMAIL_SMTP_HOST = "localhost";
 	public static final int EMAIL_SMTP_PORT = 25;
 	public static final String EMAIL_SMTP_USER = "";
