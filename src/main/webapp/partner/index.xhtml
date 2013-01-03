@@ -173,7 +173,7 @@
 								<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
 							</p:commandLink>
 							&nbsp;-&nbsp;
-							<h:outputText value="#{fnt:substring(msg.body, 0, 145 )}..."/>
+							<h:outputText value="#{fnt:substring(msg.body, 0, 125 )}..."/>
 						</td>
 					</tr>
 
@@ -323,7 +323,7 @@
 			</table>
 
 		</div>
-		<p:spacer height="20px"/>
+		<p:spacer height="0px"/>
 	</ui:repeat>
 </h:panelGroup>
 

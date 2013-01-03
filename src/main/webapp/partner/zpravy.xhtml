@@ -69,9 +69,9 @@
 						&nbsp;
 						-
 						&nbsp;
-						<c:set value="#{(fn:length(p.title) + fn:length(msg.body)) gt 130}" var="dist"/>
-						<h:outputText value="#{fn:substring(msg.body,0,127-fn:length(p.title))}..." rendered="#{dist==true}"/>
-						<h:outputText value="#{fn:substring(msg.body,0,130-fn:length(p.title))}" rendered="#{dist==false}"/>
+						<c:set value="#{(fn:length(p.title) + fn:length(msg.body)) gt 110}" var="dist"/>
+						<h:outputText value="#{fn:substring(msg.body,0,107-fn:length(p.title))}..." rendered="#{dist==true}"/>
+						<h:outputText value="#{fn:substring(msg.body,0,110-fn:length(p.title))}" rendered="#{dist==false}"/>
 					</p:column>
 
 				</p:dataTable>
