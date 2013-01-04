@@ -61,12 +61,12 @@
 
 
 .system-message-spacer {
-    padding-top: 15px;
+    padding-top: 0px;
     padding-bottom: 15px;
 }
 
 .system-message {
-    padding: 8px;
+    padding: 10px;
     background: #FFF6E0;
     border: 1px solid#FFE599;
 }
@@ -78,16 +78,16 @@
 
 .notification-spacer {
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
 }
 
 .notification {
-    border:1px solid #D9D9D9;
+    border: 1px solid #D9D9D9;
 }
 
 .notification .header {
     background: #EFEFEF;
-    border-bottom:1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
 }
 
 .notification .header table {
@@ -100,6 +100,7 @@
 
 .notification .header th.left {
     text-align: left;
+    font-size: 16px;
 }
 
 .notification .header th.right {
@@ -107,8 +108,10 @@
 }
 
 .notification .content {
-    padding: 10px;
-    width:100%;
+    padding: 15px 10px 10px 10px;
+    width: 100%;
+    color: #000000;
+    font-size: 14px;
 }
 
 .notification .content td {
@@ -120,7 +123,7 @@
 }
 
 .notification .content td.left {
-    width:80px;
+    width: 90px;
 }
 
 .notification .content td a {
@@ -238,15 +241,14 @@ p {
 }
 
 .advert .header table {
-    border:none;
-    width:100%;
+    border: none;
+    width: 100%;
 }
 .advert .header table td {
     padding: 10px;
 }
 .advert .header table td.left {
-
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
 }
 .advert .header table td.right {
@@ -423,7 +425,7 @@ p {
 
 
 .navigation {
-    padding: 10px 0px 10px 5px;
+    padding: 15px 10px 10px 10px;
 }
 
 

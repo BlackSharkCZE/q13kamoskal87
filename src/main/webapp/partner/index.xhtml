@@ -173,7 +173,7 @@
 								<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
 							</p:commandLink>
 							&nbsp;-&nbsp;
-							<h:outputText value="#{fnt:substring(msg.body, 0, 115 )}..."/>
+							<h:outputText value="#{fnt:substring(msg.body, 0, 80 )}..."/>
 						</td>
 					</tr>
 
@@ -204,18 +204,22 @@
 						</td>
 						<td class="right">
 
-							<h:panelGroup rendered="#{bundle.validTo!=null}">
+                            <span style="color: #4D9433; font-weight: bold;">
+                            <h:panelGroup rendered="#{bundle.validTo!=null}">
 								<h:outputText value="#{i18n['valid-until']}"/>
-								&nbsp;
+                                &nbsp;
 								<h:outputText value="#{bundle.validTo}">
 									<f:convertDateTime pattern="d.M.yyyy"/>
 								</h:outputText>
 							</h:panelGroup>
+                            </span>
 
+                            <span style="color: red; font-weight: bold;">
 							<h:panelGroup rendered="#{bundle.validTo==null}">
 								<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
 								<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
 							</h:panelGroup>
+                            </span>
 
 						</td>
 					</tr>

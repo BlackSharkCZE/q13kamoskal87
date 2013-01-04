@@ -12,7 +12,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+	  xmlns:p="http://primefaces.org/ui"
+      xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
+      xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
 	<title><h:outputText value="#{i18n['web_title']}"/></title>
@@ -23,45 +25,14 @@
 	<ui:composition template="/WEB-INF/templates/partner_template.xhtml">
 
 		<ui:define name="content">
-
-
-			<div class="main_menu_bar">
-				<ul class="main_menu">
-					<li class="item">
-						<h:outputLink value="index.jspx">
-							<h:outputText value="#{i18n['partner.menu.home-page']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item current">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.account']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.payments']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item last">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu-notification']}"/>
-						</h:outputLink>
-					</li>
-				</ul>
-			</div>
-
+            <partner:menu/>
 
 			<div class="navigation">
 				<h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
 				>
 				<h:outputLink value="/partner/prehled-tipu.jspx"><h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/></h:outputLink>
 				>
-				<span class="text"><h:outputText value="#{i18n['new-advert']}"/></span>
+				<span class="text">Editace reklamy</span>
 			</div>
 
 			<div style="padding:0px 0px 10px 10px">

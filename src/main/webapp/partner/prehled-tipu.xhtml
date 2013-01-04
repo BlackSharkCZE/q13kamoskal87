@@ -27,6 +27,12 @@
 		<ui:define name="content">
 			<partner:menu/>
 
+            <div class="navigation">
+                <h:outputLink value="/partner/index.jspx"><h:outputText value="#{i18n['partner.menu.home-page']}"/></h:outputLink>
+                >
+                <span class="text"><h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/></span>
+            </div>
+
 			<h:form id="dialog_form">
 				<p:confirmDialog message="#{i18n['drop-advert.are-you-sure']}" id="confirmDialog" header="TIP: #{advertModel.advertEntity.title}" severity="alert" widgetVar="confirmation">
 					<h:inputHidden value="#{advertModel.advertEntity.id}"/>
@@ -54,6 +60,7 @@
 										</td>
 										<td class="right">
 
+                                            <span style="color: #4D9433; font-weight: bold;">
 											<h:panelGroup rendered="#{bundle.validTo!=null}">
 												<h:outputText value="#{i18n['valid-until']}"/>
 												&nbsp;
@@ -61,12 +68,14 @@
 													<f:convertDateTime pattern="d.M.yyyy"/>
 												</h:outputText>
 											</h:panelGroup>
+                                            </span>
 
+                                            <span style="color: red; font-weight: bold;">
 											<h:panelGroup rendered="#{bundle.validTo==null}">
 												<h:outputText value="#{i18n['unset']}" rendered="#{empty bundle.invoiceEntities}"/>
 												<h:outputText value="#{i18n['inactive']}" rendered="#{not empty bundle.invoiceEntities}"/>
 											</h:panelGroup>
-
+                                            </span>
 										</td>
 									</tr>
 								</table>
