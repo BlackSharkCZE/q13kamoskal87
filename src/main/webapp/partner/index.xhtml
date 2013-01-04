@@ -46,13 +46,13 @@
 		<p:spacer width="1" height="10" />
 
 		<table width="100%">
-			<tr>
-				<th style="text-align: left">
-					<h:outputText value="#{i18n['actual-statistic']}"/>
+			<tr style="height: 25px;">
+				<th style="text-align: left; font-size: 18px; padding-left: 5px;">
+                    <strong><h:outputText value="#{i18n['actual-statistic']}"/></strong>
 				</th>
 
-				<th style="text-align: left">
-					<h:outputText value="#{i18n['kamoska.cz']}"/>
+				<th style="text-align: left; font-size: 18px; padding-left: 5px;">
+                    <strong><h:outputText value="#{i18n['kamoska.cz']}"/></strong>
 				</th>
 			</tr>
 			<tr>
@@ -173,7 +173,7 @@
 								<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
 							</p:commandLink>
 							&nbsp;-&nbsp;
-							<h:outputText value="#{fnt:substring(msg.body, 0, 125 )}..."/>
+							<h:outputText value="#{fnt:substring(msg.body, 0, 115 )}..."/>
 						</td>
 					</tr>
 
