@@ -173,7 +173,7 @@
 								<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}"/>
 							</p:commandLink>
 							&nbsp;-&nbsp;
-							<h:outputText value="#{fnt:substring(msg.body, 0, 80 )}..."/>
+							<h:outputText value="#{fnt:substring(msg.body, 0, 75 )}..."/>
 						</td>
 					</tr>
 
@@ -228,7 +228,7 @@
 
 			<table class="tips">
 				<tr>
-					<th>Sponozorovany tip</th>
+					<th>Sponozorovaný tip</th>
 					<th>Sekce</th>
 					<th>Stav</th>
 					<th>Akce</th>
@@ -239,11 +239,13 @@
 					<tr>
 						<td class="tip-preview">
 							<div class="image">
+                                <h:outputLink target="_blank" value="http://#{advert.url}">
 								<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
-							</div>
+                                </h:outputLink>
+                            </div>
 							<div class="text">
 								<h1>
-									<h:outputLink target="_blank" value="http://#{advert.url}">
+									<h:outputLink target="_blank" value="http://#{advert.url}" title="#{advert.title}">
 										<h:outputText value="#{advert.title}"/>
 									</h:outputLink>
 								</h1>
@@ -263,6 +265,8 @@
 									<div>
 										<h:outputText value="#{advert.rejectMessage}"/>
 									</div>
+                                    <div class="footer">
+                                        (Pro úpravu inzerát editujte a odstraňte chyby. Poté bude inzerát schválen.)</div>
 								</div>
 							</h:panelGroup>
 
@@ -288,7 +292,7 @@
 								<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
 							</p:commandButton>
 							&nbsp;
-							<p:commandButton value="Delete" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog">
+							<p:commandButton value="Smazat" oncomplete="confirmation.show()" action="null" update=":dialog_form:confirmDialog" styleClass="kamoska_button gray">
 								<f:setPropertyActionListener value="#{advert}" target="#{advertModel.advertEntity}"/>
 							</p:commandButton>
 
@@ -346,7 +350,7 @@
 </h:panelGroup>
 </h:form>
 
-<p:spacer height="50px"/>
+<p:spacer height="30px"/>
 
 </ui:define>
 
