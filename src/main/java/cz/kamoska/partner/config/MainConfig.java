@@ -52,7 +52,7 @@ public class MainConfig {
 
 	public static final String INVOICE_LINE_NAME = "Sada 5ti reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.";
 	public static final Integer INVOICE_VAT_RATE = 20;
-	public static final boolean INVOICE_WITH_VAT = false;
+	public static final boolean INVOICE_WITH_VAT = true;
 
 
 

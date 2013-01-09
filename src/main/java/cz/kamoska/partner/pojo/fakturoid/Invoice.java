@@ -84,12 +84,14 @@ public class Invoice {
 		this.subjectId = subjectId;
 		proforma = true;
 		lines = new ArrayList<>(1);
+		total = amountPrice;
 		InvoiceLine iLine = new InvoiceLine();
 		iLine.setName(MainConfig.INVOICE_LINE_NAME);
 		iLine.setQuantity("1");
 		iLine.setUnitPrice(amountPrice);
 		iLine.setVatRate(MainConfig.INVOICE_VAT_RATE);
 		iLine.setWithVat(MainConfig.INVOICE_WITH_VAT);
+
 		lines.add(iLine);
 	}
 

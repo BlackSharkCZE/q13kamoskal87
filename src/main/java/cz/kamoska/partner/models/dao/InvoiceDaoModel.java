@@ -1,11 +1,9 @@
 package cz.kamoska.partner.models.dao;
 
 import cz.kamoska.partner.dao.interfaces.InvoiceDaoInterface;
-import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.InvoiceEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
-import cz.kamoska.partner.models.template.AbstractModel;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -25,7 +23,7 @@ import java.util.List;
  */
 @SessionScoped
 @Named
-public class InvoiceDaoModel  implements Serializable {
+public class InvoiceDaoModel implements Serializable {
 
 	@Inject
 	private LoggedInPartner loggedInPartner;
@@ -41,16 +39,14 @@ public class InvoiceDaoModel  implements Serializable {
 	@RequestScoped
 	@Named
 	public List<InvoiceEntity> findNotPaidToNotDisplayAdvertBundle() {
-		List<InvoiceEntity> res = invoiceDaoInterface.findNotPaidForBundleNotDisplay(loggedInPartner.getPartner().getId());
-		return res;
+		return invoiceDaoInterface.findNotPaidForBundleNotDisplay(loggedInPartner.getPartner().getId());
 	}
 
 	@Produces
 	@RequestScoped
 	@Named
 	public List<InvoiceEntity> findEndingNotPaid() {
-		List<InvoiceEntity> res = invoiceDaoInterface.findEndingNotPaid(loggedInPartner.getPartner().getId());
-		return res;
+		return invoiceDaoInterface.findEndingNotPaid(loggedInPartner.getPartner().getId());
 	}
 
 	public Long getCountOfProforma() {
@@ -68,9 +64,9 @@ public class InvoiceDaoModel  implements Serializable {
 	}
 
 	public List<InvoiceEntity> getAllInvoiceForPartner(PartnerEntity partner) {
-		if (!partner.equals(cacheForPartner)) {
-			loadCacheFor(partner);
-		}
+		//if (!partner.equals(cacheForPartner)) {
+		loadCacheFor(partner);
+		//}
 		return cache;
 	}
 

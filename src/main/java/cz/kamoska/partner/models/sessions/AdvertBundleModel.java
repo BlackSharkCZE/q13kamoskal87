@@ -4,14 +4,11 @@ import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.template.DaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
 import cz.kamoska.partner.entities.AdvertEntity;
-import cz.kamoska.partner.entities.InvoiceEntity;
-import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.models.template.AbstractModel;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -43,9 +40,15 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 
 	public List<AdvertBundleEntity> getAdvertBundlesForPartner() {
 		List<AdvertBundleEntity> allForPartner = advertBundleDaoInterface.findAllForPartner(loggedInPartner.getPartner());
-		int invoiceCount = 0;
+//		int invoiceCount = 0;
+		allPaid = true;
 		for (AdvertBundleEntity ab : allForPartner) {
 
+			if (allPaid) {
+				allPaid = ab.getStatus() == AdvertState.ACTIVE;
+			}
+
+/*
 			for (InvoiceEntity invoiceEntity : ab.getInvoiceEntities()) {
 				invoiceCount++;
 				if (invoiceEntity.getPaid() == null) {
@@ -53,8 +56,8 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 					break;
 				}
 			}
-
-			if (ab.getAdvertEntityList()!=null && !ab.getAdvertEntityList().isEmpty()) {
+*/
+			if (ab.getAdvertEntityList() != null && !ab.getAdvertEntityList().isEmpty()) {
 				Iterator<AdvertEntity> iterator = ab.getAdvertEntityList().iterator();
 				while (iterator.hasNext()) {
 					AdvertEntity next = iterator.next();
@@ -64,9 +67,11 @@ public class AdvertBundleModel extends AbstractModel<AdvertBundleEntity> impleme
 				}
 			}
 		}
+		/*
 		if (invoiceCount == 0) {
 			allPaid = false;
 		}
+		*/
 
 		return allForPartner;
 	}
