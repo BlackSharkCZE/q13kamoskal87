@@ -280,20 +280,21 @@ p {
 
 .advert table.tips td.tip-preview .text {
     float:left;
-    padding-left: 15px;
+    padding: 10px 0 0 15px;
+    width: 500px;
 }
 
 .advert table.tips td.tip-preview .text h1 {
     color:#D9D9D9;
     padding: 0px;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 .advert table.tips td.tip-preview .text p {
     color:#D9D9D9;
     padding: 0px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color:black;
 }

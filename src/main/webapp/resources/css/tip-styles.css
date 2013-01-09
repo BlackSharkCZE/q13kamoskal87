@@ -1,6 +1,6 @@
 body { font-family: Arial; font-size: 13px; color: #333333; }
 
-.tip { width: 642px; height: 74px; position: relative; background-color: #fcf7e3; border-top: 1px solid #eeeeee; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333; margin-bottom: 2px;}
+.tip { width: 642px; height: 74px; position: relative; background-color: white; border-top: 1px solid #dddddd; border-bottom: 1px solid #dddddd; font-size: 13px; color: #333333; margin-bottom: 2px;}
 
 .tip-img { width: 60px; height: 60px; float: left; margin: 7px 10px 0 0; }
 
@@ -20,7 +20,7 @@ body { font-family: Arial; font-size: 13px; color: #333333; }
 
 
 
-.tip-height { width: 306px; height: 125px; position: relative; background-color: #fcf7e3; border-top: 1px solid #eeeeee; border-bottom: 1px solid #eeeeee; font-size: 13px; color: #333333; margin-bottom: 2px;}
+.tip-height { width: 306px; height: 125px; position: relative; background-color: white; border-top: 1px solid #dddddd; border-bottom: 1px solid #dddddd; font-size: 13px; color: #333333; margin-bottom: 2px;}
 
 .tip-img-height { width: 60px; height: 60px; float: left; margin: 10px 10px 0 10px; }
 

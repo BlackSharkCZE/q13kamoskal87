@@ -20,11 +20,6 @@
 						<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
 					</h:outputLink>
 				</li>
-				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerAccountSetting) ? 'current' : ''}">
-					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerAccountSetting}">
-						<h:outputText value="#{i18n['partner.menu.account']}"/>
-					</h:outputLink>
-				</li>
 				<li class="item #{fnt:contains(request.requestURI, basicUrl.partnerInvoices) ? 'current' : ''}">
 					<h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerInvoices}">
 						<h:outputText value="#{i18n['partner.menu.payments']}"/>
@@ -35,6 +30,11 @@
 						<h:outputText value="#{i18n['partner.menu-notification']}"/>
 					</h:outputLink>
 				</li>
+                <li class="item #{fnt:contains(request.requestURI, basicUrl.partnerAccountSetting) ? 'current' : ''}">
+                    <h:outputLink value="#{request.servletContext.contextPath}#{basicUrl.partnerAccountSetting}">
+                        <h:outputText value="#{i18n['partner.menu.account']}"/>
+                    </h:outputLink>
+                </li>
 			</ul>
 		</div>
 

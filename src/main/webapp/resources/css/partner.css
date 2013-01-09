@@ -33,37 +33,40 @@
 }
 
 .main_menu_bar {
-    padding: 8px 0px 8px 0px;
-border:1px solid #EAD1DC;
-
-    width:1150px;
-    background-color:#C27BA0;
+    padding: 10px 0px 10px 0px;
+/*    border:1px solid #EAD1DC;  */
+    border: 1px solid #ffffff;
+    width: 1150px;
+/*    background-color:#C27BA0;   */
+    background-color: #945F8E;
+    font-size: 15px;
 }
 
 .main_menu_bar .main_menu {
-
-list-style: none;
+    list-style: none;
     margin: 0;
     padding: 0;
-
 }
 .main_menu_bar .main_menu li {display:inline;}
 
-.main_menu_bar .main_menu .item  { padding: 8px 15px 8px 15px; border-right: 1px solid #EAD1DC;}
-.main_menu_bar .main_menu .item a { color:white; font-weight: bold;}
-.main_menu_bar .main_menu .item.current  { background: #4C1130}
+/*.main_menu_bar .main_menu .item  { padding: 8px 15px 8px 15px; border-right: 1px solid #EAD1DC;}     */
+.main_menu_bar .main_menu .item  { padding: 10px 30px 10px 30px; border-right: 1px solid #ffffff;}
+.main_menu_bar .main_menu .item a { color: white; font-weight: normal;}
+/*.main_menu_bar .main_menu .item.current  { background: #4C1130}      */
+.main_menu_bar .main_menu .item.current  { background: #482744; font-weight: bold;}
+.main_menu_bar .main_menu .item.current a  { font-weight: bold;}
 
 .main_menu_bar .main_menu .item .last{ }
 .main_menu_bar .main_menu .item .first{ }
 
 
 .system-message-spacer {
-    padding-top: 15px;
+    padding-top: 0px;
     padding-bottom: 15px;
 }
 
 .system-message {
-    padding: 8px;
+    padding: 10px;
     background: #FFF6E0;
     border: 1px solid#FFE599;
 }
@@ -75,16 +78,16 @@ list-style: none;
 
 .notification-spacer {
     padding-top: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 20px;
 }
 
 .notification {
-    border:1px solid #D9D9D9;
+    border: 1px solid #D9D9D9;
 }
 
 .notification .header {
     background: #EFEFEF;
-    border-bottom:1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
 }
 
 .notification .header table {
@@ -97,6 +100,7 @@ list-style: none;
 
 .notification .header th.left {
     text-align: left;
+    font-size: 16px;
 }
 
 .notification .header th.right {
@@ -104,8 +108,10 @@ list-style: none;
 }
 
 .notification .content {
-    padding: 10px;
-    width:100%;
+    padding: 15px 10px 10px 10px;
+    width: 100%;
+    color: #000000;
+    font-size: 14px;
 }
 
 .notification .content td {
@@ -117,7 +123,7 @@ list-style: none;
 }
 
 .notification .content td.left {
-    width:80px;
+    width: 90px;
 }
 
 .notification .content td a {
@@ -235,15 +241,14 @@ p {
 }
 
 .advert .header table {
-    border:none;
-    width:100%;
+    border: none;
+    width: 100%;
 }
 .advert .header table td {
     padding: 10px;
 }
 .advert .header table td.left {
-
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
 }
 .advert .header table td.right {
@@ -273,8 +278,8 @@ p {
 
 .advert table.tips td.tip-preview { width: 640px; }
 .advert table.tips td.section { width: 180px; }
-.advert table.tips td.state {width: 180px; }
-.advert table.tips td.action { border-right: none; }
+.advert table.tips td.state {width: 100px;}
+.advert table.tips td.action { border-right: none;}
 
 .advert table.tips td.tip-preview .image {
     width:60px;
@@ -286,40 +291,40 @@ p {
 
 .advert table.tips td.tip-preview .text {
     float:left;
-    padding-left: 15px;
+    padding: 10px 0 0 15px;
+    width: 500px;
 }
 
 .advert table.tips td.tip-preview .text h1 {
  color:#D9D9D9;
     padding: 0px;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
 }
 
 .advert table.tips td.tip-preview .text p {
     color:#D9D9D9;
     padding: 0px;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     color:black;
 }
 
-
 .create-tip-right {
     float: left;
-    width: 679px;
-    border-left:1px dashed #CCCCCC;
+    width: 674px;
+    border-left: 1px dashed #CCCCCC;
 
 }
 
 .create-tip-right .padding{
-    padding-left: 10px;
+    padding-left: 15px;
 }
 
 
 .create-tip-left {
     float: left;
-    width: 470px;
+    width: 468px;
 }
 
 .create-tip-left .padding {
@@ -330,6 +335,7 @@ p {
 .tip-form {
     padding-top: 10px;
     background:#EFEFEF;
+    border: 1px solid #D9D9D9;
 }
 
 .tip-form table textarea { width:95%; border-radius: 0; -moz-border-radius: 0; -webkit-border-radius: 0}
@@ -392,10 +398,16 @@ p {
 }
 
 
-.info {
-    font-size: 10px;
+.info-under-pic {
+    font-size: 12px;
     color:#666666;
     font-style: italic;
+}
+
+.info {
+    margin: 30px 0 30px 0;
+    font-size: 10px;
+    color:#666666;
 }
 
 .info ul {
@@ -420,7 +432,7 @@ p {
 
 
 .navigation {
-    padding: 10px 0px 10px 5px;
+    padding: 15px 10px 10px 10px;
 }
 
 
@@ -432,8 +444,13 @@ p {
 
 .reject-message .title {
     font-weight: bold;
+    padding-bottom: 5px;
 }
 
+.reject-message .footer {
+    font-style: italic;
+    padding-top: 5px ;
+}
 
 .WAITING_TO_ACK {color:#ff8c00; font-weight: bold;}
 .REJECTED {color:red;}
@@ -617,8 +634,8 @@ table.invoice-list tr.last td {
 
 
 .stat-box {
-	width:250px;
-	height: 40px;
+	width:300px;
+	height: 50px;
 	border:1px solid #D9D9D9;
 	padding: 4px;
 	float:left;
@@ -626,20 +643,19 @@ table.invoice-list tr.last td {
 
 .stat-box .title {
 	color:#666666;
-	font-size: 10px;
-	padding-bottom: 3px;
+	font-size: 12px;
+	padding-bottom: 5px;
 }
 
 .stat-box .content {
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 26px;
 	color:black;
 }
 .stat-box .content.small {
-	font-weight: normal;
-	font-size: 14px;
-	padding-bottom: 2px;
-
+	font-weight: bold;
+	font-size: 26px;
+    color: #444444;
 }
 
 
@@ -693,4 +709,8 @@ table.invoice-list tr.last td {
 
 #footer .footer {
 	color: gray;
+}
+
+.stats_overview {
+    margin: 20px 0 20px 0;
 }
