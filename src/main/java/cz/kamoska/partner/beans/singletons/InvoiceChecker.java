@@ -1,6 +1,7 @@
 package cz.kamoska.partner.beans.singletons;
 
 import cz.kamoska.partner.beans.FakturoidDao;
+import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.interfaces.InvoiceDaoInterface;
@@ -11,22 +12,22 @@ import cz.kamoska.partner.entities.InvoiceEntity;
 import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.enums.InvoiceType;
-import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.pojo.fakturoid.InvoiceStatus;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.FileTemplateLoader;
 
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,6 +43,8 @@ public class InvoiceChecker {
 	private Logger logger;
 	@Inject
 	private DefaultMessages defaultMessages;
+	@Inject
+	private FileTemplateLoader fileTemplateLoader;
 
 	@EJB
 	private InvoiceDaoInterface invoiceDaoInterface;
@@ -51,6 +54,8 @@ public class InvoiceChecker {
 	private AdvertBundleDaoInterface advertBundleDaoInterface;
 	@EJB
 	private MessageDaoInterface messageDaoInterface;
+	@EJB
+	private MailerBean mailerBean;
 
 	@Schedule(hour = "23", minute = "15", second = "10")
 	public void process() {
@@ -104,6 +109,14 @@ public class InvoiceChecker {
 						messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
 						messageEntity.setPartner(advertBundle.getPartnerEntity());
 						messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+						String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
+							 .replace("{PROFORMA}", invoice.getNumber())
+							 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
+							 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
+
+						mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_PROFORMA_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()),MainConfig.EMAIL_FROM, null, true);
+
 
 						SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 						if (!messageSaveResult.success) {
@@ -171,6 +184,13 @@ public class InvoiceChecker {
 									SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy");
 									message.replaceAll("{VALID_TO}", sdf.format(validUntil.getTime()));
 
+
+									String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-email-template.html")
+										 .replace("{PROFORMA}", invoice.getNumber())
+										 .replace("{FAKTURA}", update.item.getNumber())
+										 .replace("{FAKTURA_URL}", update.item.getFakturoidUrl());
+
+									mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()),MainConfig.EMAIL_FROM, null, true);
 
 
 									MessageEntity messageEntity = new MessageEntity();

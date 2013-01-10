@@ -67,4 +67,6 @@ public class MainConfig {
 
 	public static final String EMAIL_NEW_PASSWORD_SUBJECT = "Zapomenute heslo: partner.kamoska.cz";
 	public static final String EMAIL_REGISTER_SUBJECT = "Registrace: partner.kamoska.cz";
+	public static final String INVOICE_CREATE_SUBJECT = "Vystavení faktury";
+	public static final String INVOICE_CREATE_PROFORMA_SUBJECT = "Vystavení proforma faktury";
 }
