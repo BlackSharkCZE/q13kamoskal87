@@ -17,6 +17,7 @@ import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
+import cz.kamoska.partner.support.FileTemplateLoader;
 import cz.kamoska.partner.support.PictureUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
@@ -38,6 +39,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
@@ -65,6 +67,10 @@ public class AdvertController implements Serializable {
 	private AdvertBundleModel advertBundleModel;
 	@Inject
 	private FacesMessageProvider facesMessageProvider;
+	@Inject
+	private FileTemplateLoader fileTemplateLoader;
+
+
 	@EJB
 	private PictureDaoInterface pictureDaoInterface;
 	@EJB
@@ -90,6 +96,9 @@ public class AdvertController implements Serializable {
 	}
 
 	public String createNewAdvert() {
+		if (advertModel.getAdvertEntity()!=null) {
+			advertModel.setAdvertEntity(new AdvertEntity());
+		}
 		return "create-new-advert";
 	}
 
@@ -327,6 +336,13 @@ public class AdvertController implements Serializable {
 							messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
 							messageEntity.setPartner(loggedInPartner.getPartner());
 							messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+							String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
+								 .replace("{PROFORMA}", invoiceEntity.getNumber())
+								 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
+								 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
+
+							mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_PROFORMA_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()),MainConfig.EMAIL_FROM, null, true);
 
 							SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 							if (!messageSaveResult.success) {

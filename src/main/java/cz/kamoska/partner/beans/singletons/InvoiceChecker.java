@@ -111,7 +111,7 @@ public class InvoiceChecker {
 						messageEntity.setPublishDate(Calendar.getInstance().getTime());
 
 						String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
-							 .replace("{PROFORMA}", invoice.getNumber())
+							 .replace("{PROFORMA}", invoiceEntity.getNumber())
 							 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
 							 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
 
@@ -143,6 +143,7 @@ public class InvoiceChecker {
 	}
 
 	private void checkPaidInvoices() {
+		logger.info("CheckPaidInvoices....");
 		try {
 			List<InvoiceEntity> notPaid = invoiceDaoInterface.findNotPaid(10, 0);
 			for (InvoiceEntity ie : notPaid) {

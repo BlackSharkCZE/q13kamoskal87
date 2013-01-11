@@ -11,11 +11,11 @@ import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.AdvertBundleEntity;
 import cz.kamoska.partner.entities.MessageEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
+import cz.kamoska.partner.models.sessions.AdvertBundleModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -26,6 +26,7 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -47,6 +48,8 @@ public class AdvertBundleController implements Serializable {
 	private LoggedInPartner loggedInPartner;
 	@Inject
 	private DefaultMessages defaultMessages;
+	@Inject
+	private AdvertBundleModel advertBundleModel;
 
 	@EJB
 	private AdvertPriceGroupDaoInterface advertPriceGroupDaoInterface;
@@ -113,6 +116,7 @@ public class AdvertBundleController implements Serializable {
 					logger.info("Message " + messageEntity + " saved");
 				}
 
+				advertBundleModel.setAllPaid(false);
 
 				return "first-advert-bundle-created";
 			} else {
