@@ -18,7 +18,7 @@ public class InvoiceLine {
 	private String unitName;
 	private BigDecimal unitPrice;
 	private Integer vatRate;
-	private boolean withVat;
+	private Boolean withVat;
 
 
 	public String getName() {
@@ -65,11 +65,11 @@ public class InvoiceLine {
 	}
 
 	@JsonProperty(value = "with_vat")
-	public boolean isWithVat() {
+	public Boolean getWithVat() {
 		return withVat;
 	}
 
-	public void setWithVat(boolean withVat) {
+	public void setWithVat(Boolean withVat) {
 		this.withVat = withVat;
 	}
 }

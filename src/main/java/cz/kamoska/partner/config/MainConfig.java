@@ -50,7 +50,8 @@ public class MainConfig {
 	public static final String FAKTUROID_API_TOKEN = "a44432585a05b2d162d703a9044ebaa88ef3412f";
 
 
-	public static final String INVOICE_LINE_NAME = "Sada 5ti reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.";
+	public static final String INVOICE_LINE_NAME = "Sada 5 reklam Sponzorovaný tip na webu Kámoška.cz v délce trvání 1 roku.";
+
 	public static final Integer INVOICE_VAT_RATE = 20;
 	public static final boolean INVOICE_WITH_VAT = true;
 
