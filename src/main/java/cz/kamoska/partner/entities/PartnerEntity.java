@@ -32,6 +32,7 @@ import java.util.List;
 @Table(name = "partner")
 public class PartnerEntity {
 
+
 	@Id
 	@GeneratedValue(generator = "partnerIDGenerator")
 	@SequenceGenerator(allocationSize = 1, sequenceName = "partner_id_seq", name = "partnerIDGenerator")

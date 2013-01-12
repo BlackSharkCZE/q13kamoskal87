@@ -67,12 +67,17 @@ public class AdvertBundleController implements Serializable {
 	public String createEmptyAdvertBundle(PartnerEntity partnerEntity) {
 
 		logger.info("Try register partner into fakturoid");
-		Integer fId = fakturoidDao.registerPartner(partnerEntity);
+		Integer fId = null;
+		if (partnerEntity.getFakturoidId() == null) {
+			fId = fakturoidDao.registerPartner(partnerEntity);
+			partnerEntity.setFakturoidId(fId);
+		} else {
+			fId = partnerEntity.getFakturoidId();
+		}
+
 		if (fId == null) {
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("fakturoid.register-partner.failed"), FacesContext.getCurrentInstance());
 		} else {
-
-			partnerEntity.setFakturoidId(fId);
 			SaveDomainResult<PartnerEntity> updateResult = partnerDaoInterface.update(partnerEntity);
 			if (!updateResult.success) {
 				logger.severe("Can not assign Fakturoid_ID to partner " + partnerEntity);

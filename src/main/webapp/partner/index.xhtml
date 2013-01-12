@@ -43,16 +43,16 @@
 
 	<h:form id="stats-form">
 
-		<p:spacer width="1" height="10" />
+		<p:spacer width="1" height="10"/>
 
 		<table width="100%">
 			<tr style="height: 25px;">
 				<th style="text-align: left; font-size: 18px; padding-left: 5px;">
-                    <strong><h:outputText value="#{i18n['actual-statistic']}"/></strong>
+					<strong><h:outputText value="#{i18n['actual-statistic']}"/></strong>
 				</th>
 
 				<th style="text-align: left; font-size: 18px; padding-left: 5px;">
-                    <strong><h:outputText value="#{i18n['kamoska.cz']}"/></strong>
+					<strong><h:outputText value="#{i18n['kamoska.cz']}"/></strong>
 				</th>
 			</tr>
 			<tr>
@@ -75,8 +75,8 @@
 								<table width="100%">
 									<tr>
 										<td><p:calendar locale="cs" value="#{partnerStatsModel.fromDate}" id="fromDateCalendar" pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
-										<td><p:calendar  locale="cs" value="#{partnerStatsModel.toDate}"  pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
-										<td><p:commandButton value="Zobrazit" styleClass="kamoska_button light-green" update="display-count" /></td>
+										<td><p:calendar locale="cs" value="#{partnerStatsModel.toDate}" pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
+										<td><p:commandButton value="Zobrazit" styleClass="kamoska_button light-green" update="display-count"/></td>
 									</tr>
 								</table>
 
@@ -206,12 +206,12 @@
 
                             <span style="color: #4D9433; font-weight: bold;">
                             <h:panelGroup rendered="#{bundle.validTo!=null}">
-								<h:outputText value="#{i18n['valid-until']}"/>
-                                &nbsp;
-								<h:outputText value="#{bundle.validTo}">
-									<f:convertDateTime pattern="d.M.yyyy"/>
-								</h:outputText>
-							</h:panelGroup>
+										 <h:outputText value="#{i18n['valid-until']}"/>
+										 &nbsp;
+										 <h:outputText value="#{bundle.validTo}">
+											 <f:convertDateTime pattern="d.M.yyyy"/>
+										 </h:outputText>
+									 </h:panelGroup>
                             </span>
 
                             <span style="color: red; font-weight: bold;">
@@ -239,10 +239,10 @@
 					<tr>
 						<td class="tip-preview">
 							<div class="image">
-                                <h:outputLink target="_blank" value="http://#{advert.url}">
-								<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
-                                </h:outputLink>
-                            </div>
+								<h:outputLink target="_blank" value="http://#{advert.url}">
+									<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advert.pictureEntity.id}" title="#{advert.title}"/>
+								</h:outputLink>
+							</div>
 							<div class="text">
 								<h1>
 									<h:outputLink target="_blank" value="http://#{advert.url}" title="#{advert.title}">
@@ -265,8 +265,9 @@
 									<div>
 										<h:outputText value="#{advert.rejectMessage}"/>
 									</div>
-                                    <div class="footer">
-                                        (Pro úpravu inzerát editujte a odstraňte chyby. Poté bude inzerát schválen.)</div>
+									<div class="footer">
+										(Pro úpravu inzerát editujte a odstraňte chyby. Poté bude inzerát schválen.)
+									</div>
 								</div>
 							</h:panelGroup>
 
@@ -338,15 +339,17 @@
 <div class="clear"></div>
 
 
-<h:panelGroup rendered="#{advertBundleModel.allPaid}" id="new-bundle-button">
-	<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
-						  styleClass="kamoska_button green small"
-						  value="#{i18n['add-advert-group']}" update="errors bundle-list new-bundle-button"/>
-	<p:spacer width="10" height="1"/>
-	<h:outputText value="#{nextAPG.priceCzk}">
-		<f:convertNumber pattern="0"/>
-	</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
+<h:panelGroup id="new-bundle-button">
+	<h:panelGroup rendered="#{advertBundleModel.allPaid}">
+		<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}"
+							  styleClass="kamoska_button green small"
+							  value="#{i18n['add-advert-group']}" update="errors bundle-list new-bundle-button"/>
+		<p:spacer width="10" height="1"/>
+		<h:outputText value="#{nextAPG.priceCzk}">
+			<f:convertNumber pattern="0"/>
+		</h:outputText> Kč / <h:outputText value="#{nextAPG.duration}"/> dnů
 
+	</h:panelGroup>
 </h:panelGroup>
 </h:form>
 
