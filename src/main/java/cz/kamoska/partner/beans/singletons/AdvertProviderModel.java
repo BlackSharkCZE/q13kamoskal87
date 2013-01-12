@@ -167,9 +167,10 @@ public class AdvertProviderModel implements Serializable {
 						adv = "";
 				}
 				String body = adv.replace("{ADVERT_ID}", String.valueOf(aEntity.getId()))
-						.replace("{PICTURE_ID}", aEntity.getPictureEntity() != null ? String.valueOf(aEntity.getPictureEntity().getId()) : "")
-						.replace("{ADVERT_TITLE}", aEntity.getTitle())
-						.replace("{ADVERT_BODY}", aEntity.getBody());
+					 .replace("{PICTURE_ID}", aEntity.getPictureEntity() != null ? String.valueOf(aEntity.getPictureEntity().getId()) : "")
+					 .replace("{ADVERT_TITLE}", aEntity.getTitle())
+					 .replace("{ADVERT_ORIG_URL}", aEntity.getUrl())
+					 .replace("{ADVERT_BODY}", aEntity.getBody());
 				sb.append(jsTemplate.replace("{BODY}", body));
 
 			}
