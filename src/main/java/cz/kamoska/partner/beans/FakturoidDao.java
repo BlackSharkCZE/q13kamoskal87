@@ -11,17 +11,18 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -94,6 +95,72 @@ public class FakturoidDao {
 			}
 		}
 		return null;
+	}
+
+	public boolean updatePartner(PartnerEntity partnerEntity) {
+		Subject subject = new Subject(partnerEntity);
+		subject.setCustomId(null);
+		subject.setId(null);
+		final String serializedData = jsonMapper.serialize(subject);
+		HttpPut put;
+		HttpEntity entity = null;
+		if (serializedData != null) {
+			final String url = MainConfig.FAKTUROID_API_URL + "subjects/"+partnerEntity.getFakturoidId()+".json";
+			logger.info("Create Subject on URL: " + url);
+			put = new HttpPut(url);
+
+			try {
+				logger.info("Put data: " + serializedData);
+				put.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), put));
+				put.setHeader("Content-type", "application/json");
+				put.setEntity(new StringEntity(serializedData));
+				put.setHeader("User-Agent", "partnerkamoska (sticha@kamoska.cz)");
+			} catch (Exception e) {
+				logger.severe("Can not update Subject entity by PUT");
+				logger.throwing(this.getClass().getSimpleName(), "registerPartner", e);
+					put.abort();
+				return false;
+			}
+
+			DefaultHttpClient client = customHttpClient.getClient();
+
+			try {
+				HttpResponse response = client.execute(put);
+				int statusCode = response.getStatusLine().getStatusCode();
+				switch (statusCode) {
+					case HttpServletResponse.SC_OK:
+						// uzivatel byl vytvoreny
+						entity = response.getEntity();
+						final String strResponse = EntityUtils.toString(entity);
+						logger.info("Subject Updated. Response:" + strResponse);
+						Subject savedSubject = (Subject) jsonMapper.deserialize(strResponse, Subject.class);
+						if (savedSubject != null) {
+							return true;
+						} else {
+							logger.severe("Can not parse response from fakturoid: " + strResponse);
+						}
+						break;
+					default:
+						logger.warning("Subject (" + subject + ") was not Updated! Response status code: " + statusCode);
+						break;
+				}
+			} catch (Exception e) {
+				logger.severe("Can not update partner, because can not put data " + serializedData + " to URL: " + url);
+				logger.throwing(this.getClass().getSimpleName(), "registerPartner", e);
+			} finally {
+				if (entity != null) {
+					try {
+						EntityUtils.consume(entity);
+					} catch (IOException e) {
+					}
+				}
+					put.abort();
+			}
+
+		} else {
+			logger.severe("Can not register partner, because can not serialize Subject: " + subject);
+		}
+		return false;
 	}
 
 	public Integer registerPartner(PartnerEntity partnerEntity) {

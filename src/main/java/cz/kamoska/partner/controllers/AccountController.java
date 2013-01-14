@@ -1,5 +1,6 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.beans.FakturoidDao;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
@@ -9,13 +10,13 @@ import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,6 +44,8 @@ public class AccountController {
 
 	@EJB
 	private PartnerDaoInterface partnerDaoInterface;
+	@EJB
+	private FakturoidDao fakturoidDao;
 
 	public String updatePassword() {
 
@@ -80,12 +83,17 @@ public class AccountController {
 				partner.setStreet(updateCompanyModel.getStreet());
 				partner.setVatPayer(updateCompanyModel.isVatPayer());
 
-				SaveDomainResult<PartnerEntity> update = partnerDaoInterface.update(partner);
-				if (update.success) {
-					loggedInPartner.setPartner(update.item);
-					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.success"), facesContext);
+				if (fakturoidDao.updatePartner(partner)) {
+					SaveDomainResult<PartnerEntity> update = partnerDaoInterface.update(partner);
+					if (update.success) {
+						loggedInPartner.setPartner(update.item);
+						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.success"), facesContext);
+					} else {
+						logger.warning("Can not update partner");
+						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("partner.edit.error"), facesContext);
+					}
 				} else {
-					logger.warning("Can not update partner");
+					logger.warning("Can not update partner " + partner + " in DB, because can not update data on fakturoid");
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("partner.edit.error"), facesContext);
 				}
 
