@@ -88,7 +88,8 @@ public class Invoice {
 		iLine.setName(MainConfig.INVOICE_LINE_NAME);
 		iLine.setQuantity("1");
 		iLine.setUnitPrice(amountPrice);
-		iLine.setVatRate(MainConfig.INVOICE_VAT_RATE);
+//		iLine.setVatRate(MainConfig.INVOICE_VAT_RATE);
+		iLine.setVatRate(null);
 		iLine.setWithVat(null); // http://jira.mobilniplatby.cz/browse/KAMOSKA-10
 //		iLine.setWithVat(MainConfig.INVOICE_WITH_VAT);
 
