@@ -40,7 +40,7 @@
 
 			<div style="padding:10px 0px 10px 10px">
 				<h2 style="font-size: 16px">
-					Reklama v sadě - <h:outputText value="#{advertBundleModel.currentItem.name}"/>
+					Nová reklama v sadě - <h:outputText value="#{advertBundleModel.currentItem.name}"/>
 				</h2>
 			</div>
 
@@ -121,7 +121,7 @@
 									<h:outputLink value="#{advertModel.advertEntity.url}" id="link-tip1">
 										<h:panelGroup id="img_preview1">
 											<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advertController.pictureEntity.id}" rendered="#{advertController.pictureEntity.id!=null}"/>
-											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.jpg" rendered="#{advertController.pictureEntity.id==null}"/>
+											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.png" rendered="#{advertController.pictureEntity.id==null}"/>
 										</h:panelGroup>
 									</h:outputLink>
 								</div>
@@ -156,7 +156,7 @@
 									<h:outputLink value="#{advertModel.advertEntity.url}" id="link-tip2">
 										<h:panelGroup id="img_preview2">
 											<p:graphicImage url="#{pageContext.request.contextPath}/images/#{advertController.pictureEntity.id}" rendered="#{advertController.pictureEntity.id!=null}"/>
-											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.jpg" rendered="#{advertController.pictureEntity.id==null}"/>
+											<p:graphicImage url="#{pageContext.request.contextPath}/resources/img/kamoska.png" rendered="#{advertController.pictureEntity.id==null}"/>
 										</h:panelGroup>
 
 									</h:outputLink>

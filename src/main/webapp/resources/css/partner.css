@@ -62,13 +62,14 @@
 
 .system-message-spacer {
     padding-top: 0px;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 .system-message {
     padding: 10px;
     background: #FFF6E0;
     border: 1px solid#FFE599;
+    font-size: 14px;
 }
 
 .system-message p {
