@@ -474,7 +474,7 @@ table.invoice-list th {
     text-align: left;
     padding: 8px 0px 8px 8px;
     background: #EFEFEF;
-    color:black;
+    color: #333333;
     border-top: 1px solid #D9D9D9;
     border-bottom: 1px solid #D9D9D9;
 }
@@ -489,7 +489,7 @@ table.invoice-list th.right {
 
 table.invoice-list td {
     text-align: left;
-    padding: 2px 0px 2px 8px;
+    padding: 15px 0px 5px 8px;
     border-bottom: 1px solid #EFEFEF;
     border-left: 1px solid #D9D9D9;
 }
@@ -509,7 +509,6 @@ table.invoice-list td.right {
 
 table.invoice-list tr.last td {
     border-bottom: 1px solid #D9D9D9;
-
 }
 
 .bold {
@@ -580,7 +579,7 @@ table.invoice-list tr.last td {
     border:1px solid #D9D9D9;
     border-bottom:none;;
     font-size: 16px;
-    padding: 8px 10px 8px 10px;
+    padding: 8px 10px 0 10px;
 }
 
 .message-table table thead tr th.ui-paginator {
@@ -588,7 +587,7 @@ table.invoice-list tr.last td {
     background: #EFEFEF;
     border:1px solid #D9D9D9;
     border-top:none;
-
+    padding-bottom: 8px;
 }
 
 .message-table table thead tr[role="row"] {
@@ -603,7 +602,7 @@ table.invoice-list tr.last td {
     text-align: right;
     background: #EFEFEF;
     border:1px solid #D9D9D9;
-
+    padding: 8px 0 8px 0;
 }
 
 
@@ -615,7 +614,6 @@ table.invoice-list tr.last td {
     border:none;
     background: white;
 }
-
 
 .message-table table tbody tr.ui-datatable-odd {
     border:none;
