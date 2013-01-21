@@ -6,8 +6,6 @@ import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +34,7 @@ public class DefaultMessages implements Serializable {
 	public DefaultMessage getMessageFor(MessageCategory messageCategory) {
 		switch (messageCategory) {
 			case FIRST_MESSAGE_BUNDLE:
-				return new DefaultMessage("Byla vytvořena první sada reklam “{BUNDLE_NAME}”", "Právě vám byla vytvořena první sada reklam. Reklamu v této sadě vytvoříte jednoduše kliknutím na tlačítko “Nová reklama”. Pokud se vám nelíbí název sady reklam, je možné ho kliknutím na tento název editovat.", MessageType.NOTIFICATION);
+				return new DefaultMessage("Byla vytvořena sada reklam “{BUNDLE_NAME}”", "Právě vám byla vytvořena nová sada reklam. Reklamu v této sadě vytvoříte jednoduše kliknutím na tlačítko “Nová reklama”. Pokud se vám nelíbí název sady reklam, je možné ho kliknutím na tento název editovat.", MessageType.NOTIFICATION);
 			case TIPS_NOT_DISPLAY_IN_BUNDLE:
 				return new DefaultMessage("Reklamy v sadě ”{BUNDLE_NAME}” se nezobrazují. Důvod: proforma faktura č. {INVOICE_NUMBER} není uhrazená.", "", MessageType.ALERT);
 			case TIPS_PROFORMA_CREATED:
