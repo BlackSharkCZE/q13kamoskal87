@@ -37,7 +37,7 @@
 			</div>
 
 
-			<h2><h:outputText value="#{i18n['edit.login']}"/></h2>
+			<h2 style="margin: 8px 0 6px 10px; font-size: 16px;"><h:outputText value="#{i18n['edit.login']}"/></h2>
 
 			<div class="edit-form">
 
@@ -64,7 +64,7 @@
 						<p:password value="#{updateLoginModel.newPassword}" id="pwd2" label="Zopakování hesla"/>
 
 						<h:outputText value="&nbsp;"/>
-						<p:commandButton value="#{i18n['partner.edit.save-new-password']}" action="#{accountController.updatePassword}" styleClass="kamoska_button violet" update="@form"/> <!-- todo add actin method to update account -->
+						<p:commandButton value="#{i18n['partner.edit.save-new-password']}" action="#{accountController.updatePassword}" styleClass="kamoska_button violet" update="@form" style="margin-top: 10px;"/> <!-- todo add actin method to update account -->
 
 					</h:panelGrid>
 				</h:form>
@@ -73,7 +73,7 @@
 
 			<p:spacer width="1" height="20"/>
 
-			<h2><h:outputText value="#{i18n['edit.company']}"/></h2>
+			<h2 style="margin: 8px 0 6px 10px; font-size: 16px;"><h:outputText value="#{i18n['edit.company']}"/></h2>
 
 			<div class="edit-form">
 
@@ -113,13 +113,15 @@
 						<h:outputText value="#{i18n['phone-number']}: "/>
 						<p:inputText value="#{updateCompanyModel.phone}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
 
-						&nbsp;
-						<p:commandButton value="#{i18n['partner.edit.save-new-company']}" action="#{accountController.updateCompany}" styleClass="kamoska_button violet" update="@form"  /> <!-- todo implement action to update comapny -->
+                        <h:outputText value="&nbsp;"/>
+						<p:commandButton value="#{i18n['partner.edit.save-new-company']}" action="#{accountController.updateCompany}" styleClass="kamoska_button violet" update="@form" style="margin-top: 10px;" /> <!-- todo implement action to update comapny -->
 
 					</h:panelGrid>
 				</h:form>
 
 			</div>
+
+            <p:spacer height="30px"/>
 
 		</ui:define>
 

@@ -43,6 +43,7 @@
 
 			<h:form id="frm">
 
+
 				<p:dataTable value="#{messageDaoModel.lazyDataModel}"
 							 lazy="true"
 							 rows="15"
@@ -62,22 +63,23 @@
 							<f:convertDateTime pattern="d.M.yyyy" />
 						</h:outputText>
 					</p:column>
-					<p:column>
+					<p:column style="font-size: 14px; padding: 5px 0 5px 0;">
 						<p:commandLink value="#{msg.title}" action="#{messageController.showMessageDetail}" styleClass="link #{msg.read==null ? 'bold' : ''}" >
 							<f:setPropertyActionListener value="#{msg}" target="#{messageDaoModel.selectedMessage}" />
 						</p:commandLink>
 						&nbsp;
 						-
 						&nbsp;
-						<c:set value="#{(fn:length(p.title) + fn:length(msg.body)) gt 110}" var="dist"/>
-						<h:outputText value="#{fn:substring(msg.body,0,107-fn:length(p.title))}..." rendered="#{dist==true}"/>
-						<h:outputText value="#{fn:substring(msg.body,0,110-fn:length(p.title))}" rendered="#{dist==false}"/>
+						<c:set value="#{(fn:length(p.title) + fn:length(msg.body)) gt 80}" var="dist"/>
+						<h:outputText value="#{fn:substring(msg.body,0,77-fn:length(p.title))}..." rendered="#{dist==true}"/>
+						<h:outputText value="#{fn:substring(msg.body,0,80-fn:length(p.title))}" rendered="#{dist==false}"/>
 					</p:column>
 
 				</p:dataTable>
 
-
 			</h:form>
+
+            <p:spacer height="20"/>
 
 		</ui:define>
 

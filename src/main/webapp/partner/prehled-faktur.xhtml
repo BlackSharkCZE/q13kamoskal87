@@ -30,8 +30,9 @@
 				>
 				<span class="text"><h:outputText value="#{i18n['partner.menu.payments']}"/></span>
 			</div>
-			<h:form id="index_form">
-				<h2>
+
+            <h:form id="index_form">
+				<h2 style="margin: 8px 0 6px 10px; font-size: 16px;">
 					<h:outputText value="#{i18n['table.invoice.title']}"/>
 				</h2>
 				<p:spacer width="1" height="5"/>
@@ -45,7 +46,7 @@
 						<th class="right"><h:outputText value="#{i18n['table.invoice.row-title.state']}"/></th>
 					</tr>
 					<ui:repeat value="#{invoiceDaoModel.getAllInvoiceForPartner(loggedInPartner.partner)}" var="in" varStatus="status">
-						<tr class="#{status.last and in.invoice==null ? 'last' : ''}">
+						<tr class="#{status.last and in.invoice==null ? 'last' : ''}" style="font-size: 14px; color: black;">
 							<td class="left #{in.invoice==null ? '' : 'no-line'}">
 								<h:outputText value="#{in.dateCreated}">
 									<f:convertDateTime pattern="dd.MM.yyyy"/>
@@ -74,7 +75,7 @@
 
 
 						<h:panelGroup rendered="#{in.invoice!=null}">
-							<tr class="#{status.last ? 'last' : ''}">
+							<tr class="#{status.last ? 'last' : ''}" style="font-size: 14px; color: black;">
 								<td class="left">
 									<h:outputText value="#{in.invoice.dateCreated}">
 										<f:convertDateTime pattern="dd.MM.yyyy"/>
@@ -90,11 +91,11 @@
 										<h:outputText value="#{in.invoice.number}"/>
 									</h:outputLink>
 								</td>
-								<td class="#{in.invoice==null ? '' : 'no-line'}">
+								<td class="#{in.invoice==null}">
 									&nbsp;
 								</td>
 
-								<td class="right #{in.invoice==null ? '' : 'no-line'}">
+								<td class="right #{in.invoice==null}">
 									&nbsp;
 								</td>
 							</tr>
