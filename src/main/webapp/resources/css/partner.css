@@ -232,6 +232,10 @@ a.ui-commandlink.link {
     text-decoration: none !important;
 }
 
+a.ui-commandlink.link:HOVER {
+    text-decoration: underline !important;
+}
+
 a {
     color: #741B47;
     text-decoration: none ;
