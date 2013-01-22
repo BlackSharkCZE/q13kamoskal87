@@ -34,7 +34,7 @@ public class AdvertProviderModel implements Serializable {
 
 	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
 
-	private final Integer LIFE = 100;
+	private final Integer LIFE = 10;
 
 	@EJB
 	private SectionDaoInterface sectionDaoInterface;

@@ -20,11 +20,11 @@ import java.util.List;
 @Entity
 @Table(name = "advert")
 @NamedQueries({
-		@NamedQuery(name = "AdvertEntity.findAllWaitingToACK", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.WAITING_TO_ACK ORDER BY a.dateCreated ASC"),
-		@NamedQuery(name = "AdvertEntity.countInState", query = "SELECT COUNT(a) FROM AdvertEntity a WHERE a.state=:state ")
+	 @NamedQuery(name = "AdvertEntity.findAllWaitingToACK", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.WAITING_TO_ACK ORDER BY a.dateCreated ASC"),
+	 @NamedQuery(name = "AdvertEntity.countInState", query = "SELECT COUNT(a) FROM AdvertEntity a WHERE a.state=:state ")
 })
 
-
+/*
 @NamedNativeQueries({
 		@NamedNativeQuery(
 				name = "AdvertEntity.native.findLessUsedBySection",
@@ -48,6 +48,23 @@ import java.util.List;
 						"  order by foo.display_count asc\n" +
 						"  ",
 				resultClass = AdvertEntity.class)
+})
+*/
+@NamedNativeQueries({
+	 @NamedNativeQuery(
+		  name = "AdvertEntity.native.findLessUsedBySection",
+		  query = "select a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +
+				"from advert a\n" +
+				"left join advert_accesslist_actual ac on a.id = ac.advert_id\n" +
+				"left join public.advert_bundle ab on ab.id = a.bundle_id\n" +
+				"left join public.advert_section asec on asec.advertentity_id = a.id\n" +
+				"left join public.section sec on sec.id = asec.sectionentitylist_id\n" +
+				"where ab.status = 'ACTIVE' and ab.valid_to > now() and a.state = 'ACTIVE'\n" +
+				"and (ac.datecreated > now() - '1 hour'::interval or ac.datecreated is null)\n" +
+				"and sec.url_name = #sectionUrlName\n" +
+				"group by a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +
+				"order by count(a.id) asc",
+		  resultClass = AdvertEntity.class)
 })
 public class AdvertEntity {
 

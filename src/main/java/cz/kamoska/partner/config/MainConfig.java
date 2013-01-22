@@ -21,7 +21,7 @@ public class MainConfig {
 
 	public static final String SRC_FILE_FOLDER = "src";
 	public static String IMAGE_STORE_ROOT_PATH = "/srv/partner.kamoska.cz/images";
-	public static final int ADVERT_CACHE_SIZE = 100;
+	public static final int ADVERT_CACHE_SIZE = 50;
 
 	public static final String LOGGER_NAME = "KAMOSKA_LOGGER";
 
