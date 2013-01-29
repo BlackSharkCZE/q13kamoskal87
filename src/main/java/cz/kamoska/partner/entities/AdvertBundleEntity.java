@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "advert_bundle")
 
 @NamedQueries({
-		@NamedQuery(name = "AdvertBundleEntity.findByPartnerId", query = "SELECT a FROM AdvertBundleEntity a where a.partnerEntity.id = :partnerID")
+		@NamedQuery(name = "AdvertBundleEntity.findByPartnerId", query = "SELECT a FROM AdvertBundleEntity a where a.partnerEntity.id = :partnerID ORDER BY a.dateCreated ASC")
 })
 
 @NamedNativeQueries({
