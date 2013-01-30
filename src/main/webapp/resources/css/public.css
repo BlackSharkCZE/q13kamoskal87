@@ -213,3 +213,8 @@ form.register-form input[type="text"], form.register-form input[type="password"]
 
 #page input.ui-state-error { border:1px solid #990000; color: black;}
 #page textarea.ui-state-error { border:1px solid #990000;color:black;}
+
+
+.width120 {
+	width:120px;
+}

@@ -11,26 +11,23 @@ import cz.kamoska.partner.models.request.RegisterAccountModel;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.FileTemplateLoader;
+import net.airtoy.ares.AresUserInfo;
+import net.airtoy.ares.services.AresICValidation;
 import net.airtoy.encryption.MD5;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.view.facelets.FaceletContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.InterceptorBinding;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,6 +58,23 @@ public class RegisterController {
 	@EJB
 	private EmailValidator emailValidator;
 
+
+	public String checkIcoInAres() {
+
+
+		if (registerAccountModel.getPartnerEntity().getIc() != null) {
+			AresICValidation validator = new AresICValidation();
+			AresUserInfo aresUser = validator.getUser(registerAccountModel.getPartnerEntity().getIc());
+			if (aresUser != null) {
+				registerAccountModel.getPartnerEntity().setCompany(aresUser.getCompany());
+
+			}
+
+		}
+
+		return null;
+
+	}
 
 	public String registerNewAccount() {
 		String textPassword = null;

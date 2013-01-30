@@ -6,174 +6,177 @@
   Time: 14:07
 -->
 <!DOCTYPE html
-		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:ct="http://java.sun.com/jsf/composite/custom-components"
-	  xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ct="http://java.sun.com/jsf/composite/custom-components"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title><h:outputText value="#{i18n['web_title']}"/></title>
+    <title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
 
-	<ui:composition template="/WEB-INF/templates/public_template.xhtml">
+    <ui:composition template="/WEB-INF/templates/public_template.xhtml">
 
-		<ui:define name="header">
+        <ui:define name="header">
 
             <div>
                 <a href="http://partner.kamoska.cz">
-                    <h:graphicImage library="img" name="logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" width="338" height="84" />
+                    <h:graphicImage library="img" name="logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" width="338" height="84"/>
                 </a>
             </div>
 
-			<!--h2>
-				<h:outputText value="#{i18n['create-account']}"/>
-			</h2-->
-		</ui:define>
+            <!--h2>
+                <h:outputText value="#{i18n['create-account']}"/>
+            </h2-->
+        </ui:define>
 
-		<ui:define name="content">
+        <ui:define name="content">
 
-			<div class="left">
+            <div class="left">
 
-				<div class="menu_left_bar">
-					<ul class="menu_left">
-						<li class="menu_left_item current">
-							<h:outputText value="#{i18n['partner-registration']}"/>
-						</li>
-						<li class="menu_left_item last">
-							<h:outputText value="#{i18n['registration-confirm']}"/>
-						</li>
-					</ul>
-				</div>
+                <div class="menu_left_bar">
+                    <ul class="menu_left">
+                        <li class="menu_left_item current">
+                            <h:outputText value="#{i18n['partner-registration']}"/>
+                        </li>
+                        <li class="menu_left_item last">
+                            <h:outputText value="#{i18n['registration-confirm']}"/>
+                        </li>
+                    </ul>
+                </div>
 
 
-				<div class="content_bar">
-					<div class="inner_content">
-						<h5>Vytvořte si účet partner.kamoska.cz</h5>
+                <div class="content_bar">
+                    <div class="inner_content">
+                        <h5>Vytvořte si účet partner.kamoska.cz</h5>
 
-						<div class="text" style="margin-top: 5px; ">
+                        <div class="text" style="margin-top: 5px; ">
                             Zaregistrujte se do reklamního systému a inzerujte na stránkách magazínu Kámoška.cz – tvoje lepší kamarádka. Vyplňte prosím následující formulář, abychom vám mohli založit účet. Všechny údaje jsou povinné.
-						</div>
-						<p:spacer height="20px"/>
+                        </div>
+                        <p:spacer height="20px"/>
 
-						<div class="text">
-							Před vyplněním registrace si prosím přečtěte:
-							<h:outputLink value="eula.jspx">
-								<h:outputText value="#{i18n['eula']}"/>
-							</h:outputLink>
-						</div>
+                        <div class="text">
+                            Před vyplněním registrace si prosím přečtěte:
+                            <h:outputLink value="eula.jspx">
+                                <h:outputText value="#{i18n['eula']}"/>
+                            </h:outputLink>
+                        </div>
 
-						<p:spacer height="20px"/>
-
-
+                        <p:spacer height="20px"/>
 
 
-						<h:form id="register-form" styleClass="register-form">
+                        <h:form id="register-form" styleClass="register-form">
 
-							<p:messages id="errors" autoUpdate="false" closable="true" />
+                            <p:messages id="errors" autoUpdate="false" closable="true"/>
 
-							<h5 style="margin-bottom: 10px;">Příhlašovací údaje</h5>
+                            <h5 style="margin-bottom: 10px;">Příhlašovací údaje</h5>
 
-							<h:panelGrid columns="3" styleClass="form-table">
+                            <h:panelGrid columns="3" styleClass="form-table">
 
-								<h:outputText value="#{i18n['email']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/>
-								<h:outputText value="E-mail zároveň slouží jako login do systému" styleClass="note"/>
+                                <h:outputText value="#{i18n['email']}: "/>
+                                <p:inputText value="#{registerAccountModel.partnerEntity.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/>
+                                <h:outputText value="E-mail zároveň slouží jako login do systému" styleClass="note"/>
 
-								<h:outputText value="#{i18n['password']}: "/>
-								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd1" match="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
-								&nbsp;
+                                <h:outputText value="#{i18n['password']}: "/>
+                                <p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd1" match="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
+                                &nbsp;
 
-								<h:outputText value="#{i18n['password-again']}: "/>
-								<p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
-								&nbsp;
+                                <h:outputText value="#{i18n['password-again']}: "/>
+                                <p:password value="#{registerAccountModel.partnerEntity.password}" id="pwd2" required="true" requiredMessage="#{i18n['register.password.required']}"/>
+                                &nbsp;
 
-							</h:panelGrid>
+                            </h:panelGrid>
 
-							<h5 style="margin: 15px 0 10px 0;">Firemní údaje</h5>
+                            <h5 style="margin: 15px 0 10px 0;">Firemní údaje</h5>
 
-							<h:panelGrid columns="3" styleClass="form-table">
-
-
-								<h:outputText value="#{i18n['company-name']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.company}" required="true" requiredMessage="#{i18n['register.company.required']}"/>
-								&nbsp;
-
-								<h:outputText value="#{i18n['ic']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.ic}" required="true" requiredMessage="#{i18n['register.ic.required']}"/>
-								&nbsp;
-
-								<h:outputText value="-"/>
-								<h:panelGroup>
-									<p:selectBooleanCheckbox value="#{registerAccountModel.partnerEntity.vatPayer}">
-										<p:ajax event="change" update="dic"/>
-									</p:selectBooleanCheckbox>
-									&nbsp;
-									<h:outputText value="#{i18n['vat-payer']}"/>
-								</h:panelGroup>
-								&nbsp;
-
-								<h:outputText value="#{i18n['dic']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.dic}" id="dic" disabled="#{registerAccountModel.partnerEntity.vatPayer==false}"/>
-								&nbsp;
-
-								<h:outputText value="#{i18n['street']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.street}" required="true" requiredMessage="#{i18n['register.street.required']}"/>
-								&nbsp;
-
-								<h:outputText value="#{i18n['city']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.city}" required="true" requiredMessage="#{i18n['register.city.required']}"/>
-								&nbsp;
-
-								<h:outputText value="#{i18n['postcode']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.psc}" required="true" requiredMessage="#{i18n['register.postcode.required']}"/>
-								&nbsp;
-
-								<h:outputText value="#{i18n['phone-number']}: "/>
-								<p:inputText value="#{registerAccountModel.partnerEntity.phoneNumber}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
-								&nbsp;
-
-								<h:outputText value=""/>
-								<h:panelGroup>
-									<p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
-									<h:outputText value="Souhlasím s "/>
-									<h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnými obchodními podmínkami</h:outputLink>
-								</h:panelGroup>
-								&nbsp;
-
-							</h:panelGrid>
+                            <h:panelGrid columns="3" styleClass="form-table" columnClasses=",width120,">
 
 
-							<div class="align-right" style="padding: 20px 0">
-								<p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button"/>
-							</div>
+                                <h:outputText value="#{i18n['company-name']}: "/>
+                                <p:inputText id="company-name" value="#{registerAccountModel.partnerEntity.company}" required="true" requiredMessage="#{i18n['register.company.required']}"/>
+                                &nbsp;
 
-						</h:form>
+                                <h:outputText value="#{i18n['ic']}: "/>
+                                <p:inputText id="ic" value="#{registerAccountModel.partnerEntity.ic}" required="true" requiredMessage="#{i18n['register.ic.required']}"/>
+                                <p:commandButton action="#{registerController.checkIcoInAres}" value="#{i18n['register.ic.validate']}"
+                                                 update="company-name street city psc"
+                                                 process="@this ic"
+                                                 styleClass="kamoska_button light-green" style="font-size: 12px;"
+                                                 partialSubmit="true"/>
 
-					</div>
-				</div>
-			</div>
+                                <h:outputText value="-"/>
+                                <h:panelGroup>
+                                    <p:selectBooleanCheckbox value="#{registerAccountModel.partnerEntity.vatPayer}">
+                                        <p:ajax event="change" update="dic"/>
+                                    </p:selectBooleanCheckbox>
+                                    &nbsp;
+                                    <h:outputText value="#{i18n['vat-payer']}"/>
+                                </h:panelGroup>
+                                &nbsp;
+
+                                <h:outputText value="#{i18n['dic']}: "/>
+                                <p:inputText value="#{registerAccountModel.partnerEntity.dic}" id="dic" disabled="#{registerAccountModel.partnerEntity.vatPayer==false}"/>
+                                &nbsp;
+
+                                <h:outputText value="#{i18n['street']}: "/>
+                                <p:inputText id="street" value="#{registerAccountModel.partnerEntity.street}" required="true" requiredMessage="#{i18n['register.street.required']}"/>
+                                &nbsp;
+
+                                <h:outputText value="#{i18n['city']}: "/>
+                                <p:inputText id="city" value="#{registerAccountModel.partnerEntity.city}" required="true" requiredMessage="#{i18n['register.city.required']}"/>
+                                &nbsp;
+
+                                <h:outputText value="#{i18n['postcode']}: "/>
+                                <p:inputText id="psc" value="#{registerAccountModel.partnerEntity.psc}" required="true" requiredMessage="#{i18n['register.postcode.required']}"/>
+                                &nbsp;
+
+                                <h:outputText value="#{i18n['phone-number']}: "/>
+                                <p:inputText value="#{registerAccountModel.partnerEntity.phoneNumber}" required="true" requiredMessage="#{i18n['register.phone-number.required']}"/>
+                                &nbsp;
+
+                                <h:outputText value=""/>
+                                <h:panelGroup>
+                                    <p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
+                                    <h:outputText value="Souhlasím s "/>
+                                    <h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnými obchodními podmínkami</h:outputLink>
+                                </h:panelGroup>
+                                &nbsp;
+
+                            </h:panelGrid>
 
 
-			<div class="right">
-				<ct:login/>
-			</div>
+                            <div class="align-right" style="padding: 20px 0">
+                                <p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button"/>
+                            </div>
+
+                        </h:form>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="right">
+                <ct:login/>
+            </div>
 
             <!-- Priprava pro footer-->
             <div class="clear" style="margin: 20px 0 40px 0; color: gray; text-align: right; ">
-                <span>Copyright &copy; 2009 - 2013  <a href="http://www.kamoska.cz/" title="Kámoška.cz - Tvoje lepší kamarádka" alt="Kámoška.cz - Tvoje lepší kamarádka">Kámoška.cz  - tvoje lepší kamarádka</a></span> | <a href="http://partner.kamoska.cz/eula.jspx" title="Všeobecné obchodní podmínky" alt="Všeobecné obchodní podmínky">Všeobecné obchodní podmínky</a>
+                <span>Copyright &copy; 2009 - 2013  <a href="http://www.kamoska.cz/" title="Kámoška.cz - Tvoje lepší kamarádka" alt="Kámoška.cz - Tvoje lepší kamarádka">Kámoška.cz - tvoje lepší kamarádka</a></span> | <a
+                    href="http://partner.kamoska.cz/eula.jspx" title="Všeobecné obchodní podmínky" alt="Všeobecné obchodní podmínky">Všeobecné obchodní podmínky</a>
             </div>
             <!-- End footer-->
 
-		</ui:define>
+        </ui:define>
 
 
-	</ui:composition>
+    </ui:composition>
 
 </h:body>
 

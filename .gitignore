@@ -5,3 +5,4 @@ target/
 jozin.sql.tar.gz
 jozin_ddl.sql
 jozin_dml.sql
+atlassian-ide-plugin.xml
