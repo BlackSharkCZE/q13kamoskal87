@@ -56,7 +56,7 @@ public class AccountController {
 				// je zadano nove heslo
 				loggedInPartner.getPartner().setPassword(MD5.md5hexa(updateLoginModel.getNewPassword()).toUpperCase());
 			}
-			loggedInPartner.getPartner().setEmail(updateLoginModel.getEmail());
+			//loggedInPartner.getPartner().setEmail(updateLoginModel.getEmail());
 			SaveDomainResult<PartnerEntity> update = partnerDaoInterface.update(loggedInPartner.getPartner());
 			if (update.success) {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.login.success"), facesContext);

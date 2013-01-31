@@ -49,8 +49,7 @@
 					<h:panelGrid columns="2">
 						<h:outputText value="#{i18n['partner.edit.email']}: "/>
 						<h:panelGroup>
-							<p:inputText value="#{updateLoginModel.email}" required="true" requiredMessage="#{i18n['register.email.required']}"/> <!-- todo kontrolovat zda e-mail zmenil a pokud ano, tak zda je nove vybrany volny -->
-							&nbsp;<h:outputText value="#{i18n['partner.edit.email.info']}" styleClass="info"/>
+                            <h:outputText value="#{updateLoginModel.email}"/>
 						</h:panelGroup>
 
 						<h:outputText value="#{i18n['partner.edit.old-password']}: "/>
