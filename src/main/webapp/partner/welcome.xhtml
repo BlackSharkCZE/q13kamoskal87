@@ -13,6 +13,8 @@
 	  xmlns:h="http://java.sun.com/jsf/html"
 	  xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:p="http://primefaces.org/ui"
+      xmlns:fnt="http://java.sun.com/jsp/jstl/functions"
+      xmlns:partner="http://java.sun.com/jsf/composite/partnerComponents"
 	  xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
@@ -25,38 +27,108 @@
 
 		<ui:define name="content">
 
+        <div class="main_menu_bar">
+            <ul class="main_menu">
+                <li class="item current">
+                    <h:outputLink value="">
+                        <h:outputText value="#{i18n['partner.menu.home-page']}"/>
+                    </h:outputLink>
+                </li>
+                <li class="item">
+                    <h:outputLink value="">
+                        <h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
+                    </h:outputLink>
+                </li>
+                <li class="item">
+                    <h:outputLink value="">
+                        <h:outputText value="#{i18n['partner.menu.account']}"/>
+                    </h:outputLink>
+                </li>
+                <li class="item">
+                    <h:outputLink value="">
+                        <h:outputText value="#{i18n['partner.menu.payments']}"/>
+                    </h:outputLink>
+                </li>
+                <li class="item last">
+                    <h:outputLink value="">
+                        <h:outputText value="#{i18n['partner.menu-notification']}"/>
+                    </h:outputLink>
+                </li>
+            </ul>
+        </div>
 
-			<div class="main_menu_bar">
-				<ul class="main_menu">
-					<li class="item current">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.home-page']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.sponzored-tips']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.account']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu.payments']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item last">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['partner.menu-notification']}"/>
-						</h:outputLink>
-					</li>
-				</ul>
-			</div>
 
-			<h:form>
+            <div class="stats_overview">
+
+                <h:form id="stats-form">
+
+                    <p:spacer width="1" height="10"/>
+
+                    <table width="100%">
+                        <tr style="height: 25px;">
+                            <th style="text-align: left; font-size: 18px; padding-left: 5px;">
+                                <strong><h:outputText value="#{i18n['actual-statistic']}"/></strong>
+                            </th>
+
+                            <th style="text-align: left; font-size: 18px; padding-left: 5px;">
+                                <strong><h:outputText value="#{i18n['kamoska.cz']}"/></strong>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <div>
+                                    <div class="stat-box">
+                                        <div class="title">
+                                            <h:outputText value="#{i18n['advert.display-count.title']}"/>
+                                        </div>
+                                        <div class="content">
+                                            <h:outputText value="#{partnerStatsModel.advertDisplayCount}" id="display-count"/>
+                                        </div>
+                                    </div>
+                                    <div class="stat-box" style="border-left:none">
+                                        <div class="title">
+                                            <h:outputText value="#{i18n['period']}"/>
+                                        </div>
+                                        <div class="content small">
+
+                                            <table width="100%">
+                                                <tr>
+                                                    <td><p:calendar locale="cs" value="#{partnerStatsModel.fromDate}" id="fromDateCalendar" pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
+                                                    <td><p:calendar locale="cs" value="#{partnerStatsModel.toDate}" pattern="dd.MM.yyyy" styleClass="customDatePicker"/></td>
+                                                    <td><p:commandButton value="Zobrazit" styleClass="kamoska_button light-green" update="display-count"/></td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right">
+                                <div style="text-align: left;">
+
+                                    <div class="stat-box">
+                                        <div class="title">
+                                            <h:outputText value="#{i18n['advert-this-month']}"/>
+                                        </div>
+                                        <div class="content small">
+                                            <h:outputText value="#{partnerStatsModel.advertDisplayCountBySystem}"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>
+
+            </div>
+
+
+
+
+
+            <h:form>
 			<div class="notification-spacer">
 
 				<p:messages id="errors" />
@@ -67,7 +139,7 @@
 							<table>
 								<tr>
 									<th class="left">
-										<h:outputText value="#{i18n['notification']}"/> (1/1)
+                                        Vítejte v reklamním systému Kámoška.cz
 									</th>
 									<th class="right">
 										&nbsp;
@@ -75,16 +147,28 @@
 								</tr>
 							</table>
 						</div>
-						<div class="content">
-							<div class="text">
-								<h4>
-									Vítejte v partnerském reklamním systému Kámoška.cz
+						<div class="content-welcome">
+							<div>
+								<h4 style="font-size: 18px; font-weight: bold; ">
+                                    <span style="background-color: #945f8e; color:#ffffff; padding: 2px 4px 2px 4px;">1. Vytvořte si první sadu reklam</span>
 								</h4>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum. Lorem ipsum lolor sit amet, consectetur elit. Praesent dictum convallis ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum. Lorem ipsum lolor sit amet, consectetur elit. Praesent dictum.
+                                V každé sadě reklam máte možnost nastavit <strong>až 5 reklam</strong>, které můžete libovolně měnit, mazat a editovat. Počet sad je <strong>neomezen</strong>, přičemž každá sada je zpoplatněna ročním poplatkem. Cena první sady je <span style="background-color: #4d9433; color:#ffffff; padding: 2px 3px 2px 3px;"> 1825 Kč na rok.</span> Cena každé další sady je <span style="background-color: #4d9433; color:#ffffff; padding: 2px 3px 2px 3px;">1460 Kč na rok.</span> Všechny reklamy se zobrazují <strong>náhodně</strong>, žádná není nijak zvýhodněna.
 							</div>
 							<p:spacer height="30px" />
 
-							<table class="welcome w700">
+                            <div>
+                                <h4 style="font-size: 18px; font-weight: bold; ">
+                                    <span style="background-color: #945f8e; color:#ffffff; padding: 2px 4px 2px 4px;">2. Nastavte reklamy</span>
+                                </h4>
+                                Následně nastavte požadované reklamy. Reklam v jedné sadě můžete mít až 5 a během roku je můžete libovolně měnit, mazat, editovat a vytvářet nové. Po schválení se vaše reklamy začnou ihned zobrazovat na vybraných pozicích.
+                            </div>
+                            <p:spacer height="30px" />
+
+                            <div>
+                                <p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
+                            </div>
+
+							<!--table class="welcome w700">
 								<tr>
 									<td class="left">1.</td>
 									<td class="right">
@@ -137,17 +221,15 @@
 										</div>
 									</td>
 								</tr>
-							</table>
+							</table -->
 						</div>
 					</div>
 			</div>
+
+                <div style="color: #666666; text-align: right;"><i>Ceny jsou konečné, nejsme plátci DPH.</i></div>
+
 				<p:spacer width="20px" />
-				<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green small" update="errors" />
 
-				<div style="position: absolute;top:300px; left:800px; z-index: 1000;width:210px;">
-					<p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
-
-				</div>
 
 			</h:form>
 

@@ -123,6 +123,14 @@
     line-height: 150%;
 }
 
+.notification .content-welcome {
+    padding: 25px 0 30px 20px;
+    width: 1080px;
+    color: #000000;
+    font-size: 16px;
+    line-height: 150%;
+}
+
 .notification .content td {
     padding-bottom: 12px;
 }
@@ -185,7 +193,10 @@ table.welcome td.left {
 }
 
 .kamoska_button.green.big {
-    font-size: 14px;
+    font-size: 20px;
+    padding: 10px 10px 10px 10px;
+    border:1px solid #38761D;
+    background: #4d9433;
 }
 
 .kamoska_button.light-green {
