@@ -22,7 +22,13 @@ import java.util.List;
 })
 
 @NamedNativeQueries({
-	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "select ab.* from advert_bundle ab join invoices i on i.advert_bundle_id = ab.id where i.invoicetype = 'PROFORMA' and i.paid is not null and (ab.valid_to - now())::interval <= '14 day'", resultClass = AdvertBundleEntity.class)
+	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "SELECT i.* FROM invoices i\n" +
+		 "JOIN ( SELECT max(id) AS id FROM invoices GROUP BY advert_bundle_id ) inv\n" +
+		 "ON inv.id = i.id\n" +
+		 "JOIN public.advert_bundle ab ON ab.id = i.advert_bundle_id\n" +
+		 "WHERE i.invoicetype = 'FAKTURA' AND i.paid IS NOT null\n" +
+		 "AND (ab.valid_to - now())::INTERVAL <= '14 day'", resultClass = AdvertBundleEntity.class)
+//	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "select ab.* from advert_bundle ab join invoices i on i.advert_bundle_id = ab.id where i.invoicetype = 'PROFORMA' and i.paid is not null and (ab.valid_to - now())::interval <= '14 day'", resultClass = AdvertBundleEntity.class)
 })
 public class AdvertBundleEntity {
 
