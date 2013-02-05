@@ -6,144 +6,182 @@
   Time: 14:07
 -->
 <!DOCTYPE html
-		PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://java.sun.com/jsf/html"
-	  xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
-	<title><h:outputText value="#{i18n['web_title']}"/></title>
+    <title><h:outputText value="#{i18n['web_title']}"/></title>
 </h:head>
 
 <h:body>
 
-	<ui:composition template="/WEB-INF/templates/admin_template.xhtml">
+    <ui:composition template="/WEB-INF/templates/admin_template.xhtml">
 
-		<ui:define name="content">
+        <ui:define name="content">
 
-			<div class="main_menu_bar">
-				<ul class="main_menu">
-					<li class="item current">
-						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
-							<h:outputText value="#{i18n['admin.menu.home-page']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['admin.menu.partners']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
-							<h:outputText value="#{i18n['admin.menu.agreement.tips']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['admin.menu.agreement.xml']}"/>
-						</h:outputLink>
-					</li>
-					<li class="item last">
-						<h:outputLink value="">
-							<h:outputText value="#{i18n['admin.menu.invoices']}"/>
-						</h:outputLink>
-					</li>
-				</ul>
-			</div>
+            <div class="main_menu_bar">
+                <ul class="main_menu">
+                    <li class="item current">
+                        <h:outputLink value="#{pageContext.servletContext.contextPath}/admin/index.jspx">
+                            <h:outputText value="#{i18n['admin.menu.home-page']}"/>
+                        </h:outputLink>
+                    </li>
+                    <li class="item">
+                        <h:outputLink value="">
+                            <h:outputText value="#{i18n['admin.menu.partners']}"/>
+                        </h:outputLink>
+                    </li>
+                    <li class="item">
+                        <h:outputLink value="#{pageContext.servletContext.contextPath}/admin/tips.jspx">
+                            <h:outputText value="#{i18n['admin.menu.agreement.tips']}"/>
+                        </h:outputLink>
+                    </li>
+                    <li class="item">
+                        <h:outputLink value="">
+                            <h:outputText value="#{i18n['admin.menu.agreement.xml']}"/>
+                        </h:outputLink>
+                    </li>
+                    <li class="item last">
+                        <h:outputLink value="">
+                            <h:outputText value="#{i18n['admin.menu.invoices']}"/>
+                        </h:outputLink>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="notification-spacer">
+
+                <div class="notification">
+                    <div class="header">
+                        <table>
+                            <tr>
+                                <th class="left">
+                                    <h:outputText value="Servisni tlacitka"/>
+                                </th>
+                                <th class="right">
+                                    &nbsp;
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="content">
+                        <h:form id="service_buttons">
+                            <h:panelGrid columns="3">
+
+                                <p:commandButton value="Zkontrolovat zaplacene faktury" action="#{adminController.checkPaidInvoices}" update="lchp"/>
+                                <h:outputText value="Last check: "/>
+                                <h:outputText value="#{adminController.lastCheckPaid}" id="lchp">
+                                    <f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss"/>
+                                </h:outputText>
+
+                                <p:commandButton value="Vystavit nove proforma faktury" action="#{adminController.createProforma}" update="lcp"/>
+                                <h:outputText value="Last check: "/>
+                                <h:outputText value="#{adminController.lastCreateProforma}" id="lcp">
+                                    <f:convertDateTime pattern="dd.MM.yyyy hh:mm:ss"/>
+                                </h:outputText>
+
+                            </h:panelGrid>
+                        </h:form>
+                    </div>
+                </div>
+
+            </div>
 
 
-			<div class="notification-spacer">
+            <div class="notification-spacer">
 
 
-				<p:messages id="errors"/>
+                <p:messages id="errors"/>
 
-				<div class="notification">
-					<div class="header">
-						<table>
-							<tr>
-								<th class="left">
-									<h:outputText value="#{i18n['new-in-system']}"/>
-								</th>
-								<th class="right">
-									&nbsp;
-								</th>
-							</tr>
-						</table>
-					</div>
-					<div class="content">
+                <div class="notification">
+                    <div class="header">
+                        <table>
+                            <tr>
+                                <th class="left">
+                                    <h:outputText value="#{i18n['new-in-system']}"/>
+                                </th>
+                                <th class="right">
+                                    &nbsp;
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="content">
 
-						<div>
-							<span><h:outputText value="#{i18n['tips-waiting-to-pass']}: "/></span>
+                        <div>
+                            <span><h:outputText value="#{i18n['tips-waiting-to-pass']}: "/></span>
 							<span class="count">
 								<h:outputText value="#{advertDaoModel.getCountInState('WAITING_TO_ACK')}"/>
 							</span>
-						</div>
-						<!--div>
-							<span><h:outputText value="#{i18n['xml-waiting-to-pass']}"/></span>
-							<span class="count">55 </span>
-						</div-->
+                        </div>
+                        <!--div>
+                            <span><h:outputText value="#{i18n['xml-waiting-to-pass']}"/></span>
+                            <span class="count">55 </span>
+                        </div-->
 
-					</div>
-				</div>
-			</div>
+                    </div>
+                </div>
+            </div>
 
-			<div class="notification-spacer">
-				<div class="notification">
-					<div class="header">
-						<table>
-							<tr>
-								<th class="left">
-									<h:outputText value="#{i18n['stats-overview']}"/>
-								</th>
-								<th class="right">
-									&nbsp;
-								</th>
-							</tr>
-						</table>
-					</div>
-					<div class="content">
+            <div class="notification-spacer">
+                <div class="notification">
+                    <div class="header">
+                        <table>
+                            <tr>
+                                <th class="left">
+                                    <h:outputText value="#{i18n['stats-overview']}"/>
+                                </th>
+                                <th class="right">
+                                    &nbsp;
+                                </th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="content">
 
-						<div>
-							<span><h:outputText value="#{i18n['stats.monthly-tips-display']}: "/></span>
+                        <div>
+                            <span><h:outputText value="#{i18n['stats.monthly-tips-display']}: "/></span>
 							<span class="count">
 								<h:outputText value="#{advertStatsDaoModel.displayAllCountCurrentMonth}"/>
 							</span>
-						</div>
-						<div>
-							<span><h:outputText value="#{i18n['stats.number-of-registered-partners']}"/></span>
+                        </div>
+                        <div>
+                            <span><h:outputText value="#{i18n['stats.number-of-registered-partners']}"/></span>
 							<span class="count">
 								<h:outputText value="#{partnerDaoModel.partnerCountOfActivatedPartners}"/>
 							</span>
 
-							<span><h:outputText value="#{i18n['stats.number-of-payers']}"/></span>
+                            <span><h:outputText value="#{i18n['stats.number-of-payers']}"/></span>
 							<span class="count">
 								<h:outputText value="#{partnerDaoModel.payingPartnerCount}"/>
 							</span>
-						</div>
+                        </div>
 
-						<div>
-							<span><h:outputText value="#{i18n['stats.promo-invoice-count']}"/></span>
+                        <div>
+                            <span><h:outputText value="#{i18n['stats.promo-invoice-count']}"/></span>
 							<span class="count">
 								<h:outputText value="#{invoiceDaoModel.countOfProforma}"/>
 							</span>
-							<span><h:outputText value="#{i18n['stats.promo.invoice-payed']}"/></span>
+                            <span><h:outputText value="#{i18n['stats.promo.invoice-payed']}"/></span>
 							<span class="count">
 								<h:outputText value="#{invoiceDaoModel.countOfPaidProforma}"/>
 							</span>
-						</div>
+                        </div>
 
-					</div>
-				</div>
-			</div>
-
-
-		</ui:define>
+                    </div>
+                </div>
+            </div>
 
 
-	</ui:composition>
+        </ui:define>
+
+
+    </ui:composition>
 
 </h:body>
 

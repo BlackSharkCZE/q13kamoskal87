@@ -57,7 +57,8 @@ public class PartnerStatsModel implements Serializable {
 	public Long getAdvertDisplayCountBySystem() {
 
 		Calendar c = Calendar.getInstance();
-		c.set(Calendar.DAY_OF_MONTH,1);
+//		c.set(Calendar.DAY_OF_MONTH,1);
+		c.add(Calendar.DAY_OF_MONTH, -30);
 
 		Calendar c2 = Calendar.getInstance();
 		c2.add(Calendar.DAY_OF_MONTH, 1);

@@ -22,7 +22,7 @@ import java.util.List;
 })
 
 @NamedNativeQueries({
-	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "SELECT i.* FROM invoices i\n" +
+	@NamedNativeQuery(name = "AdvertBundleEntity.native.findRequiredNewProforma", query = "SELECT ab.* FROM invoices i\n" +
 		 "JOIN ( SELECT max(id) AS id FROM invoices GROUP BY advert_bundle_id ) inv\n" +
 		 "ON inv.id = i.id\n" +
 		 "JOIN public.advert_bundle ab ON ab.id = i.advert_bundle_id\n" +
