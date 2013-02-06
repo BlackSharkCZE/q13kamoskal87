@@ -98,7 +98,7 @@ public class AdvertProviderModel implements Serializable {
 		advertsCache = new HashMap<>(allSections.size());
 		for (SectionEntity section : allSections) {
 			advertsCache.put(section.getUrlName(), new ArrayBlockingQueue<AdvertViewWrapper>(MainConfig.ADVERT_CACHE_SIZE));
-			List<AdvertEntity> advertEntities = advertDaoInterface.findLessUsedBySection(section.getUrlName(), MainConfig.ADVERT_CACHE_SIZE);
+			List<AdvertEntity> advertEntities = advertDaoInterface.findLessUsedBySection(section.getUrlName(), MainConfig.ADVERT_CACHE_SIZE, null);
 			if (advertEntities.isEmpty()) {
 				logger.warning("There is not adverts for section : " + section);
 			} else {
@@ -120,11 +120,13 @@ public class AdvertProviderModel implements Serializable {
 		AdvertEntity res = null;
 		Queue<AdvertViewWrapper> adv = advertsCache.get(sectionUrlName);
 		if (adv != null) {
+			//todo nacteni z cache by mozna mohlo byt synchronizovane nebo by dana queue mohla byt v synchronized obalce
 			AdvertViewWrapper av = adv.poll();
 			if (av != null) {
 				if (av.viewCount > LIFE) {
 					logger.info("Advert display reach maximum value " + LIFE);
 					reloadCacheForSection(sectionUrlName);
+					res = getAdvertEntityBySection(sectionUrlName);
 				} else {
 					av.viewCount++;
 					if (!adv.add(av)) {
@@ -143,7 +145,12 @@ public class AdvertProviderModel implements Serializable {
 
 	public void reloadCacheForSection(String sectionUrlName) {
 		Queue<AdvertViewWrapper> adv = advertsCache.get(sectionUrlName);
-		List<AdvertEntity> ade = advertDaoInterface.findLessUsedBySection(sectionUrlName, MainConfig.ADVERT_CACHE_SIZE - adv.size());
+		Iterator iter = adv.iterator();
+		List<Integer> exludeIDS = new ArrayList<>(adv.size());
+		while (iter.hasNext()) {
+			exludeIDS.add(((AdvertViewWrapper) iter.next()).advertEntity.getId());
+		}
+		List<AdvertEntity> ade = advertDaoInterface.findLessUsedBySection(sectionUrlName, MainConfig.ADVERT_CACHE_SIZE - adv.size(), exludeIDS);
 		for (AdvertEntity ae : ade) {
 			adv.add(new AdvertViewWrapper(ae, 0));
 		}
