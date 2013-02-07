@@ -53,7 +53,7 @@ public class InvoiceChecker {
 	private MessageDaoInterface messageDaoInterface;
 	@EJB
 	private MailerBean mailerBean;
-	
+
 	private Date lastCheckPaidInvoices;
 	private Date lastCreateNewProforma;
 
@@ -63,7 +63,7 @@ public class InvoiceChecker {
 
 			checkPaidInvoices();
 		} catch (Exception e) {
-			logger.severe("Exception in process method checkPaidInvoices: " +  e.getMessage());
+			logger.severe("Exception in process method checkPaidInvoices: " + e.getMessage());
 			logger.throwing(this.getClass().getSimpleName(), "process", e);
 		}
 
@@ -89,56 +89,58 @@ public class InvoiceChecker {
 					logger.info("Create new proforma for AdvertBundle: " + advertBundle);
 					// pro kazdou advertBundle je nutne vytvorit novou proforma-fakturu a vytvorit hlasku pro partnera.
 
-					{
-						// neni vystavena faktura, takze fakturu vystavime
-						BigDecimal invoicePrice = advertBundle.getAdvertPriceGroupEntity().getPriceCzk();
-						Invoice invoice = new Invoice(advertBundle.getPartnerEntity().getFakturoidId(), invoicePrice);
-						InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
-						if (invoiceEntity == null) {
-							logger.warning("Invoice for partner " + advertBundle.getPartnerEntity() + " for advertBundle " + advertBundle + " was not created!");
-							//todo odeslat email klukum, ze nebyla vystavena faktura
+
+					// neni vystavena faktura, takze fakturu vystavime
+					BigDecimal invoicePrice = advertBundle.getAdvertPriceGroupEntity().getPriceCzk();
+					Invoice invoice = new Invoice(advertBundle.getPartnerEntity().getFakturoidId(), invoicePrice);
+					InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
+					if (invoiceEntity == null) {
+						logger.warning("Invoice for partner " + advertBundle.getPartnerEntity() + " for advertBundle " + advertBundle + " was not created!");
+						//todo odeslat email klukum, ze nebyla vystavena faktura
+					} else {
+						logger.info("Invoice for advertBundle " + advertBundle + " was created!");
+						invoiceEntity.setAdvertBundleEntity(advertBundle);
+						invoiceEntity.setInvoiceType(InvoiceType.PROFORMA);
+						invoiceEntity.setPrice(invoicePrice);
+
+						DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.EXTEND_PROFORMA_CREATED);
+						message.replaceAll("{BUNDLE_NAME}", advertBundle.getName());
+						message.replaceAll("{INVOICE_NUMBER}", invoiceEntity.getNumber());
+						SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy");
+						message.replaceAll("{EXPIRE}", sdf.format(advertBundle.getValidTo()));
+
+						MessageEntity messageEntity = new MessageEntity();
+						messageEntity.setBody(message.getBody());
+						messageEntity.setTitle(message.getTitle());
+						messageEntity.setMessageType(message.getMessageType());
+						messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
+						messageEntity.setPartner(advertBundle.getPartnerEntity());
+						messageEntity.setPublishDate(Calendar.getInstance().getTime());
+
+						String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
+							 .replace("{PROFORMA}", invoiceEntity.getNumber())
+							 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
+							 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
+
+						logger.info("Proforma "+invoiceEntity.getNumber()+" created and try send notification email to partner: "+invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail());
+						mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_PROFORMA_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()), MainConfig.EMAIL_FROM, null, true);
+						logger.info("Proforma "+ invoiceEntity.getNumber() + "created and e-mail sent to " + invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail());
+
+						SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
+						if (!messageSaveResult.success) {
+							logger.warning("Can not save system message " + messageEntity);
 						} else {
-							invoiceEntity.setAdvertBundleEntity(advertBundle);
-							invoiceEntity.setInvoiceType(InvoiceType.PROFORMA);
-							invoiceEntity.setPrice(invoicePrice);
+							logger.info("Message " + messageEntity + " saved");
+						}
 
-							DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.EXTEND_PROFORMA_CREATED);
-							message.replaceAll("{BUNDLE_NAME}", advertBundle.getName());
-							message.replaceAll("{INVOICE_NUMBER}", invoiceEntity.getNumber());
-							SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy");
-							message.replaceAll("{EXPIRE}", sdf.format(advertBundle.getValidTo()));
-
-							MessageEntity messageEntity = new MessageEntity();
-							messageEntity.setBody(message.getBody());
-							messageEntity.setTitle(message.getTitle());
-							messageEntity.setMessageType(message.getMessageType());
-							messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
-							messageEntity.setPartner(advertBundle.getPartnerEntity());
-							messageEntity.setPublishDate(Calendar.getInstance().getTime());
-
-							String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
-								 .replace("{PROFORMA}", invoiceEntity.getNumber())
-								 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
-								 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
-
-							mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_PROFORMA_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()), MainConfig.EMAIL_FROM, null, true);
-
-
-							SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
-							if (!messageSaveResult.success) {
-								logger.warning("Can not save system message " + messageEntity);
-							} else {
-								logger.info("Message " + messageEntity + " saved");
-							}
-
-							SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
-							if (!saveResult.success) {
-								logger.severe("Can not save InvoiceEntity: " + invoiceEntity);
-							} else {
-								logger.info("InvoiceEntity saved: " + saveResult.item);
-							}
+						SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
+						if (!saveResult.success) {
+							logger.severe("Can not save InvoiceEntity: " + invoiceEntity);
+						} else {
+							logger.info("InvoiceEntity saved: " + saveResult.item);
 						}
 					}
+
 
 				}
 			} else {
