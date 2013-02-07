@@ -16,6 +16,24 @@
 
 <h:head>
 	<title><h:outputText value="#{i18n['web_title']}"/></title>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-12651708-6']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type =
+                    'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+                    'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
 </h:head>
 
 <h:body>
@@ -67,26 +85,26 @@
                         <p>Všechny vaše reklamy se zobrazují náhodně, žádná není nijak zvýhodněna.</p>
                         <p>Ceny jsou konečné, nejsme plátci DPH.</p>
 
-						<div style="padding: 10px 0 10px 0; ">
+                        <div style="padding: 10px 0 10px 0; ">
 
-							<table>
-								<tr>
-									<td>
-										<h:outputLink value="/proc-to-funguje.jspx#predstaveni">
-											<div class="nav-active">
-												<div class="inner">&lt;</div>
-											</div>
-										</h:outputLink>
-									</td>
-									<td>
-										<p:spacer width="15" height="1"/>
-										<h:outputLink styleClass="link-big" value="/registrace.jspx">Zpět</h:outputLink>
-									</td>
-								</tr>
-							</table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h:outputLink value="http://partner.kamoska.cz">
+                                            <div class="nav-active">
+                                                <div class="inner">&lt;</div>
+                                            </div>
+                                        </h:outputLink>
+                                    </td>
+                                    <td>
+                                        <p:spacer width="15" height="1"/>
+                                        <h:outputLink styleClass="link-big" value="http://partner.kamoska.cz">Zpět na partner.kamoska.cz</h:outputLink>
+                                    </td>
+                                </tr>
+                            </table>
 
 
-						</div>
+                        </div>
 
 					</div>
 				</div>

@@ -19,6 +19,24 @@
 
 <h:head>
 	<title><h:outputText value="#{i18n['web_title']}"/></title>
+
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-12651708-6']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type =
+                    'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+                    'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+
+    </script>
+
 </h:head>
 
 <h:body>
@@ -165,7 +183,7 @@
                             <p:spacer height="30px" />
 
                             <div>
-                                <p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green big" update="errors" />
+                                <p:commandButton action="#{advertBundleController.createEmptyAdvertBundle(loggedInPartner.partner)}" value="#{i18n['create-firtst-advert-group']}" styleClass="kamoska_button green big_welcome" update="errors" />
                             </div>
 
 							<!--table class="welcome w700">

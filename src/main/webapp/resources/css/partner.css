@@ -193,6 +193,13 @@ table.welcome td.left {
 }
 
 .kamoska_button.green.big {
+    font-size: 12px;
+    padding: 10px 10px 10px 10px;
+    border:1px solid #38761D;
+    background: #4d9433;
+}
+
+.kamoska_button.green.big_welcome {
     font-size: 20px;
     padding: 10px 10px 10px 10px;
     border:1px solid #38761D;
@@ -245,6 +252,7 @@ a.ui-commandlink.link {
 
 a.ui-commandlink.link:HOVER {
     text-decoration: underline !important;
+    color: #4D9433;
 }
 
 a {
