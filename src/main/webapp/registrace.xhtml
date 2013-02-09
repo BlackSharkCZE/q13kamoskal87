@@ -44,9 +44,15 @@
         <ui:define name="header">
 
             <div>
-                <a href="http://partner.kamoska.cz">
-                    <h:graphicImage library="img" name="logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" width="338" height="84"/>
-                </a>
+                <div style="width: 360px; float: left;">
+                    <a href="http://partner.kamoska.cz">
+                        <h:graphicImage library="img" name="logo-partner-kamoska.png" alt="Partner Kámoška.cz" title="Partner Kámoška.cz" width="338" height="84" />
+                    </a>
+                </div>
+                <div style="float: left; padding-top:43px; font-size: 12px; font-weight: bold; color:#666666;">
+                    <span style="background-color: #f6f6f6; color:#333333; padding: 2px 8px 2px 8px;">partner@kamoska.cz</span> &nbsp;/&nbsp; <span style="background-color: #f6f6f6; color:#333333; padding: 2px 8px 2px 8px;">+420 602 321 010</span>
+                </div>
+                <div class="clear"></div>
             </div>
 
             <!--h2>
@@ -75,7 +81,7 @@
                         <h5>Vytvořte si účet partner.kamoska.cz</h5>
 
                         <div class="text" style="margin-top: 5px; ">
-                            Zaregistrujte se do reklamního systému a inzerujte na stránkách magazínu Kámoška.cz – tvoje lepší kamarádka. Vyplňte prosím následující formulář, abychom vám mohli založit účet. Všechny údaje jsou povinné.
+                            Zaregistrujte se do reklamního systému a inzerujte na stránkách magazínu Kámoška.cz. Vyplňte prosím následující formulář, abychom vám mohli založit účet. Všechny údaje jsou povinné.
                         </div>
                         <p:spacer height="20px"/>
 
@@ -172,7 +178,7 @@
                                 <h:panelGroup>
                                     <p:selectBooleanCheckbox value="#{registerAccountModel.eulaAgreement}" required="true" requiredMessage="#{i18n['register.eula-agreement.required']}"/>
                                     <h:outputText value="Souhlasím s "/>
-                                    <h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">všeobecnými obchodními podmínkami</h:outputLink>
+                                    <h:outputLink value="#{request.servletContext.contextPath}/eula.jspx">VOP</h:outputLink>
                                 </h:panelGroup>
                                 &nbsp;
 

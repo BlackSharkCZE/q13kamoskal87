@@ -53,8 +53,8 @@
 				<span class="text">Editace reklamy</span>
 			</div>
 
-			<div style="padding:0px 0px 10px 10px">
-				<h2>
+			<div style="padding:10px 0px 10px 10px">
+				<h2 style="font-size: 16px">
 					Editace reklamy v sadě - <h:outputText value="#{advertBundleModel.currentItem.name}"/>
 				</h2>
 			</div>
@@ -68,7 +68,7 @@
 
 					<div class="text" style="padding: 10px 10px 30px 10px;">
 						Zadejte reklamu Sponzorovaný tip. Formulujte ji jasně a přesně.
-						<h:outputLink value="">Potřebuji pomoci s tvorbou kvalitní reklamy.</h:outputLink>
+                        <!--<h:outputLink value="">Potřebuji pomoci s tvorbou kvalitní reklamy.</h:outputLink>  -->
 					</div>
 
 					<div class="create-tip-left">
@@ -84,7 +84,7 @@
 											<p:ajax event="keyup" update="link-tip1-title link-tip2-title"/>
 										</p:inputText>
 										&nbsp;
-										<span class="counter" id="title_counter">(0/50)</span>
+                                        <!--span class="counter" id="title_counter">(0/50)</span-->
 									</td>
 								</tr>
 								<tr>
@@ -94,7 +94,7 @@
 									<td class="second">
 										<p:inputTextarea id="body"
 														 counter="counter"
-														 counterTemplate="{0} znaků zbývá"
+														 counterTemplate="Zbývá {0} znaků"
 														 maxlength="90"
 														 value="#{advertModel.advertEntity.body}" required="true" requiredMessage="#{i18n['advert.body.required']}" validatorMessage="#{i18n['advert.body.too-long']}">
 											<f:validateLength maximum="90"/>
@@ -111,8 +111,8 @@
 										<h:outputText value="#{i18n['advert.destination']}: "/>
 									</td>
 									<td class="second">
-										<span class="counter">http://</span>
-										<p:inputText style="width:270px" id="link" value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{i18n['advert.link.required']}"/>
+										<span class="counter">http:// </span>
+										<p:inputText style="width:254px" id="link" value="#{advertModel.advertEntity.url}" required="true" requiredMessage="#{i18n['advert.link.required']}"/>
 									</td>
 								</tr>
 								<tr>
@@ -225,7 +225,7 @@
 							<tr>
 								<td>&nbsp;</td>
 								<td>
-									<div class="info">
+									<div class="info-under-pic">
 										Maximální možná velikost obrázku je 200 kB, obrázek bude dále automaticky oříznut na velikost 60x60 px<br/>
 										Podporované formáty: GIF, JPG, PNG
 
@@ -238,14 +238,16 @@
 
 							<ul>
 								<li>Výsledná velikost obrázku je 60x60 px</li>
-								<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent dictum convallis ornare</li>
+                                <li>Reklama se začne zobrazovat ihned po schválení administrátorem</li>
 							</ul>
 
 						</div>
 
-						<p:commandButton update="@form" value="#{i18n['update_advert']}" action="#{advertController.updateAdvert}" styleClass="kamoska_button violet" />
-						<p:spacer width="20px;" height="0" />
-						<p:commandButton value="#{i18n['cancel_advert']}" action="#{advertController.cancelAdvert}" styleClass="kamoska_button gray" immediate="true"/>
+                        <div style="margin: 0 0 20px 20px;">
+                            <p:commandButton update="@form" value="#{i18n['save_advert']}" action="#{advertController.updateAdvert}" styleClass="kamoska_button violet" />
+                            <p:spacer width="20px;" height="0" />
+                            <p:commandButton value="#{i18n['cancel_advert']}" action="#{advertController.cancelAdvert}" styleClass="kamoska_button gray" immediate="true"/>
+                        </div>
 
 					</div>
 				</div>

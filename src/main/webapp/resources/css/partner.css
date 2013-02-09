@@ -13,7 +13,7 @@
 
 #header .title {
     float:left;
-    width:575px;
+    width:775px;
     height: 110px;
     text-align: left;
     font-size: 18px;
@@ -22,7 +22,7 @@
 
 #header .login {
     float:left;
-    width:575px;
+    width:375px;
     height: 40px;
     text-align: right;
 }
