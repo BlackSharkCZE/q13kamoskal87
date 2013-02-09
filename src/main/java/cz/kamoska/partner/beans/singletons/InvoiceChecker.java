@@ -117,7 +117,7 @@ public class InvoiceChecker {
 						messageEntity.setPartner(advertBundle.getPartnerEntity());
 						messageEntity.setPublishDate(Calendar.getInstance().getTime());
 
-						String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-email-template.html")
+						String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-proforma-extension-email-template.html")
 							 .replace("{PROFORMA}", invoiceEntity.getNumber())
 							 .replace("{ADVERT_BUNDLE}", invoiceEntity.getAdvertBundleEntity().getName())
 							 .replace("{PROFORMA_URL}", invoiceEntity.getFakturoidUrl());
