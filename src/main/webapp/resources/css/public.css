@@ -255,3 +255,33 @@ form.register-form input[type="text"], form.register-form input[type="password"]
 .width120 {
 	width:120px;
 }
+
+.kamoska_button {
+    text-shadow: none;
+    font-size: 10px;
+}
+
+.kamoska_button.green {
+    background: #38761D;
+    color:white;
+    text-shadow: none;
+    font-weight: bold;
+}
+
+.kamoska_button.green.small {
+    font-size:10px;
+}
+
+.kamoska_button.green.big {
+    font-size: 12px;
+    padding: 10px 10px 10px 10px;
+    border:1px solid #38761D;
+    background: #4d9433;
+}
+
+.kamoska_button.green.big_welcome {
+    font-size: 20px;
+    padding: 10px 10px 10px 10px;
+    border:1px solid #38761D;
+    background: #4d9433;
+}
