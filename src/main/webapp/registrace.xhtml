@@ -122,7 +122,7 @@
                             <h:panelGrid columns="3" styleClass="form-table" columnClasses=",width120,">
 
 
-                                <h:outputText value="#{i18n['company-name']}: "/>
+                                <h:outputText value="#{i18n['company-name']}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/>
                                 <p:inputText id="company-name" value="#{registerAccountModel.partnerEntity.company}" required="true" requiredMessage="#{i18n['register.company.required']}"/>
                                 &nbsp;
 
@@ -185,8 +185,8 @@
                             </h:panelGrid>
 
 
-                            <div class="align-right" style="padding: 20px 0">
-                                <p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button"/>
+                            <div class="align-right" style="padding: 20px 0;">
+                                <p:commandButton id="register_button" action="#{registerController.registerNewAccount}" update="@form" value="#{i18n['register']}" styleClass="kamoska_button_registr"/>
                             </div>
 
                         </h:form>
