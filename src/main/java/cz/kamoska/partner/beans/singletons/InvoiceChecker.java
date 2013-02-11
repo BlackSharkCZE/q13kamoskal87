@@ -164,31 +164,31 @@ public class InvoiceChecker {
 			List<InvoiceEntity> notPaid = invoiceDaoInterface.findNotPaid(10, 0);
 
 			if (notPaid != null && !notPaid.isEmpty()) {
-				for (InvoiceEntity ie : notPaid) {
-					Invoice invoice = fakturoidDao.findById(ie.getFakturoidId());
+				for (InvoiceEntity notPaidProforma : notPaid) {
+					Invoice invoice = fakturoidDao.findById(notPaidProforma.getFakturoidId());
 					if (invoice != null) {
 						if (invoice.getInvoiceStatus() == InvoiceStatus.PAID && invoice.getRelatedId() != null) {
-							ie.setPaid(invoice.getPaidAt());
+							notPaidProforma.setPaid(invoice.getPaidAt());
 							Invoice paidInvoice = fakturoidDao.findById(invoice.getRelatedId());
 							if (paidInvoice != null) {
-								InvoiceEntity invoiceEntity = new InvoiceEntity();
-								invoiceEntity.setFakturoidId(paidInvoice.getId());
-								invoiceEntity.setFakturoidUrl(paidInvoice.getPublicHtmlUrl());
-								invoiceEntity.setInvoiceType(paidInvoice.isProforma() ? InvoiceType.PROFORMA : InvoiceType.FAKTURA);
-								invoiceEntity.setNumber(paidInvoice.getNumber());
-								invoiceEntity.setPaid(paidInvoice.getPaidAt());
-								invoiceEntity.setPrice(ie.getPrice());
-								invoiceEntity.setPriceIncVat(ie.getPriceIncVat());
-								invoiceEntity.setAdvertBundleEntity(ie.getAdvertBundleEntity());
-								ie.setInvoice(invoiceEntity);
-								SaveDomainResult<InvoiceEntity> update = invoiceDaoInterface.update(ie);
+								InvoiceEntity paidInvoceEntity = new InvoiceEntity();
+								paidInvoceEntity.setFakturoidId(paidInvoice.getId());
+								paidInvoceEntity.setFakturoidUrl(paidInvoice.getPublicHtmlUrl());
+								paidInvoceEntity.setInvoiceType(paidInvoice.isProforma() ? InvoiceType.PROFORMA : InvoiceType.FAKTURA);
+								paidInvoceEntity.setNumber(paidInvoice.getNumber());
+								paidInvoceEntity.setPaid(paidInvoice.getPaidAt());
+								paidInvoceEntity.setPrice(notPaidProforma.getPrice());
+								paidInvoceEntity.setPriceIncVat(notPaidProforma.getPriceIncVat());
+								paidInvoceEntity.setAdvertBundleEntity(notPaidProforma.getAdvertBundleEntity());
+								notPaidProforma.setInvoice(paidInvoceEntity);
+								SaveDomainResult<InvoiceEntity> update = invoiceDaoInterface.update(notPaidProforma);
 								if (update.success) {
 									Calendar validUntil = new GregorianCalendar();
 									validUntil.setTime(paidInvoice.getPaidAt());
 									AdvertPriceGroupEntity apge = update.item.getAdvertBundleEntity().getAdvertPriceGroupEntity();
 									validUntil.add(Calendar.DAY_OF_MONTH, apge.getDuration());
 									update.item.getAdvertBundleEntity().setValidTo(validUntil.getTime());
-									update.item.getAdvertBundleEntity().setValidFrom(invoiceEntity.getPaid());
+									update.item.getAdvertBundleEntity().setValidFrom(paidInvoceEntity.getPaid());
 									update.item.getAdvertBundleEntity().setStatus(AdvertState.ACTIVE);
 									SaveDomainResult<AdvertBundleEntity> update1 = advertBundleDaoInterface.update(update.item.getAdvertBundleEntity());
 									if (!update1.success) {
@@ -198,18 +198,18 @@ public class InvoiceChecker {
 
 										DefaultMessage message = defaultMessages.getMessageFor(DefaultMessages.MessageCategory.INVOICE_PAID);
 										message.replaceAll("{BUNDLE_NAME}", update1.item.getName());
-										message.replaceAll("{INVOICE_NUMBER}", invoiceEntity.getNumber());
-										message.replaceAll("{PROFORMA_NUMBER}", ie.getNumber());
+										message.replaceAll("{INVOICE_NUMBER}", paidInvoceEntity.getNumber());
+										message.replaceAll("{PROFORMA_NUMBER}", notPaidProforma.getNumber());
 										SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy");
 										message.replaceAll("{VALID_TO}", sdf.format(validUntil.getTime()));
 
 
 										String emailTemplate = fileTemplateLoader.loadFileFromResources("invoice-create-email-template.html")
 											 .replace("{PROFORMA}", invoice.getNumber())
-											 .replace("{FAKTURA}", update.item.getNumber())
-											 .replace("{FAKTURA_URL}", update.item.getFakturoidUrl());
+											 .replace("{FAKTURA}", paidInvoceEntity.getNumber())
+											 .replace("{FAKTURA_URL}", paidInvoceEntity.getFakturoidUrl());
 
-										mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_SUBJECT, Arrays.asList(invoiceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()), MainConfig.EMAIL_FROM, null, true);
+										mailerBean.sendEmail(emailTemplate, MainConfig.INVOICE_CREATE_SUBJECT, Arrays.asList(paidInvoceEntity.getAdvertBundleEntity().getPartnerEntity().getEmail()), MainConfig.EMAIL_FROM, null, true);
 
 
 										MessageEntity messageEntity = new MessageEntity();
@@ -217,7 +217,7 @@ public class InvoiceChecker {
 										messageEntity.setTitle(message.getTitle());
 										messageEntity.setMessageType(message.getMessageType());
 										messageEntity.setGroupUid(String.valueOf(Calendar.getInstance().getTime().getTime()));
-										messageEntity.setPartner(ie.getAdvertBundleEntity().getPartnerEntity());
+										messageEntity.setPartner(notPaidProforma.getAdvertBundleEntity().getPartnerEntity());
 										messageEntity.setPublishDate(Calendar.getInstance().getTime());
 
 										SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
@@ -229,7 +229,7 @@ public class InvoiceChecker {
 									}
 
 								} else {
-									logger.severe("Can not update Invoice " + ie);
+									logger.severe("Can not update Invoice " + notPaidProforma);
 								}
 							}
 						}
