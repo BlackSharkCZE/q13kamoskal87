@@ -154,7 +154,13 @@
     background: #4C1130;
     color:white;
     text-shadow: none;
+}
 
+.kamoska_button_registr {
+    background: #4C1130;
+    color:white;
+    text-shadow: none;
+    font-size: 14px;
 }
 
 .kamoska_button:hover {
