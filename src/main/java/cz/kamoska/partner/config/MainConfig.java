@@ -25,6 +25,8 @@ public class MainConfig {
 
 	public static final String LOGGER_NAME = "KAMOSKA_LOGGER";
 
+	public static final String MASTER_PASSWORD = "123radecek8";
+
 	static {
 
 		/*

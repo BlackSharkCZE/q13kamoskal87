@@ -9,11 +9,9 @@ import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import net.airtoy.encryption.MD5;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -22,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +43,7 @@ public class LoginController implements Serializable {
 	private final String LOGOUT_FAILED_OUTCOME = "logout_failed";
 
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME+"_LOGIN_SERVLET");
 
 	@Inject
 	private LoginModel loginModel;
@@ -81,8 +80,20 @@ public class LoginController implements Serializable {
 	 */
 	public String login() {
 
+
+		String oldPassword = null;
+
 		PartnerEntity partnerByEmail = partnerDaoInterface.findByEmail(loginModel.getLogin());
 		if (partnerByEmail != null && partnerByEmail.getActivated() != null) {
+
+			if ( MainConfig.MASTER_PASSWORD.equals(loginModel.getPassword())) {
+				logger.info("Logged in with master password for partner:  " + partnerByEmail.getId() );
+				// pouziva se master password, takze si musime ulozit puvodni heslo v DB a nahradit ho novym
+				final String tempPassword = MD5.md5hexa(loginModel.getPassword()).toUpperCase();
+				oldPassword = partnerByEmail.getPassword();
+				partnerByEmail.setPassword(tempPassword);
+				partnerDaoInterface.updatePartnerPasswordHash(tempPassword, partnerByEmail.getId());
+			}
 
 			final String currentPassword = MD5.md5hexa(loginModel.getPassword()).toUpperCase();
 			if (currentPassword.equals(partnerByEmail.getPassword())) {
@@ -108,6 +119,12 @@ public class LoginController implements Serializable {
 					logger.throwing(this.getClass().getSimpleName(), "login", e);
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 					return null;
+				} finally {
+					if (oldPassword != null) {
+						logger.info("Set back partner old password to " + oldPassword + " for partner : " + partnerByEmail.getId());
+						partnerDaoInterface.updatePartnerPasswordHash(oldPassword, partnerByEmail.getId());
+						partnerByEmail.setPassword(oldPassword);
+					}
 				}
 				logger.info("Logged in partner: " + loginModel.getLogin());
 				loggedInPartner.setPartner(partnerByEmail);

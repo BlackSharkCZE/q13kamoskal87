@@ -72,6 +72,19 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 	}
 
 	@Override
+	public boolean updatePartnerPasswordHash(String hash, Integer partnerID) {
+		boolean res = false;
+		try {
+			int updateCount = em.createNamedQuery("PartnerEntity.native.setPasswordHash").setParameter("password", hash.toUpperCase()).setParameter("id", partnerID).executeUpdate();
+			res = updateCount > 0;
+		} catch (Exception e) {
+			logger.severe("Can not update hash to " + hash + " for partnerID="+partnerID);
+		}
+		return res;
+
+	}
+
+	@Override
 	public PartnerEntity findByEmail(String email) {
 		Map<String, Object> params = new HashMap<>(1);
 		params.put("email", email);

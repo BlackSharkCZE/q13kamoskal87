@@ -17,6 +17,14 @@ import javax.ejb.Local;
 public interface PartnerDaoInterface extends DaoInterface<PartnerEntity> {
 
 	/**
+	 * Nastavuje novy hash jako password pro daneho partnera
+	 * @param hash novy hash hesla
+	 * @param partnerID identifikator partnera, kteremu se ma hash hesla zmenit
+	 * @return true pokud byla zmena povedena, jinak false
+	 */
+	boolean updatePartnerPasswordHash(final String hash, final Integer partnerID);
+
+	/**
 	 * Hleda partnera dle zadaneho emailu
 	 * @param email
 	 * @return
