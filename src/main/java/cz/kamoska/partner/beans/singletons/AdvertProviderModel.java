@@ -97,8 +97,10 @@ public class AdvertProviderModel implements Serializable {
 		List<SectionEntity> allSections = sectionDaoInterface.findAll();
 		advertsCache = new HashMap<>(allSections.size());
 		for (SectionEntity section : allSections) {
+			logger.info("Create cache for " + section.getUrlName());
 			advertsCache.put(section.getUrlName(), new ArrayBlockingQueue<AdvertViewWrapper>(MainConfig.ADVERT_CACHE_SIZE));
 			List<AdvertEntity> advertEntities = advertDaoInterface.findLessUsedBySection(section.getUrlName(), MainConfig.ADVERT_CACHE_SIZE, null);
+			logger.info("Adverts for section "+section.getUrlName()+": " + (advertEntities != null ? advertEntities.size() : 0));
 			if (advertEntities.isEmpty()) {
 				logger.warning("There is not adverts for section : " + section);
 			} else {

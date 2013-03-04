@@ -1,29 +1,12 @@
-3.10.2012 - 60 min						1
-4.10.2012 - 60 min						1
-6.10.2012 - 60 min						1
-8.10.2012 - 90 min						1.5
-10.10.2012 - 90 min					1.5
-11.10.2012 - 120 min					2
-12.10.2012 - 90 min					1.5c
-13.10.2012 - 270 min					4.5
-14.10.2012 - 120 min					2
-15.10.2012 - 60 min					1
-17.10.2012 - 210 min					3.5
-18.10.2012 - 150 min					2.5
-19.10.2012 - 90 min					1.5
-22.10.2012 - 270 min					4.5
-24.10.2012 - 60 min					1
-25.10.2012 - 150 min					2.5
-28.10.2012 - 90 min					1.5
-29.10.2012 - 90 min					1.5
-31.10.2012 - 120 min					2.0
-01.11.2012 - 75 min					1.25
-03.11.2012 - 120 min					2.0
-04.11.2012 - 75 min					1.25
-05.11.2012 - 40 min					0.66
-06.11.2012 - 60 min					1
-07.11.2012 - 120 min					2
-08.11.2012 - 120 min					2
-11.11.2012 - 160 min					2.66
-12.11.2012 - 90 min					1.5
-16.11.2012 - 28.11.2012				6
+select a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id
+from advert a
+left join advert_accesslist_actual ac on a.id = ac.advert_id
+left join public.advert_bundle ab on ab.id = a.bundle_id
+left join public.advert_section asec on asec.advertentity_id = a.id
+left join public.section sec on sec.id = asec.sectionentitylist_id
+where ab.status = 'ACTIVE' and ab.valid_to > now() and a.state = 'ACTIVE'
+and (ac.datecreated > now() - '1 hour'::interval or ac.datecreated is null)
+and sec.url_name = #sectionUrlName
+and a.id not in ({@EXLUDE_ID_LIST@})  
+group by a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id
+order by count(a.id) asc";

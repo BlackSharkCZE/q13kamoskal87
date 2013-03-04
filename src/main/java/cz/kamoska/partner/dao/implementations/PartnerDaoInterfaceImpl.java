@@ -11,11 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: blackshark
- * Date: 8.10.12
- * Time: 20:44
- * To change this template use File | Settings | File Templates.
  */
 @Stateless
 public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implements PartnerDaoInterface {

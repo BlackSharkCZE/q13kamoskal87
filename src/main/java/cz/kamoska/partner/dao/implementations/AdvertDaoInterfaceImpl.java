@@ -63,7 +63,7 @@ public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements
 		 "left join public.advert_section asec on asec.advertentity_id = a.id\n" +
 		 "left join public.section sec on sec.id = asec.sectionentitylist_id\n" +
 		 "where ab.status = 'ACTIVE' and ab.valid_to > now() and a.state = 'ACTIVE'\n" +
-		 "and (ac.datecreated > now() - '1 hour'::interval or ac.datecreated is null)\n" +
+		 "and (ac.datecreated > now() - '1 hour'::interval or ac.datecreated is null  or a.view_count = 0)\n" +
 		 "and sec.url_name = #sectionUrlName\n" +
 		 "and a.id not in ({@EXLUDE_ID_LIST@})  \n" +
 		 "group by a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +

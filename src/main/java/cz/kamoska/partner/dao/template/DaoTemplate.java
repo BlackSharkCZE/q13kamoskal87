@@ -6,7 +6,6 @@ import cz.kamoska.partner.commons.Constants;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.QueryResult;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
-import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,6 +15,7 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author blackshark
@@ -397,7 +397,7 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			count = em.createQuery(countCq).getSingleResult();
 			em.flush();
 		} catch (Exception e) {
-			logger.severe("Can not obtain record count for " + rootClass.getName() + " List");
+			logger.severe("Can not obtain record count for " + rootClass.getName() + " List: "+ e.getMessage());
 			logger.throwing(this.getClass().getSimpleName(), "getObjectListCount", e);
 			count = 0L;
 		}
@@ -418,7 +418,7 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			em.flush();
 			return res;
 		} catch (Exception e) {
-			logger.severe("Can not execute update by namedQuery " + namedQuery);
+			logger.severe("Can not execute update by namedQuery " + namedQuery + ": " + e.getMessage());
 			logger.throwing(this.getClass().getSimpleName(), "executeUpdateNamedQuery", e);
 			return 0;
 		}

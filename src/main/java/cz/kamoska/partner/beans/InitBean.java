@@ -10,7 +10,6 @@ import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
 import net.airtoy.encryption.MD5;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -26,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -106,10 +106,10 @@ public class InitBean implements Serializable {
 		if (sectionEntities == null || sectionEntities.isEmpty()) {
 			//zadne sekce nejsou vytvorene, takze je vytvorime
 			createSections();
+		} else {
+			logger.info("There are sections in DB: " + sectionEntities);
 		}
-
 		initDatabaseFunctions();
-
 	}
 
 	private void createSections() {
