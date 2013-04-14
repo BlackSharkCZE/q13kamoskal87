@@ -1,12 +1,12 @@
 package cz.kamoska.partner.models.template;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.QueryResult;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.template.DaoInterface;
-import java.util.logging.Logger;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -21,8 +21,7 @@ import java.util.Map;
  */
 public abstract class AbstractModel<T> {
 
-	protected final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
-
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	protected abstract DaoInterface<T> getBasicDaoInterface();
 
 	protected T currentItem;
@@ -39,7 +38,7 @@ public abstract class AbstractModel<T> {
 		try {
 			currentItem = (T) clazz.newInstance();
 		} catch (Exception e) {
-			logger.severe("Can not init current for class " + clazz.getName());
+			logger.error("Can not init current for class " + clazz.getName());
 		}
 		lazyDataModel = createLazyDataModel(clazz, defaultSortColumn);
 	}
@@ -68,7 +67,7 @@ public abstract class AbstractModel<T> {
 
 	public boolean updateCurrentItem() {
 		if (currentItem == null) {
-			logger.warning("Can not update NULL item " + clazz.getName());
+			logger.warn("Can not update NULL item " + clazz.getName());
 			return false;
 		}
 		SaveDomainResult<T> res = getBasicDaoInterface().update(currentItem);
@@ -80,7 +79,7 @@ public abstract class AbstractModel<T> {
 
 	public boolean saveCurrentItem() {
 		if (currentItem == null) {
-			logger.warning("Can not save NULL item " + clazz.getName());
+			logger.warn("Can not save NULL item " + clazz.getName());
 			return false;
 		}
 
@@ -95,7 +94,7 @@ public abstract class AbstractModel<T> {
 		try {
 			currentItem = (T) clazz.newInstance();
 		} catch (Exception e) {
-			logger.severe("Can not reset current item: " + clazz.getName());
+			logger.error("Can not reset current item: " + clazz.getName());
 		}
 	}
 
@@ -103,7 +102,7 @@ public abstract class AbstractModel<T> {
 		if (currentItem != null) {
 			return getBasicDaoInterface().drop(currentItem);
 		} else {
-			logger.warning("Can not drop NULL object.");
+			logger.warn("Can not drop NULL object.");
 		}
 		return false;
 	}
@@ -126,7 +125,7 @@ public abstract class AbstractModel<T> {
 
 	public boolean refresh() {
 		if (currentItem == null) {
-			logger.warning("Can not save NULL item " + clazz.getName());
+			logger.warn("Can not save NULL item " + clazz.getName());
 			return false;
 		} else {
 			T res = getBasicDaoInterface().refresh(currentItem);

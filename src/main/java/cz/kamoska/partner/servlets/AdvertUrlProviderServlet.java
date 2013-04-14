@@ -1,11 +1,11 @@
 package cz.kamoska.partner.servlets;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.entities.AdvertEntity;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +23,9 @@ import java.io.IOException;
 @WebServlet(name = "AdvertUrlProviderServlet", urlPatterns = {"/advert"})
 public class AdvertUrlProviderServlet extends HttpServlet {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@EJB
 	private AdvertDaoInterface advertDaoInterface;
@@ -31,7 +33,7 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		if (request.getParameter("id") == null || request.getParameter("id").isEmpty()) {
-			logger.warning("Can not redirect to advert link, because missing ID parameter in Request!");
+			logger.warn("Can not redirect to advert link, because missing ID parameter in Request!");
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		} else {
 
@@ -39,16 +41,16 @@ public class AdvertUrlProviderServlet extends HttpServlet {
 			try {
 				advertId = Integer.parseInt(request.getParameter("id"));
 			} catch (NumberFormatException e) {
-				logger.warning("Can not redirect to advert link, because invalid ID (" + request.getParameter("id") + ") in request!");
+				logger.warn("Can not redirect to advert link, because invalid ID (" + request.getParameter("id") + ") in request!");
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			}
 
 			if (advertId != null) {
 				AdvertEntity advert = advertDaoInterface.findByPrimaryKey(AdvertEntity.class, advertId);
 				if (advert != null) {
-					response.sendRedirect(advert.getUrl().startsWith("http://") ? advert.getUrl() : "http://"+advert.getUrl() );
+					response.sendRedirect(advert.getUrl().startsWith("http://") ? advert.getUrl() : "http://" + advert.getUrl());
 				} else {
-					logger.severe("Can not find advert with ID "+ advertId);
+					logger.error("Can not find advert with ID " + advertId);
 					response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 				}
 			}

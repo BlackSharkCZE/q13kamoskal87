@@ -8,6 +8,7 @@ import cz.kamoska.partner.models.request.LoginModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
+import cz.kamoska.partner.support.Kamoska;
 import net.airtoy.encryption.MD5;
 
 import javax.ejb.EJB;
@@ -18,9 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,7 +30,7 @@ import java.util.logging.Logger;
  */
 @Named
 @RequestScoped
-public class LoginController implements Serializable {
+public class LoginController {
 
 	/* Nazvy OUTCOME do navigation.xml pro dany controller */
 	private final String ADMIN_LOGIN_SUCCESSFUL_OUTCOME = "admin_login_successful";
@@ -43,7 +42,8 @@ public class LoginController implements Serializable {
 	private final String LOGOUT_FAILED_OUTCOME = "logout_failed";
 
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME+"_LOGIN_SERVLET");
+	@Inject @Kamoska
+	private org.slf4j.Logger logger;
 
 	@Inject
 	private LoginModel loginModel;
@@ -69,7 +69,7 @@ public class LoginController implements Serializable {
 			request.getSession().invalidate();
 			return LOGOUT_SUCCESSFUL_OUTCOME;
 		} catch (Exception e) {
-			logger.warning("Can not logout user: " + request.getUserPrincipal().getName());
+			logger.warn("Can not logout user: " + request.getUserPrincipal().getName());
 			return LOGOUT_FAILED_OUTCOME;
 		}
 	}
@@ -104,8 +104,7 @@ public class LoginController implements Serializable {
 					try {
 						request.logout();
 					} catch (ServletException e) {
-						logger.warning("Can not logout current user: " + request.getUserPrincipal().getName());
-						logger.throwing(this.getClass().getSimpleName(), "login", e);
+						logger.warn("Can not logout current user: " + request.getUserPrincipal().getName(), e);
 					} finally {
 						loggedInPartner.setLoggedInTimestamp(null);
 						loggedInPartner.setPartner(null);
@@ -115,8 +114,7 @@ public class LoginController implements Serializable {
 				try {
 					request.login(loginModel.getLogin(), loginModel.getPassword());
 				} catch (ServletException e) {
-					logger.severe("Can not login partner " + loginModel.getLogin() + ": " + e.getMessage() );
-					logger.throwing(this.getClass().getSimpleName(), "login", e);
+					logger.error("Can not login partner " + loginModel.getLogin() + ": " + e.getMessage(), e);
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("login.error.invalid-password"), FacesContext.getCurrentInstance());
 					return null;
 				} finally {

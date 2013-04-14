@@ -3,9 +3,10 @@ package cz.kamoska.partner.servlets;
 import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.PictureDaoInterface;
 import cz.kamoska.partner.entities.PictureEntity;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,24 +27,26 @@ import java.io.OutputStream;
 @WebServlet(name = "PictureProviderServlet", urlPatterns = "/images/*")
 public class PictureProviderServlet extends HttpServlet {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
-	
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
+
 	@EJB
 	private PictureDaoInterface pictureDaoInterface;
 
 	private static final int BATCH_SIZE = 4 * 1024;
 
-	
+
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		final String url[] = request.getRequestURI().split("/");
 		if (url != null && url.length > 1) {
 			final String pictureStrId = url[url.length - 1];
 
-			Integer pictureId =  null ;
+			Integer pictureId = null;
 			try {
 				pictureId = Integer.parseInt(pictureStrId);
 			} catch (NumberFormatException e) {
-				logger.severe("Invalid picture ID: " + pictureStrId);
+				logger.error("Invalid picture ID: " + pictureStrId);
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
 
@@ -53,7 +56,7 @@ public class PictureProviderServlet extends HttpServlet {
 					logger.info("Can not find pictureEntity for ID: " + pictureId);
 					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				} else {
-					final String path = MainConfig.IMAGE_STORE_ROOT_PATH + "/" + pictureEntity.getPartnerEntity().getId()+ "/"+pictureEntity.getSystemName();
+					final String path = MainConfig.IMAGE_STORE_ROOT_PATH + "/" + pictureEntity.getPartnerEntity().getId() + "/" + pictureEntity.getSystemName();
 					File f = new File(path);
 					if (f.exists()) {
 						response.setContentType("image/jpeg");
@@ -62,23 +65,22 @@ public class PictureProviderServlet extends HttpServlet {
 						byte[] cache = new byte[BATCH_SIZE];
 						int read = 0;
 						while ((read = fSteam.read(cache)) != -1) {
-							ostr.write(cache,0,read);
+							ostr.write(cache, 0, read);
 						}
 						ostr.flush();
 					} else {
-						logger.severe("Can not find picture "+ path);
+						logger.error("Can not find picture " + path);
 						response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 					}
 				}
 			}
 
 		} else {
-			logger.severe("Can not return picture with missing ID in URL");
+			logger.error("Can not return picture with missing ID in URL");
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 		}
-		
-		
-		
+
+
 	}
 
 

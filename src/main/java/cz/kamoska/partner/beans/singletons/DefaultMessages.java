@@ -4,6 +4,8 @@ import cz.kamoska.partner.enums.MessageType;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.Serializable;
 
@@ -15,6 +17,8 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 @ApplicationScoped
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class DefaultMessages implements Serializable {
 
 	public enum MessageCategory {

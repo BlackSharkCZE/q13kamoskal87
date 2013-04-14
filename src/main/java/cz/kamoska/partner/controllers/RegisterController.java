@@ -11,6 +11,7 @@ import cz.kamoska.partner.models.request.RegisterAccountModel;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.FileTemplateLoader;
+import cz.kamoska.partner.support.Kamoska;
 import net.airtoy.ares.Address;
 import net.airtoy.ares.AresUserInfo;
 import net.airtoy.ares.services.AresICValidation;
@@ -28,7 +29,6 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,7 +40,8 @@ import java.util.logging.Logger;
 @Named
 @RequestScoped
 public class RegisterController {
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject @Kamoska
+private org.slf4j.Logger logger;
 
 	private final String REGISTER_SUCCESSFUL_OUTCOME = "register_successful";
 
@@ -108,16 +109,16 @@ public class RegisterController {
 						try {
 							Files.createDirectories(path);
 						} catch (IOException e) {
-							logger.severe("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
+							logger.error("Can not create image directory for new partner " + partnerEntity + ". Create file MANUALLY!");
 						}
 
 						return REGISTER_SUCCESSFUL_OUTCOME;
 					} else {
-						logger.severe("Can not save Partner " + partnerEntity);
+						logger.error("Can not save Partner " + partnerEntity);
 						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
 					}
 				} else {
-					logger.warning("Email " + partnerEntity.getEmail() + " already used!");
+					logger.warn("Email " + partnerEntity.getEmail() + " already used!");
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.email.used"), FacesContext.getCurrentInstance());
 				}
 			} else {
@@ -127,7 +128,7 @@ public class RegisterController {
 
 		} else {
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("registration.error"), FacesContext.getCurrentInstance());
-			logger.severe("Can not save Partner because partnerEntity is null ");
+			logger.error("Can not save Partner because partnerEntity is null ");
 		}
 
 		return null;

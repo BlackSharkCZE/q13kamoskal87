@@ -1,12 +1,12 @@
 package cz.kamoska.partner.dao.interfaces;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.AdvertAccessListDailyEntity;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,19 +18,20 @@ import java.util.logging.Logger;
 @Stateless
 public class AdvertAccessListDailyDaoInterfaceImpl extends DaoTemplate<AdvertAccessListDailyEntity> implements AdvertAccessListDailyDaoInterface {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
-	
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
+
 	@Override
 	public Long getDisplayCountByFromDateAndToDate(Date fromDate, Date toDate) {
 		try {
 			Long sum = (Long) em.createNamedQuery("AdvertAccessListDailyEntity.getDisplayCountByFromDateAndToDate")
-					.setParameter("fromDate", fromDate)
-					.setParameter("toDate", toDate).getSingleResult();
+				 .setParameter("fromDate", fromDate)
+				 .setParameter("toDate", toDate).getSingleResult();
 			em.flush();
 			return sum == null ? 0 : sum;
 		} catch (Exception e) {
-			logger.severe("Can not read advert display count by fromDate and toDate");
-			logger.throwing(this.getClass().getSimpleName(), "getDisplayCountByFromDateAndToDate", e);
+			logger.error("Can not read advert display count by fromDate and toDate", e);
 		}
 		return -1L;
 	}
@@ -46,8 +47,7 @@ public class AdvertAccessListDailyDaoInterfaceImpl extends DaoTemplate<AdvertAcc
 			em.flush();
 			return sum == null ? 0 : sum;
 		} catch (Exception e) {
-			logger.severe("Can not read advert display count by fromDate and toDate and partnerID " + partnerID);
-			logger.throwing(this.getClass().getSimpleName(), "getDisplayCountByFromDateAndToDate", e);
+			logger.error("Can not read advert display count by fromDate and toDate and partnerID " + partnerID, e);
 		}
 		return -1L;
 

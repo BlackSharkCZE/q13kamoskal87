@@ -2,16 +2,10 @@ package cz.kamoska.partner.servlets;
 
 import cz.kamoska.partner.beans.FakturoidDao;
 import cz.kamoska.partner.beans.singletons.InvoiceChecker;
-import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.interfaces.InvoiceDaoInterface;
-import cz.kamoska.partner.entities.AdvertBundleEntity;
-import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
-import cz.kamoska.partner.entities.InvoiceEntity;
-import cz.kamoska.partner.enums.InvoiceType;
-import cz.kamoska.partner.pojo.fakturoid.Invoice;
-import cz.kamoska.partner.pojo.fakturoid.InvoiceStatus;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
+import org.slf4j.Logger;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -21,9 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +26,7 @@ import java.util.List;
 @WebServlet(name = "TestServlet", urlPatterns = "/tests")
 public class TestServlet extends HttpServlet {
 
-	@Inject
+	@Inject @Kamoska
 	private Logger logger;
 
 	@EJB
@@ -49,7 +40,6 @@ public class TestServlet extends HttpServlet {
 
 	@EJB
 	private InvoiceChecker invoiceChecker;
-
 
 
 	protected void doRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -89,11 +79,11 @@ public class TestServlet extends HttpServlet {
 
 							  SaveDomainResult<AdvertBundleEntity> update1 = advertBundleDaoInterface.update(update.item.getAdvertBundleEntity());
 							  if (!update1.success) {
-								  logger.severe("Can not update AdvertBundleEntity: " + update.item.getAdvertBundleEntity());
+								  logger.error("Can not update AdvertBundleEntity: " + update.item.getAdvertBundleEntity());
 							  }
 
 						  } else {
-							  logger.severe("Can not update Invoice " + ie);
+							  logger.error("Can not update Invoice " + ie);
 						  }
 					  }
 				  }

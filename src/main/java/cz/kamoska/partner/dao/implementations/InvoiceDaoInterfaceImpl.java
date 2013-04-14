@@ -20,6 +20,8 @@ import java.util.Map;
 @Stateless
 public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implements InvoiceDaoInterface {
 
+
+
 	@Override
 	public List<InvoiceEntity> findAllProformaForPartner(PartnerEntity partnerEntity) {
 		Map<String, Object> params = new HashMap<>(1);
@@ -60,8 +62,7 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountOfProforma").getSingleResult();
 			return res;
 		} catch (Exception e) {
-			logger.severe("Can not read count of proforma. ");
-			logger.throwing(this.getClass().getSimpleName(), "getProformaCount", e);
+			logger.error("Can not read count of proforma. ", e);
 		}
 		return -1L;
 	}
@@ -72,8 +73,7 @@ public class InvoiceDaoInterfaceImpl extends DaoTemplate<InvoiceEntity> implemen
 			Long res = (Long) em.createNamedQuery("InvoiceEntity.getCountPaidProforma").getSingleResult();
 			return res;
 		} catch (Exception e) {
-			logger.severe("Can not read count of paid proforma. ");
-			logger.throwing(this.getClass().getSimpleName(), "getPaidProformaCount", e);
+			logger.error("Can not read count of paid proforma. ", e);
 		}
 		return -1L;
 	}

@@ -2,7 +2,6 @@ package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.FakturoidDao;
 import cz.kamoska.partner.beans.singletons.DefaultMessages;
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertBundleDaoInterface;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
@@ -16,6 +15,7 @@ import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -26,7 +26,6 @@ import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +38,9 @@ import java.util.logging.Logger;
 @Named
 public class AdvertBundleController implements Serializable {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@Inject
 	private FacesMessageProvider facesMessageProvider;
@@ -80,7 +81,7 @@ public class AdvertBundleController implements Serializable {
 		} else {
 			SaveDomainResult<PartnerEntity> updateResult = partnerDaoInterface.update(partnerEntity);
 			if (!updateResult.success) {
-				logger.severe("Can not assign Fakturoid_ID to partner " + partnerEntity);
+				logger.error("Can not assign Fakturoid_ID to partner " + partnerEntity);
 			} else {
 				loggedInPartner.setPartner(updateResult.item);
 				partnerEntity = updateResult.item;
@@ -116,7 +117,7 @@ public class AdvertBundleController implements Serializable {
 
 				SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 				if (!messageSaveResult.success) {
-					logger.warning("Can not save system message " + messageEntity);
+					logger.warn("Can not save system message " + messageEntity);
 				} else {
 					logger.info("Message " + messageEntity + " saved");
 				}
@@ -125,7 +126,7 @@ public class AdvertBundleController implements Serializable {
 
 				return "first-advert-bundle-created";
 			} else {
-				logger.severe("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);
+				logger.error("Can not save Advert Bundle " + advertBundleEntity + " for partner " + partnerEntity);
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("advert-bundle.create.failed"), FacesContext.getCurrentInstance());
 			}
 		}
@@ -136,7 +137,7 @@ public class AdvertBundleController implements Serializable {
 	public void updateBundleName(AdvertBundleEntity advertBundleEntity) {
 		SaveDomainResult<AdvertBundleEntity> update = advertBundleDaoInterface.update(advertBundleEntity);
 		if (!update.success) {
-			logger.severe("Can not update AdvertBundle (Change Name): " + advertBundleEntity);
+			logger.error("Can not update AdvertBundle (Change Name): " + advertBundleEntity);
 			FacesMessageCreate.addMessage(FacesMessage.SEVERITY_WARN, facesMessageProvider.getLocalizedMessage("bundle.change.name.failed").replace("{0}", advertBundleEntity.getName()), FacesContext.getCurrentInstance());
 		}
 	}

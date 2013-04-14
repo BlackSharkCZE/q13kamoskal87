@@ -1,14 +1,13 @@
 package cz.kamoska.partner.beans;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertAccessListActualInterface;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
+import org.slf4j.Logger;
 
-import javax.ejb.Asynchronous;
-import javax.ejb.EJB;
-import javax.ejb.Stateless;
+import javax.ejb.*;
+import javax.inject.Inject;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,9 +17,11 @@ import javax.ejb.Stateless;
  * To change this template use File | Settings | File Templates.
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
 public class AccessListBean {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject @Kamoska
+	private Logger logger;
 
 	@EJB
 	private AdvertAccessListActualInterface advertAccessListActualInterface;
@@ -30,7 +31,7 @@ public class AccessListBean {
 	public void save(AdvertAccessListEntity aale) {
 		SaveDomainResult<AdvertAccessListEntity> saveResult = advertAccessListActualInterface.save(aale);
 		if (!saveResult.success) {
-			logger.severe("Can not save access record to DDB form " + aale);
+			logger.error("Can not save access record to DDB form " + aale);
 		}
 	}
 

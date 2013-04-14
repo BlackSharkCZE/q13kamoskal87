@@ -1,11 +1,8 @@
 package cz.kamoska.partner.beans.stateless;
 
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
-import cz.kamoska.partner.entities.PartnerEntity;
 
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
+import javax.ejb.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +15,8 @@ import javax.ejb.Stateless;
 
 @Stateless
 @Local
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class EmailValidator{
 
 	@EJB

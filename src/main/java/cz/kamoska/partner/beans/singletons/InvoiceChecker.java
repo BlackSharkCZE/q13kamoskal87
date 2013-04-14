@@ -16,15 +16,13 @@ import cz.kamoska.partner.pojo.fakturoid.Invoice;
 import cz.kamoska.partner.pojo.fakturoid.InvoiceStatus;
 import cz.kamoska.partner.pojo.kamoska.DefaultMessage;
 import cz.kamoska.partner.support.FileTemplateLoader;
+import cz.kamoska.partner.support.Kamoska;
 
-import javax.ejb.EJB;
-import javax.ejb.Schedule;
-import javax.ejb.Singleton;
+import javax.ejb.*;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,10 +32,13 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 @Singleton
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class InvoiceChecker {
 
-	@Inject
-	private Logger logger;
+	@Inject @Kamoska
+	private org.slf4j.Logger logger;
+
 	@Inject
 	private DefaultMessages defaultMessages;
 	@Inject
@@ -63,15 +64,13 @@ public class InvoiceChecker {
 
 			checkPaidInvoices();
 		} catch (Exception e) {
-			logger.severe("Exception in process method checkPaidInvoices: " + e.getMessage());
-			logger.throwing(this.getClass().getSimpleName(), "process", e);
+			logger.error("Exception in process method checkPaidInvoices: ", e);
 		}
 
 		try {
 			createNewProforma();
 		} catch (Exception e) {
-			logger.severe("Exception in process method createNewProforma: " + e.getMessage());
-			logger.throwing(this.getClass().getSimpleName(), "process", e);
+			logger.error("Exception in process method createNewProforma: ", e);
 		}
 
 	}
@@ -95,7 +94,7 @@ public class InvoiceChecker {
 					Invoice invoice = new Invoice(advertBundle.getPartnerEntity().getFakturoidId(), invoicePrice);
 					InvoiceEntity invoiceEntity = fakturoidDao.createInvoice(invoice);
 					if (invoiceEntity == null) {
-						logger.warning("Invoice for partner " + advertBundle.getPartnerEntity() + " for advertBundle " + advertBundle + " was not created!");
+						logger.warn("Invoice for partner " + advertBundle.getPartnerEntity() + " for advertBundle " + advertBundle + " was not created!");
 						//todo odeslat email klukum, ze nebyla vystavena faktura
 					} else {
 						logger.info("Invoice for advertBundle " + advertBundle + " was created!");
@@ -128,14 +127,14 @@ public class InvoiceChecker {
 
 						SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 						if (!messageSaveResult.success) {
-							logger.warning("Can not save system message " + messageEntity);
+							logger.warn("Can not save system message " + messageEntity);
 						} else {
 							logger.info("Message " + messageEntity + " saved");
 						}
 
 						SaveDomainResult<InvoiceEntity> saveResult = invoiceDaoInterface.save(invoiceEntity);
 						if (!saveResult.success) {
-							logger.severe("Can not save InvoiceEntity: " + invoiceEntity);
+							logger.error("Can not save InvoiceEntity: " + invoiceEntity);
 						} else {
 							logger.info("InvoiceEntity saved: " + saveResult.item);
 						}
@@ -148,8 +147,7 @@ public class InvoiceChecker {
 			}
 
 		} catch (Exception e) {
-			logger.severe("Can not create new proforma: " + e.getMessage());
-			logger.throwing(this.getClass().getSimpleName(), "createNewProforma", e);
+			logger.error("Can not create new proforma: " + e.getMessage(), e);
 		} finally {
 			logger.info("Create new proforma process finished.");
 		}
@@ -192,7 +190,7 @@ public class InvoiceChecker {
 									update.item.getAdvertBundleEntity().setStatus(AdvertState.ACTIVE);
 									SaveDomainResult<AdvertBundleEntity> update1 = advertBundleDaoInterface.update(update.item.getAdvertBundleEntity());
 									if (!update1.success) {
-										logger.severe("Can not update AdvertBundleEntity: " + update.item.getAdvertBundleEntity());
+										logger.error("Can not update AdvertBundleEntity: " + update.item.getAdvertBundleEntity());
 									} else {
 
 
@@ -222,14 +220,14 @@ public class InvoiceChecker {
 
 										SaveDomainResult<MessageEntity> messageSaveResult = messageDaoInterface.save(messageEntity);
 										if (!messageSaveResult.success) {
-											logger.warning("Can not save system message " + messageEntity);
+											logger.warn("Can not save system message " + messageEntity);
 										} else {
 											logger.info("Message " + messageEntity + " saved");
 										}
 									}
 
 								} else {
-									logger.severe("Can not update Invoice " + notPaidProforma);
+									logger.error("Can not update Invoice " + notPaidProforma);
 								}
 							}
 						}
@@ -239,8 +237,7 @@ public class InvoiceChecker {
 				logger.info("There are not not paid invoices in kamoska system.");
 			}
 		} catch (Exception e) {
-			logger.severe("Exception Occurs in checkPaidInvoices");
-			logger.throwing(this.getClass().getSimpleName(), "checkPaidInvoices", e);
+			logger.error("Exception Occurs in checkPaidInvoices", e);
 		} finally {
 			logger.info("Check paid invoices process finished!");
 

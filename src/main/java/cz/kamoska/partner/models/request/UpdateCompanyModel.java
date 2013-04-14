@@ -2,7 +2,6 @@ package cz.kamoska.partner.models.request;
 
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;

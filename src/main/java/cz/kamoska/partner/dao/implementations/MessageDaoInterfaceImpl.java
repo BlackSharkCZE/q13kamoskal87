@@ -37,8 +37,7 @@ public class MessageDaoInterfaceImpl extends DaoTemplate<MessageEntity> implemen
 			Long count = (Long) em.createNamedQuery("Message.getCountByPartnerIDAndTypeAndPublished").setParameter("partnerID", partnerEntity.getId()).setParameter("messageType", messageType).getSingleResult();
 			return count;
 		} catch (Exception e) {
-			logger.severe("Can not read Message Count for partner " + partnerEntity + " and message type " + messageType);
-			logger.throwing(this.getClass().getSimpleName(), "getMessageCountForPartner", e);
+			logger.error("Can not read Message Count for partner " + partnerEntity + " and message type " + messageType, e);
 		}
 		return -1L;
 	}
@@ -49,8 +48,7 @@ public class MessageDaoInterfaceImpl extends DaoTemplate<MessageEntity> implemen
 			Long count = (Long) em.createNamedQuery("Message.getUnreadCountByPartnerIDAndTypeAndPublished").setParameter("partnerID", partnerEntity.getId()).setParameter("messageType", messageType).getSingleResult();
 			return count;
 		} catch (Exception e) {
-			logger.severe("Can not read UnreadMessage Count for partner " + partnerEntity + " and message type " + messageType);
-			logger.throwing(this.getClass().getSimpleName(), "getUnreadMessageCountForPartner", e);
+			logger.error("Can not read UnreadMessage Count for partner " + partnerEntity + " and message type " + messageType, e);
 		}
 		return -1L;
 	}

@@ -23,8 +23,7 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 			Long count = (Long) query.getSingleResult();
 			return count.intValue();
 		} catch (Exception e) {
-			logger.info("Can not obtain partner count in role " + PartnerGroups.GROUP_ADMIN);
-			logger.throwing(this.getClass().getSimpleName(), "getPartnerCountByGroup", e);
+			logger.info("Can not obtain partner count in role " + PartnerGroups.GROUP_ADMIN, e);
 		}
 		return 0;
 	}
@@ -47,8 +46,7 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 		try {
 			return (Long)em.createNamedQuery("PartnerEntity.countOfAllActivatedPartners").getSingleResult();
 		} catch (Exception e) {
-			logger.severe("Can not obtain count of activated partners");
-			logger.throwing(this.getClass().getSimpleName(), "getPartnerCountOfActivatedPartners", e);
+			logger.error("Can not obtain count of activated partners", e);
 		}
 		return -1L;
 	}
@@ -60,8 +58,7 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 			em.flush();
 			return res;
 		} catch (Exception e) {
-			logger.severe("Can not read count of paying partners.");
-			logger.throwing(this.getClass().getSimpleName(), "getPayingPartnerCount", e);
+			logger.error("Can not read count of paying partners.", e);
 		}
 		return -1L;
 	}
@@ -73,7 +70,7 @@ public class PartnerDaoInterfaceImpl extends DaoTemplate<PartnerEntity> implemen
 			int updateCount = em.createNamedQuery("PartnerEntity.native.setPasswordHash").setParameter("password", hash.toUpperCase()).setParameter("id", partnerID).executeUpdate();
 			res = updateCount > 0;
 		} catch (Exception e) {
-			logger.severe("Can not update hash to " + hash + " for partnerID="+partnerID);
+			logger.error("Can not update hash to " + hash + " for partnerID="+partnerID);
 		}
 		return res;
 

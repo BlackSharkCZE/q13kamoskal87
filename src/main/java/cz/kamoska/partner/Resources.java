@@ -1,8 +1,8 @@
 package cz.kamoska.partner;
 
-import cz.kamoska.partner.config.MainConfig;
-
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -19,9 +19,10 @@ public class Resources {
 
 
 	@Produces
+	@Kamoska
 	Logger getLogger(InjectionPoint ip) {
 //		return Logger.getLogger(ip.getMember().getDeclaringClass());
-		return Logger.getLogger(MainConfig.LOGGER_NAME);
+		return LoggerFactory.getLogger(ip.getMember().getDeclaringClass());
 	}
 
 	@Produces

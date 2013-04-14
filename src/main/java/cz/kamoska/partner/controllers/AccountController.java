@@ -9,14 +9,15 @@ import cz.kamoska.partner.models.request.UpdateLoginModel;
 import cz.kamoska.partner.models.sessions.LoggedInPartner;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
+import cz.kamoska.partner.support.Kamoska;
 import net.airtoy.encryption.MD5;
+import org.slf4j.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +29,7 @@ import java.util.logging.Logger;
 @Model
 public class AccountController {
 
-	@Inject
+	@Inject @Kamoska
 	private Logger logger;
 	@Inject
 	private FacesContext facesContext;
@@ -63,7 +64,7 @@ public class AccountController {
 				loggedInPartner.setPartner(update.item);
 			} else {
 				FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.login.failed"), facesContext);
-				logger.warning("Can not change login credentials for partner " + loggedInPartner.getPartner());
+				logger.warn("Can not change login credentials for partner " + loggedInPartner.getPartner());
 			}
 		}
 		return null;
@@ -89,11 +90,11 @@ public class AccountController {
 						loggedInPartner.setPartner(update.item);
 						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, facesMessageProvider.getLocalizedMessage("partner.edit.success"), facesContext);
 					} else {
-						logger.warning("Can not update partner");
+						logger.warn("Can not update partner");
 						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("partner.edit.error"), facesContext);
 					}
 				} else {
-					logger.warning("Can not update partner " + partner + " in DB, because can not update data on fakturoid");
+					logger.warn("Can not update partner " + partner + " in DB, because can not update data on fakturoid");
 					FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("partner.edit.error"), facesContext);
 				}
 

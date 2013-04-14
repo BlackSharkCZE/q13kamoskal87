@@ -7,7 +7,6 @@ import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 
 import javax.ejb.Stateless;
-import javax.inject.Named;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

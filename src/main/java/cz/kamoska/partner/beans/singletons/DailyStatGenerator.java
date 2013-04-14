@@ -1,12 +1,14 @@
 package cz.kamoska.partner.beans.singletons;
 
-import cz.kamoska.partner.config.MainConfig;
-
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
+import org.slf4j.Logger;
 
 import javax.annotation.Resource;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +23,13 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 @Singleton
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class DailyStatGenerator {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private Logger logger;
 
 	@Resource(name = "jdbc/kamoska")
 	private DataSource dataSource;
@@ -37,8 +43,7 @@ public class DailyStatGenerator {
 			processInternal();
 			logger.info("Generate daily stats - DONE");
 		} catch (Exception e) {
-			logger.severe("Error executing generateDailyStats");
-			logger.throwing(this.getClass().getSimpleName(), "generateDailyStats", e);
+			logger.error("Error executing generateDailyStats", e);
 		}
 
 	}
@@ -52,20 +57,19 @@ public class DailyStatGenerator {
 				rs.next();
 				res = rs.getInt(1);
 				if (rs.wasNull()) {
-					logger.severe("Can not generate dailyStats. ResultSet column 0 is NULL");
+					logger.error("Can not generate dailyStats. ResultSet column 0 is NULL");
 				} else {
 					if (res > 0) {
-						logger.severe("Executing SQL function to generate daily stats successful");
+						logger.error("Executing SQL function to generate daily stats successful");
 					} else {
-						logger.severe("Executing SQL function to generate daily stats return unexpected value: " + res + ". Should be 1");
+						logger.error("Executing SQL function to generate daily stats return unexpected value: " + res + ". Should be 1");
 					}
 				}
 			} else {
-				logger.severe("Can not generate dailyStats. ResultSet for query " + query + " is null.");
+				logger.error("Can not generate dailyStats. ResultSet for query " + query + " is null.");
 			}
 		} catch (Exception e) {
-			logger.severe("Can not execute query " + query);
-			logger.throwing(this.getClass().getSimpleName(), "processInternal", e);
+			logger.error("Can not execute query " + query, e);
 		} finally {
 			if (rs != null) {
 				try {

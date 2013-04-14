@@ -1,7 +1,10 @@
 package cz.kamoska.partner.config;
 
-import java.util.logging.Logger;
-//import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+//import org.slf4j.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +15,8 @@ import java.util.logging.Logger;
  */
 public class MainConfig {
 
-	/*
-	private static final Logger logger = Logger.getLogger\(.*\);
-	 */
-//	private static final Logger logger = Logger.getLogger(MainConfig.class);
-	private static final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+
+	private static final Logger logger = LoggerFactory.getLogger(MainConfig.class);
 
 
 	public static final String SRC_FILE_FOLDER = "src";
@@ -34,7 +34,7 @@ public class MainConfig {
 			PropertiesConfiguration configuration = new PropertiesConfiguration("main-config.properties");
 			IMAGE_STORE_ROOT_PATH = configuration.getString("IMAGE_STORE_ROOT_PATH", "/srv/partner.kamoska.cz/images");
 		} catch (ConfigurationException e) {
-			logger.severe("Can not load configuration. ", e);
+			logger.error("Can not load configuration. ", e);
 		}
 	*/
 	}

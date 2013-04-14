@@ -1,6 +1,5 @@
 package cz.kamoska.partner.beans;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.AdvertPriceGroupDaoInterface;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
@@ -9,14 +8,14 @@ import cz.kamoska.partner.entities.AdvertPriceGroupEntity;
 import cz.kamoska.partner.entities.PartnerEntity;
 import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.PartnerGroups;
+import cz.kamoska.partner.support.Kamoska;
 import net.airtoy.encryption.MD5;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.ejb.*;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.sql.DataSource;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -25,7 +24,6 @@ import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,9 +35,13 @@ import java.util.logging.Logger;
 @ApplicationScoped
 @Startup
 @Singleton
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class InitBean implements Serializable {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	private static final String DEFAULT_LOGIN = "admin@kamoska.cz";
 	private static final String DEFAULT_PASSWORD = "adminadmin";
@@ -74,13 +76,13 @@ public class InitBean implements Serializable {
 			partnerEntity.setPsc("10000");
 			partnerEntity.setStreet("Goblinniho povstani");
 			partnerEntity.setVatPayer(false);
-			partnerEntity.setRoles(Arrays.asList(new String[]{PartnerGroups.GROUP_ADMIN.toString()}));
+			partnerEntity.setRoles(Arrays.asList(PartnerGroups.GROUP_ADMIN.toString()));
 
 			SaveDomainResult<PartnerEntity> saveResult = partnerDao.save(partnerEntity);
 			if (saveResult.success) {
 				logger.info("Default partner " + partnerEntity + " created with password: " + DEFAULT_PASSWORD + " and login: " + DEFAULT_LOGIN);
 			} else {
-				logger.severe("There is not ADMIN in database and it is not possible to create admin!");
+				logger.error("There is not ADMIN in database and it is not possible to create admin!");
 			}
 		}
 
@@ -97,7 +99,7 @@ public class InitBean implements Serializable {
 			if (save.success) {
 				logger.info("Default APGE created: " + save.item);
 			} else {
-				logger.severe("Can not save default APGE: " + apge);
+				logger.error("Can not save default APGE: " + apge);
 			}
 
 		}
@@ -120,7 +122,7 @@ public class InitBean implements Serializable {
 		s1.setUrlName("sex");
 		SaveDomainResult<SectionEntity> saveResult = sectionDaoInterface.save(s1);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s1);
+			logger.error("Can not create Section " + s1);
 		}
 		SectionEntity s2 = new SectionEntity();
 		s2.setAlwaysSelected(false);
@@ -129,7 +131,7 @@ public class InitBean implements Serializable {
 
 		saveResult = sectionDaoInterface.save(s2);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s2);
+			logger.error("Can not create Section " + s2);
 		}
 		SectionEntity s3 = new SectionEntity();
 		s3.setAlwaysSelected(false);
@@ -137,7 +139,7 @@ public class InitBean implements Serializable {
 		s3.setUrlName("fashion");
 		saveResult = sectionDaoInterface.save(s3);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s3);
+			logger.error("Can not create Section " + s3);
 		}
 		SectionEntity s4 = new SectionEntity();
 		s4.setAlwaysSelected(false);
@@ -145,7 +147,7 @@ public class InitBean implements Serializable {
 		s4.setUrlName("bloggers");
 		saveResult = sectionDaoInterface.save(s4);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s4);
+			logger.error("Can not create Section " + s4);
 		}
 		SectionEntity s5 = new SectionEntity();
 		s5.setAlwaysSelected(false);
@@ -153,7 +155,7 @@ public class InitBean implements Serializable {
 		s5.setUrlName("healthy");
 		saveResult = sectionDaoInterface.save(s5);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s5);
+			logger.error("Can not create Section " + s5);
 		}
 		SectionEntity s6 = new SectionEntity();
 		s6.setAlwaysSelected(true);
@@ -161,7 +163,7 @@ public class InitBean implements Serializable {
 		s6.setUrlName("main-page");
 		saveResult = sectionDaoInterface.save(s6);
 		if (!saveResult.success) {
-			logger.severe("Can not create Section " + s6);
+			logger.error("Can not create Section " + s6);
 		}
 
 
@@ -177,38 +179,37 @@ public class InitBean implements Serializable {
 			int res = ps.executeUpdate();
 			logger.info("Function to generate daily stats create successful");
 		} catch (Exception e) {
-			logger.severe("Can not execute query " + query);
-			logger.throwing(this.getClass().getSimpleName(), "initDatabaseFunctions", e);
+			logger.error("Can not execute query " + query, e);
 		}
 	}
 
 
 	private final String sqlFunctionCreateCommand = "-- Function: fnc_generate_daily_stats()\n" +
-			"\n" +
-			"-- DROP FUNCTION fnc_generate_daily_stats();\n" +
-			"\n" +
-			"CREATE OR REPLACE FUNCTION fnc_generate_daily_stats()\n" +
-			"  RETURNS integer AS\n" +
-			"$BODY$BEGIN\n" +
-			"\n" +
-			"insert into advert_accesslist_daily(id, display_count, for_date, advert_entity)\n" +
-			"select \n" +
-			"nextval('advert_accesslist_daily_id_seq') as id, \n" +
-			"count(id) as display_count, \n" +
-			"'yesterday'::date as for_date,\n" +
-			"advert_id as advert_entity\n" +
-			"from advert_accesslist_actual\n" +
-			"where datecreated::date = 'yesterday'::date\n" +
-			"group by advert_id;\n" +
-			"\n" +
-			"\n" +
-			"delete from advert_accesslist_actual where datecreated::date = 'yesterday'::date;\n" +
-			"return 1;\n" +
-			"\n" +
-			"END;$BODY$\n" +
-			"  LANGUAGE plpgsql VOLATILE\n" +
-			"  COST 100;\n" +
-			"ALTER FUNCTION fnc_generate_daily_stats()\n" +
-			"  OWNER TO \"partner.kamoska.cz\";\n" +
-			"COMMENT ON FUNCTION fnc_generate_daily_stats() IS 'Generuje denni statistiky za predesly den';\n";
+		 "\n" +
+		 "-- DROP FUNCTION fnc_generate_daily_stats();\n" +
+		 "\n" +
+		 "CREATE OR REPLACE FUNCTION fnc_generate_daily_stats()\n" +
+		 "  RETURNS integer AS\n" +
+		 "$BODY$BEGIN\n" +
+		 "\n" +
+		 "insert into advert_accesslist_daily(id, display_count, for_date, advert_entity)\n" +
+		 "select \n" +
+		 "nextval('advert_accesslist_daily_id_seq') as id, \n" +
+		 "count(id) as display_count, \n" +
+		 "'yesterday'::date as for_date,\n" +
+		 "advert_id as advert_entity\n" +
+		 "from advert_accesslist_actual\n" +
+		 "where datecreated::date = 'yesterday'::date\n" +
+		 "group by advert_id;\n" +
+		 "\n" +
+		 "\n" +
+		 "delete from advert_accesslist_actual where datecreated::date = 'yesterday'::date;\n" +
+		 "return 1;\n" +
+		 "\n" +
+		 "END;$BODY$\n" +
+		 "  LANGUAGE plpgsql VOLATILE\n" +
+		 "  COST 100;\n" +
+		 "ALTER FUNCTION fnc_generate_daily_stats()\n" +
+		 "  OWNER TO \"partner.kamoska.cz\";\n" +
+		 "COMMENT ON FUNCTION fnc_generate_daily_stats() IS 'Generuje denni statistiky za predesly den';\n";
 }

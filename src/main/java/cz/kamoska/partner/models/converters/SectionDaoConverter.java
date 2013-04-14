@@ -1,15 +1,14 @@
 package cz.kamoska.partner.models.converters;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
 import cz.kamoska.partner.entities.SectionEntity;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -23,7 +22,7 @@ import javax.naming.NamingException;
 @FacesConverter(value = "advertSectionConverter")
 public class SectionDaoConverter implements Converter {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private SectionDaoInterface sectionDaoInterface;
 
@@ -32,8 +31,7 @@ public class SectionDaoConverter implements Converter {
 		try {
 			sectionDaoInterface = InitialContext.doLookup("java:app/sectionDaoInterface");
 		} catch (NamingException e) {
-			logger.severe("Can not lookup for SectionDaoInterface");
-			logger.throwing(this.getClass().getSimpleName(), "SectionDaoConverter", e);
+			logger.error("Can not lookup for SectionDaoInterface", e);
 		}
 	}
 

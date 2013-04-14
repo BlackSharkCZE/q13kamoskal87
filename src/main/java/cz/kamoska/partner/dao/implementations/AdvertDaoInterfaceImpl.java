@@ -1,17 +1,17 @@
 package cz.kamoska.partner.dao.implementations;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.enums.AdvertState;
 import cz.kamoska.partner.support.ArrayStringUtils;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +23,9 @@ import java.util.logging.Logger;
 @Stateless
 public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements AdvertDaoInterface {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@Override
 	public List<AdvertEntity> findAllWaitingToAck() {
@@ -37,8 +39,7 @@ public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements
 			Long count = (Long) em.createNamedQuery("AdvertEntity.countInState").setParameter("state", state).getSingleResult();
 			return count;
 		} catch (Exception e) {
-			logger.severe("Can not read Advert Count in state " + state);
-			logger.throwing(this.getClass().getSimpleName(), "getAdvertCountInState", e);
+			logger.error("Can not read Advert Count in state " + state, e);
 		}
 		return -1L;
 	}
@@ -56,7 +57,7 @@ public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements
 		}
 	}
 
-	private final static String LESS_USED_ADVERT_BY_SECTION_AND_EXLUDE_ID_LIST= "select a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +
+	private final static String LESS_USED_ADVERT_BY_SECTION_AND_EXLUDE_ID_LIST = "select a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +
 		 "from advert a\n" +
 		 "left join advert_accesslist_actual ac on a.id = ac.advert_id\n" +
 		 "left join public.advert_bundle ab on ab.id = a.bundle_id\n" +

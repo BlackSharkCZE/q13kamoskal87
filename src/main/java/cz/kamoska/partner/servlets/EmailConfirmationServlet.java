@@ -1,12 +1,12 @@
 package cz.kamoska.partner.servlets;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.domains.SaveDomainResult;
 import cz.kamoska.partner.dao.interfaces.PartnerDaoInterface;
 import cz.kamoska.partner.entities.PartnerEntity;
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +28,9 @@ public class EmailConfirmationServlet extends HttpServlet {
 	private static final String ACTIVATE_ERROR_PAGE = "/activate-email-error.jspx";
 	private static final String ACTIVATE_SUCCESS_PAGE = "/activate-email-success.jspx";
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@EJB
 	private PartnerDaoInterface partnerDaoInterface;
@@ -46,15 +48,15 @@ public class EmailConfirmationServlet extends HttpServlet {
 					logger.info("Partner " + partnerEntity + " activated!");
 					request.getRequestDispatcher(ACTIVATE_SUCCESS_PAGE).forward(request, response);
 				} else {
-					logger.info("Partner "+ partnerEntity + " can not been activated.");
+					logger.info("Partner " + partnerEntity + " can not been activated.");
 					request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 				}
 			} else {
-				logger.warning("Can not find Partner by Confirmation Hash " + cHash);
+				logger.warn("Can not find Partner by Confirmation Hash " + cHash);
 				request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 			}
 		} else {
-			logger.warning("Can not activate partner with null or emepty confirmation Hash. Request: " + request.getRequestURI());
+			logger.warn("Can not activate partner with null or emepty confirmation Hash. Request: " + request.getRequestURI());
 			request.getRequestDispatcher(ACTIVATE_ERROR_PAGE).forward(request, response);
 		}
 

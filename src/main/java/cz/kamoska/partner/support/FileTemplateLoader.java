@@ -1,7 +1,5 @@
 package cz.kamoska.partner.support;
 
-import java.util.logging.Logger;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.BufferedReader;
@@ -19,8 +17,8 @@ import java.io.Serializable;
 @ApplicationScoped
 public class FileTemplateLoader implements Serializable {
 
-	@Inject
-	private Logger logger;
+	@Inject @Kamoska
+	private org.slf4j.Logger logger;
 
 	public String loadFileFromResources(String fileName) {
 
@@ -35,8 +33,7 @@ public class FileTemplateLoader implements Serializable {
 				template.append(line);
 			}
 		} catch (Exception e) {
-			logger.info("Can not read file "+fileName+" template");
-			logger.throwing(this.getClass().getSimpleName(), "loadFileFromResources", e);
+			logger.info("Can not read file "+fileName+" template", e);
 		}
 		return template.toString();
 

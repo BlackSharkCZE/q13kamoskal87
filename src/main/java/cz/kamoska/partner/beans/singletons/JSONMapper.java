@@ -5,12 +5,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import cz.kamoska.partner.config.MainConfig;
-
-import java.util.logging.Logger;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
@@ -22,9 +22,13 @@ import java.io.IOException;
  */
 
 @Singleton
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class JSONMapper {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	private ObjectMapper mapper;
 
@@ -41,8 +45,7 @@ public class JSONMapper {
 			final String res = mapper.writeValueAsString(object);
 			return res;
 		} catch (JsonProcessingException e) {
-			logger.severe("Can not serialize to JSON object: " + object);
-			logger.throwing(this.getClass().getSimpleName(), "serialize", e);
+			logger.error("Can not serialize to JSON object: " + object, e);
 		}
 		return null;
 	}
@@ -51,8 +54,7 @@ public class JSONMapper {
 		try {
 			return mapper.readValue(serializedObject, clazz);
 		} catch (IOException e) {
-			logger.severe("Can not deserialize JSON for data: " + serializedObject + " as class " + clazz);
-			logger.throwing(this.getClass().getSimpleName(), "deserialize", e);
+			logger.error("Can not deserialize JSON for data: " + serializedObject + " as class " + clazz, e);
 		}
 		return null;
 	}

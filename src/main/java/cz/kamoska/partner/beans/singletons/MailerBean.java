@@ -1,14 +1,17 @@
 package cz.kamoska.partner.beans.singletons;
 
 import cz.kamoska.partner.config.MainConfig;
+import cz.kamoska.partner.support.Kamoska;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
-import java.util.logging.Logger;
 
 import javax.ejb.Asynchronous;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -21,10 +24,14 @@ import java.util.List;
 
 @Singleton
 @ApplicationScoped
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+
 public class MailerBean {
 
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@Asynchronous
 	public void sendEmail(final String body, final String subject, List<String> recipients, final String from, List<String> attachment, boolean html) {
@@ -69,11 +76,10 @@ public class MailerBean {
 
 				email.send();
 			} catch (Exception e) {
-				logger.severe("Can not send e-mail to " + recipients + " with subject: " + subject);
-				logger.throwing(this.getClass().getSimpleName(), "sendEmail", e);
+				logger.error("Can not send e-mail to " + recipients + " with subject: " + subject, e);
 			}
 		} else {
-			logger.warning("Try send email with subject " + subject + " but recipients empty.");
+			logger.warn("Try send email with subject " + subject + " but recipients empty.");
 		}
 	}
 

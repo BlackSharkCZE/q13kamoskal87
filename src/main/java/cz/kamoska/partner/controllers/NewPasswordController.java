@@ -9,9 +9,9 @@ import cz.kamoska.partner.models.request.NewPasswordModel;
 import cz.kamoska.partner.support.FacesMessageCreate;
 import cz.kamoska.partner.support.FacesMessageProvider;
 import cz.kamoska.partner.support.FileTemplateLoader;
+import cz.kamoska.partner.support.Kamoska;
 import net.airtoy.encryption.MD5;
 import org.apache.commons.lang.RandomStringUtils;
-import java.util.logging.Logger;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -32,8 +32,8 @@ import java.util.Arrays;
 @Named
 public class NewPasswordController {
 
-	@Inject
-	private Logger logger;
+	@Inject @Kamoska
+	private org.slf4j.Logger logger;
 	@Inject
 	private FacesContext facesContext;
 	@Inject
@@ -66,7 +66,7 @@ public class NewPasswordController {
 					final String body = fileTemplateLoader.loadFileFromResources("/new-password-email-template.html");
 					if (body == null) {
 						FacesMessageCreate.addMessage(FacesMessage.SEVERITY_ERROR, facesMessageProvider.getLocalizedMessage("new.password.sent-failed"), facesContext);
-						logger.severe("Can not load template for new-password-email-template. New password was not sent to e-mail " + partnerByEmail.getEmail());
+						logger.error("Can not load template for new-password-email-template. New password was not sent to e-mail " + partnerByEmail.getEmail());
 					} else {
 						String emailBody = body.replace("{PASSWORD}", newPassword).replace("{LOGIN}", partnerByEmail.getEmail());
 						mailerBean.sendEmail(emailBody, MainConfig.EMAIL_NEW_PASSWORD_SUBJECT, Arrays.asList(new String[]{partnerByEmail.getEmail()}), MainConfig.EMAIL_FROM, null, true);

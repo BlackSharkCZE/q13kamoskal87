@@ -1,13 +1,13 @@
 package cz.kamoska.partner.dao.implementations;
 
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertAccessListActualInterface;
 import cz.kamoska.partner.dao.template.DaoTemplate;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
+import cz.kamoska.partner.support.Kamoska;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,18 +19,19 @@ import java.util.logging.Logger;
 @Stateless
 public class AdvertAccessListActualInterfaceImpl extends DaoTemplate<AdvertAccessListEntity> implements AdvertAccessListActualInterface {
 
-	private final Logger logger = Logger.getLogger(MainConfig.LOGGER_NAME);
+	@Inject
+	@Kamoska
+	private org.slf4j.Logger logger;
 
 	@Override
 	public Long getDisplayCountByFromDateAndToDate(Date fromDate, Date toDate) {
 		try {
 			Long res = (Long) em.createNamedQuery("AdvertAccessListEntity.getDisplayCountByFromDateAndToDate")
-					.setParameter("fromDate", fromDate)
-					.setParameter("toDate", toDate).getSingleResult();
+				 .setParameter("fromDate", fromDate)
+				 .setParameter("toDate", toDate).getSingleResult();
 			return res == null ? 0 : res;
 		} catch (Exception e) {
-			logger.severe("Can not read count of advert display by from date and to date");
-			logger.throwing(this.getClass().getSimpleName(), "getDisplayCountByFromDateAndToDate", e);
+			logger.error("Can not read count of advert display by from date and to date", e);
 		}
 		return -1L;
 	}
@@ -45,8 +46,7 @@ public class AdvertAccessListActualInterfaceImpl extends DaoTemplate<AdvertAcces
 				 .setParameter("partnerID", partnerID).getSingleResult();
 			return res == null ? 0 : res;
 		} catch (Exception e) {
-			logger.severe("Can not read count of advert display by from date and to date and partnerID " + partnerID);
-			logger.throwing(this.getClass().getSimpleName(), "getDisplayCountByFromDateAndToDate", e);
+			logger.error("Can not read count of advert display by from date and to date and partnerID " + partnerID, e);
 		}
 		return -1L;
 
