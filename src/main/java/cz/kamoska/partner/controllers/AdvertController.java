@@ -385,6 +385,7 @@ public class AdvertController implements Serializable {
 	}
 
 	public void handleFileUpload(FileUploadEvent event) {
+		logger.info("Handle File Upload : " + event);
 		UploadedFile uFile = event.getFile();
 		FacesMessageCreate.addMessage(FacesMessage.SEVERITY_INFO, "File " + uFile.getFileName() + " is uploaded!", FacesContext.getCurrentInstance());
 
@@ -394,6 +395,8 @@ public class AdvertController implements Serializable {
 		pictureEntity.setSize(uFile.getSize());
 		pictureEntity.setContentType(uFile.getContentType());
 		pictureEntity.setOrigName(uFile.getFileName());
+
+		logger.info("Handle Picture Entity " + pictureEntity);
 
 		BufferedImage bi = null;
 		try {
