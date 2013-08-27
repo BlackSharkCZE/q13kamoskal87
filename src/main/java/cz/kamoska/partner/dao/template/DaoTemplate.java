@@ -98,6 +98,7 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public T findByPrimaryKey(Class entityClass, Object primaryKey) {
 		T res = null;
 		if (primaryKey != null) {

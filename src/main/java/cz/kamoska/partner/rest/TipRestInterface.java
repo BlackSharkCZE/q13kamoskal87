@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,6 +40,22 @@ public class TipRestInterface {
 	private ServletContext context;
 	*/
 
+
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+	@Path("html/{section}/{type}/{count}")
+	public String getTipsHtml(final @PathParam(value = "section") String section,
+									  final @PathParam(value = "type") AdvertDisplayStyle type,
+									  final @PathParam(value = "count") Integer count,
+									  @Context HttpServletRequest request) {
+		StringBuilder urlBase = new StringBuilder(128);
+		urlBase.append(request.getScheme()).append("://").append(request.getServerName());
+		if (request.getServerPort() != 80 && request.getServerPort() != 443) {
+			urlBase.append(":").append(request.getServerPort());
+		}
+		urlBase.append(request.getServletContext().getContextPath());
+		return advertProviderModel.getAdvertHtml(section, type, count).replace("#{pageContext.request.contextPath}", urlBase);
+	}
 
 	@GET()
 	@Produces(value = "text/javascript")

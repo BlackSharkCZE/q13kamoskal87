@@ -50,6 +50,7 @@ public class AdvertProviderModel implements Serializable {
 
 	private String verticalAdvertTemplate;
 	private String horizontalAdvertTemplate;
+
 	private final String jsTemplate;
 
 
@@ -57,8 +58,11 @@ public class AdvertProviderModel implements Serializable {
 		jsTemplate = "document.write('{BODY}');";
 	}
 
+
+
 	@PostConstruct
 	public void postConstruct() {
+
 
 		try {
 			InputStream hInputStream = this.getClass().getClassLoader().getResourceAsStream("tip-template-h.html");
@@ -188,4 +192,29 @@ public class AdvertProviderModel implements Serializable {
 
 	}
 
+	public String getAdvertHtml(String sectionUrlName, AdvertDisplayStyle advertDisplayStyle, Integer advertCount) {
+		for (int a = 0; a < advertCount; a++) {
+			AdvertEntity aEntity = getAdvertEntityBySection(sectionUrlName);
+			if (aEntity != null) {
+				String adv;
+				switch (advertDisplayStyle) {
+					case VERTICAL:
+						adv = verticalAdvertTemplate;
+						break;
+					case HORIZONTAL:
+						adv = horizontalAdvertTemplate;
+						break;
+					default:
+						adv = "";
+				}
+				return adv.replace("{ADVERT_ID}", String.valueOf(aEntity.getId()))
+					 .replace("{PICTURE_ID}", aEntity.getPictureEntity() != null ? String.valueOf(aEntity.getPictureEntity().getId()) : "")
+					 .replace("{ADVERT_TITLE}", aEntity.getTitle())
+					 .replace("{ADVERT_ORIG_URL}", aEntity.getUrl())
+					 .replace("{ADVERT_BODY}", aEntity.getBody());
+
+			}
+		}
+		return "<p>Can not load Tip</p>";
+	}
 }
