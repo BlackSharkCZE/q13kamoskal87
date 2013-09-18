@@ -20,6 +20,7 @@ public class Invoice {
 	private Integer id;
 	private boolean proforma;
 	private boolean partialProforma;
+	private String supplyCode;
 	private String number;
 	private String variableSymbol;
 	private String yourName;
@@ -609,5 +610,13 @@ public class Invoice {
 
 	public void setLines(List<InvoiceLine> lines) {
 		this.lines = lines;
+	}
+	@JsonProperty(value = "supply_code")
+	public String getSupplyCode() {
+		return supplyCode;
+	}
+
+	public void setSupplyCode(String supplyCode) {
+		this.supplyCode = supplyCode;
 	}
 }

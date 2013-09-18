@@ -1,0 +1,14 @@
+create-domain kamoska
+start-domain kamoska
+set server.admin-service.das-config.autodeploy-enabled=false
+delete-jvm-options "-client"
+delete-jvm-options "-Xmx1024:-Xmx512m:-XX\:MaxPermSize=192m"
+create-jvm-options "-Xmx2048m:-Xms2048m:-XX\:MaxPermSize=256m:-XX\:PermSize=256m:-server"
+
+
+create-jdbc-connection-pool --datasourceclassname org.postgresql.ds.PGConnectionPoolDataSource --restype javax.sql.ConnectionPoolDataSource --property DatabaseName=kamoska:PortNumber=5432:Password=kamoska:User=partner.kamoska.cz:ServerName=localhost  kamoska_connection_pool
+
+set domain.resources.jdbc-connection-pool.kamoska_connection_pool.steady-pool-size=8
+set domain.resources.jdbc-connection-pool.kamoska_connection_pool.max-pool-size=18
+
+create-jdbc-resource --connectionpoolid kamoska_connection_pool jdbc/kamoska

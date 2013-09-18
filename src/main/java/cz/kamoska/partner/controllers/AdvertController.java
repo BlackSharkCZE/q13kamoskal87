@@ -1,6 +1,7 @@
 package cz.kamoska.partner.controllers;
 
 import cz.kamoska.partner.beans.FakturoidDao;
+import cz.kamoska.partner.beans.singletons.AdvertCacheNG;
 import cz.kamoska.partner.beans.singletons.DefaultMessages;
 import cz.kamoska.partner.beans.singletons.MailerBean;
 import cz.kamoska.partner.config.MainConfig;
@@ -70,6 +71,8 @@ public class AdvertController implements Serializable {
 	@Inject
 	private FileTemplateLoader fileTemplateLoader;
 
+	@Inject
+	private AdvertCacheNG advertCacheNG;
 
 	@EJB
 	private PictureDaoInterface pictureDaoInterface;
@@ -135,6 +138,7 @@ public class AdvertController implements Serializable {
 				if (!messageSaveResult.success) {
 					logger.warn("Can not save system message " + messageEntity);
 				} else {
+					advertCacheNG.reload();
 					logger.info("Message " + messageEntity + " saved");
 				}
 			}

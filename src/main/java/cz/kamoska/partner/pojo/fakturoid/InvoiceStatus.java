@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum InvoiceStatus {
 
-	OPEN("open"), SENT("sent"), OVERTUDE("overtude"),PAID("paid");
+	OPEN("open"), SENT("sent"), OVERDUE("overdue"),PAID("paid");
 
 
 	private final String value;

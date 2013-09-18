@@ -1,10 +1,12 @@
 package cz.kamoska.partner.controllers;
 
+import cz.kamoska.partner.beans.singletons.AdvertCacheNG;
 import cz.kamoska.partner.beans.singletons.InvoiceChecker;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.Date;
@@ -23,6 +25,8 @@ public class AdminController implements Serializable {
 	@EJB
 	private InvoiceChecker invoiceChecker;
 
+	@Inject
+	private AdvertCacheNG advertCacheNG;
 
 	@RolesAllowed("admin")
 	public String checkPaidInvoices() {
@@ -36,6 +40,17 @@ public class AdminController implements Serializable {
 		return null;
 	}
 
+	@RolesAllowed("admin")
+	public void reloadCache() {
+		advertCacheNG.reload();
+	}
+
+
+	public Date getLastCacheReload() {
+		return advertCacheNG.getLastRealodCache();
+	}
+
+
 	public Date getLastCreateProforma() {
 		return invoiceChecker.getLastCreateNewProforma();
 	}
@@ -43,5 +58,7 @@ public class AdminController implements Serializable {
 	public Date getLastCheckPaid() {
 		return invoiceChecker.getLastCheckPaidInvoices();
 	}
+
+
 
 }

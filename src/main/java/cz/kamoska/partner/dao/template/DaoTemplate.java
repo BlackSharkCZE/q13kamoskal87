@@ -131,7 +131,7 @@ public abstract class DaoTemplate<T> implements DaoInterface<T> {
 			}
 			try {
 				res = q.getResultList();
-				em.flush();
+//				em.flush();
 				return res;
 			} catch (Exception e) {
 				logger.error("Can not find any result for namedQuery: " + namedQuery, e);

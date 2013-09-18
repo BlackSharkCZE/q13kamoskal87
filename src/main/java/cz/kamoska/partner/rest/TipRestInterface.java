@@ -82,8 +82,9 @@ public class TipRestInterface {
 	public String reloadAdvertCache(
 		 final @PathParam(value = "section") String section,
 		 @Context HttpServletRequest request) {
-		advertProviderModel.reloadCacheForSection(section);
-		return "reload cache for section " + section + " done.";
+//		advertProviderModel.reloadCacheForSection(section);
+		advertProviderModel.reloadCache();
+		return "Reload Old Cache is DISABLED! ";
 	}
 
 

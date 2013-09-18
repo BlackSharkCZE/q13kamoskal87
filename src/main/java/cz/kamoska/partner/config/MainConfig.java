@@ -72,4 +72,8 @@ public class MainConfig {
 	public static final String EMAIL_REGISTER_SUBJECT = "Registrace: partner.kamoska.cz";
 	public static final String INVOICE_CREATE_SUBJECT = "Vystavení faktury";
 	public static final String INVOICE_CREATE_PROFORMA_SUBJECT = "Vystavení proforma faktury";
+
+	public static final int CACHE_SIZE = 20;
+	public static final int INITIAL_THREAD_POOL_SIZE = 10;
+	public static final int MAXIMUM_THREAD_POOL_SIZE = 30;
 }

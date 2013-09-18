@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "advert")
 @NamedQueries({
+	 @NamedQuery(name = "AdvertEntity.findAllActive", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.ACTIVE ORDER BY a.acceptDate DESC"),
 	 @NamedQuery(name = "AdvertEntity.findAllWaitingToACK", query = "SELECT a FROM AdvertEntity a WHERE a.state=cz.kamoska.partner.enums.AdvertState.WAITING_TO_ACK ORDER BY a.dateCreated ASC"),
 	 @NamedQuery(name = "AdvertEntity.countInState", query = "SELECT COUNT(a) FROM AdvertEntity a WHERE a.state=:state ")
 })

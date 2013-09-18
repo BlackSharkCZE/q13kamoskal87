@@ -1,0 +1,10 @@
+*****************************
+***** NEW DATABASE INFO *****
+*****************************
+Database Name: kamoska
+Database Owner: partner.kamoska.cz
+Password: kamoska
+
+
+asadmin --port 9048 multimode --file commands_file.txt
+

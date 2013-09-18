@@ -1,23 +1,20 @@
 package cz.kamoska.partner.beans.singletons;
 
 import cz.kamoska.partner.beans.AccessListBean;
-import cz.kamoska.partner.config.MainConfig;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.dao.interfaces.SectionDaoInterface;
 import cz.kamoska.partner.entities.AdvertAccessListEntity;
 import cz.kamoska.partner.entities.AdvertEntity;
-import cz.kamoska.partner.entities.SectionEntity;
 import cz.kamoska.partner.enums.AdvertDisplayStyle;
-import cz.kamoska.partner.pojo.kamoska.AdvertViewWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.*;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.*;
-import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.Calendar;
 
 
 /**
@@ -45,7 +42,10 @@ public class AdvertProviderModel implements Serializable {
 	@EJB
 	private AccessListBean accessListBean;
 
-	private Map<String, Queue<AdvertViewWrapper>> advertsCache;
+	@Inject
+	private AdvertCacheNG advertCacheNG;
+
+//	private Map<String, Queue<AdvertViewWrapper>> advertsCache;
 
 
 	private String verticalAdvertTemplate;
@@ -54,15 +54,25 @@ public class AdvertProviderModel implements Serializable {
 	private final String jsTemplate;
 
 
+//	private final ThreadPoolExecutor executor;
+//	private final BlockingQueue<Runnable> cache;
+
+
 	public AdvertProviderModel() {
 		jsTemplate = "document.write('{BODY}');";
-	}
 
+		/*
+		cache = new ArrayBlockingQueue<>(MainConfig.CACHE_SIZE);
+		executor = new ThreadPoolExecutor(MainConfig.INITIAL_THREAD_POOL_SIZE,
+			 MainConfig.MAXIMUM_THREAD_POOL_SIZE,
+			 2, TimeUnit.MINUTES, cache);
+		*/
+
+	}
 
 
 	@PostConstruct
 	public void postConstruct() {
-
 
 		try {
 			InputStream hInputStream = this.getClass().getClassLoader().getResourceAsStream("tip-template-h.html");
@@ -98,14 +108,15 @@ public class AdvertProviderModel implements Serializable {
 			verticalAdvertTemplate = "<div style='font-weight:bold;color:red'>Can not load tip-template-v.html template</div>";
 		}
 
+		/*
 		List<SectionEntity> allSections = sectionDaoInterface.findAll();
 		advertsCache = new HashMap<>(allSections.size());
 		for (SectionEntity section : allSections) {
 			logger.info("Create cache for " + section.getUrlName());
 			advertsCache.put(section.getUrlName(), new ArrayBlockingQueue<AdvertViewWrapper>(MainConfig.ADVERT_CACHE_SIZE));
 			List<AdvertEntity> advertEntities = advertDaoInterface.findLessUsedBySection(section.getUrlName(), MainConfig.ADVERT_CACHE_SIZE, null);
-			logger.info("Adverts for section "+section.getUrlName()+": " + (advertEntities != null ? advertEntities.size() : 0));
-			if (advertEntities.isEmpty()) {
+			logger.info("Adverts for section " + section.getUrlName() + ": " + (advertEntities != null ? advertEntities.size() : 0));
+			if (advertEntities != null && advertEntities.isEmpty()) {
 				logger.warn("There is not adverts for section : " + section);
 			} else {
 				logger.info("Add " + advertEntities.size() + " adverts to cache " + section.getName());
@@ -114,6 +125,7 @@ public class AdvertProviderModel implements Serializable {
 				}
 			}
 		}
+		*/
 	}
 
 	/**
@@ -123,6 +135,14 @@ public class AdvertProviderModel implements Serializable {
 	 * @return reklama, ktera se zarazena do pozadovane sekce
 	 */
 	public AdvertEntity getAdvertEntityBySection(final String sectionUrlName) {
+
+		AdvertEntity advert = advertCacheNG.getNextAdvertEntity(sectionUrlName);
+		if (advert != null) {
+			accessListBean.save(new AdvertAccessListEntity(advert, Calendar.getInstance().getTime()));
+		}
+		return advert;
+
+		/*
 		AdvertEntity res = null;
 		Queue<AdvertViewWrapper> adv = advertsCache.get(sectionUrlName);
 		if (adv != null) {
@@ -131,7 +151,14 @@ public class AdvertProviderModel implements Serializable {
 			if (av != null) {
 				if (av.viewCount > LIFE) {
 					logger.info("Advert display reach maximum value " + LIFE);
-					reloadCacheForSection(sectionUrlName);
+
+					executor.execute(new Runnable() {
+						@Override
+						public void run() {
+							reloadCacheForSection(sectionUrlName);
+						}
+					});
+
 					res = getAdvertEntityBySection(sectionUrlName);
 				} else {
 					av.viewCount++;
@@ -147,19 +174,38 @@ public class AdvertProviderModel implements Serializable {
 			}
 		}
 		return res;
+		*/
 	}
 
+	@Deprecated
 	public void reloadCacheForSection(String sectionUrlName) {
+
+		throw new RuntimeException("Reload Old Cache is DISABLED!");
+
+		/*
+		logger.debug("Realoding Cache for " + sectionUrlName);
 		Queue<AdvertViewWrapper> adv = advertsCache.get(sectionUrlName);
 		Iterator iter = adv.iterator();
 		List<Integer> exludeIDS = new ArrayList<>(adv.size());
+
+		logger.debug("exludeIDS for " + sectionUrlName);
 		while (iter.hasNext()) {
 			exludeIDS.add(((AdvertViewWrapper) iter.next()).advertEntity.getId());
 		}
+		logger.debug("exludeIDS for " + sectionUrlName + " DONE");
+
+		logger.debug("Load LessUsedAdvert for " + sectionUrlName);
 		List<AdvertEntity> ade = advertDaoInterface.findLessUsedBySection(sectionUrlName, MainConfig.ADVERT_CACHE_SIZE - adv.size(), exludeIDS);
+		logger.debug("Load LessUsedAdvert for " + sectionUrlName + " DONE");
+
+		logger.debug("Fill Adcert Cache for section " + sectionUrlName);
 		for (AdvertEntity ae : ade) {
 			adv.add(new AdvertViewWrapper(ae, 0));
 		}
+		logger.debug("Fill Adcert Cache for section " + sectionUrlName + " DONE");
+
+		logger.debug("Realod Cache for " + sectionUrlName + " DONE");
+		*/
 	}
 
 
@@ -193,6 +239,7 @@ public class AdvertProviderModel implements Serializable {
 	}
 
 	public String getAdvertHtml(String sectionUrlName, AdvertDisplayStyle advertDisplayStyle, Integer advertCount) {
+		StringBuilder sb = new StringBuilder(4096);
 		for (int a = 0; a < advertCount; a++) {
 			AdvertEntity aEntity = getAdvertEntityBySection(sectionUrlName);
 			if (aEntity != null) {
@@ -207,14 +254,17 @@ public class AdvertProviderModel implements Serializable {
 					default:
 						adv = "";
 				}
-				return adv.replace("{ADVERT_ID}", String.valueOf(aEntity.getId()))
+				sb.append(adv.replace("{ADVERT_ID}", String.valueOf(aEntity.getId()))
 					 .replace("{PICTURE_ID}", aEntity.getPictureEntity() != null ? String.valueOf(aEntity.getPictureEntity().getId()) : "")
 					 .replace("{ADVERT_TITLE}", aEntity.getTitle())
 					 .replace("{ADVERT_ORIG_URL}", aEntity.getUrl())
-					 .replace("{ADVERT_BODY}", aEntity.getBody());
-
+					 .replace("{ADVERT_BODY}", aEntity.getBody()));
 			}
 		}
-		return "<p>Can not load Tip</p>";
+		return sb.toString();
+	}
+
+	public void reloadCache() {
+		advertCacheNG.reload();
 	}
 }

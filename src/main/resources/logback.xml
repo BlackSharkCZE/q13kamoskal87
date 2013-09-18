@@ -1,22 +1,23 @@
 <configuration debug="true">
-    <!--
-    Necessary information: http://logback.qos.ch/manual/
-    -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/Airtoy/www/kamoska/kamoska.log</file>
-        <append>true</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>90</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <!-- How to create patterns: http://logback.qos.ch/manual/layouts.html -->
-            <pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS}|%level|%thread|%logger{36}|%msg|%ex{short}%n</pattern>
-            <immediateFlush>true</immediateFlush>
-        </encoder>
-    </appender>
+<!--
+Necessary information: http://logback.qos.ch/manual/
+-->
+<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<append>true</append>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<!--<fileNamePattern>/var/log/Airtoy/jozin2/admin/application.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+		<fileNamePattern>/var/log/Airtoy/www/kamoska/kamoska.log.%d{yyyy-MM-dd}.log</fileNamePattern>
+		<!--<fileNamePattern>/tmp/kamoska.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+		<maxHistory>90</maxHistory>
+	</rollingPolicy>
+	<encoder>
+		<!-- How to create patterns: http://logback.qos.ch/manual/layouts.html -->
+		<pattern>%date{yyyy-MM-dd'T'HH:mm:ss.SSS}|%level|%thread|%logger{36}|%msg|%ex%n</pattern>
+		<immediateFlush>true</immediateFlush>
+	</encoder>
+</appender>
 
-    <root level="info">
-        <appender-ref ref="FILE"/>
-    </root>
+<root level="debug">
+	<appender-ref ref="FILE"/>
+</root>
 </configuration>

@@ -57,6 +57,11 @@ public class AdvertDaoInterfaceImpl extends DaoTemplate<AdvertEntity> implements
 		}
 	}
 
+	@Override
+	public List<AdvertEntity> findAllActive() {
+		return findListByNamedQuery("AdvertEntity.findAllActive", 0, -1, null);
+	}
+
 	private final static String LESS_USED_ADVERT_BY_SECTION_AND_EXLUDE_ID_LIST = "select a.id, a.accept_date, a.body, a.date_created, a.reject_date, a.reject_message, a.state, a.title, a.url, a.view_count, a.bundle_id, a.picture_id\n" +
 		 "from advert a\n" +
 		 "left join advert_accesslist_actual ac on a.id = ac.advert_id\n" +
