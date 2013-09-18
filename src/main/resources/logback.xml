@@ -17,7 +17,7 @@ Necessary information: http://logback.qos.ch/manual/
 	</encoder>
 </appender>
 
-<root level="debug">
+<root level="info">
 	<appender-ref ref="FILE"/>
 </root>
 </configuration>
