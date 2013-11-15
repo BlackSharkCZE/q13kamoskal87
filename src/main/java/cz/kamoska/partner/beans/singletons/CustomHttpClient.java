@@ -24,7 +24,6 @@ import java.io.Serializable;
  * User: blackshark
  * Date: 29.10.12
  * Time: 19:51
- * To change this template use File | Settings | File Templates.
  */
 @Singleton
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -57,7 +56,7 @@ public class CustomHttpClient implements Serializable {
 
 		connManager = new ThreadSafeClientConnManager(schemeRegistry);
 		client = new DefaultHttpClient(connManager, httpParameters);
-		credentials =  new UsernamePasswordCredentials("x", MainConfig.FAKTUROID_API_TOKEN);
+		credentials =  new UsernamePasswordCredentials(MainConfig.FAKTUROID_LOGIN_EMAIL, MainConfig.FAKTUROID_API_TOKEN);
 
 	}
 

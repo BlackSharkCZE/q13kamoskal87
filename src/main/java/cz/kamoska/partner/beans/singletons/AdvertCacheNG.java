@@ -4,6 +4,7 @@ import cz.kamoska.partner.beans.AdvertContainer;
 import cz.kamoska.partner.dao.interfaces.AdvertDaoInterface;
 import cz.kamoska.partner.entities.AdvertEntity;
 import cz.kamoska.partner.entities.SectionEntity;
+import cz.kamoska.partner.enums.AdvertState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,9 +95,14 @@ public class AdvertCacheNG implements Serializable {
 				while (iterator.hasNext()) {
 					advertContainer = iterator.next();
 					if (advertContainer.sections.contains(sectionName)) {
-						iterator.remove();
-						advertContainer.displayCount++;
-						break;
+						if (advertContainer.advertEntity.getBundleEntity().getStatus() == AdvertState.ACTIVE) {
+							iterator.remove();
+							advertContainer.displayCount++;
+							break;
+						} else {
+							iterator.remove();
+						}
+
 					}
 				}
 				if (advertContainer != null) {

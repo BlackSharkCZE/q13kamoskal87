@@ -147,28 +147,12 @@ private org.slf4j.Logger logger;
 		confirmUrl.append("/activate/").append(partnerEntity.getEmailConfirmationHash());
 
 		final String body = template.replace("{LOGIN}", partnerEntity.getEmail()).replace("{PASSWORD}", textPassword).replace("{CONFIRM_URL}", confirmUrl);
-		mailerBean.sendEmail(body, MainConfig.EMAIL_REGISTER_SUBJECT, Arrays.asList(new String[] {partnerEntity.getEmail()}), "partner@kamoska.cz",null, true);
+		mailerBean.sendEmail(body, MainConfig.EMAIL_REGISTER_SUBJECT, Arrays.asList(new String[] {partnerEntity.getEmail()}), MainConfig.EMAIL_FROM,null, true);
 
 	}
 
 	private String loadEmailTemplate() {
 		return fileTemplateLoader.loadFileFromResources("/registration-email-template.html");
-		/*
-		  StringBuilder template = new StringBuilder(1024);
-		  String line;
-		  try (
-				  InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("/registration-email-template.html");
-				  InputStreamReader istr = new InputStreamReader(resourceAsStream);
-				  BufferedReader reader = new BufferedReader(istr);
-		  ) {
-			  while ((line = reader.readLine()) != null) {
-				  template.append(line);
-			  }
-		  } catch (Exception e) {
-			  logger.info("Can not read e-mail template", e);
-		  }
-		  return template.toString();
-  */
 	}
 
 }

@@ -1,9 +1,5 @@
 package cz.kamoska.partner.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 //import org.slf4j.Logger;
 
 /**
@@ -15,29 +11,12 @@ import org.slf4j.LoggerFactory;
  */
 public class MainConfig {
 
-
-	private static final Logger logger = LoggerFactory.getLogger(MainConfig.class);
-
-
 	public static final String SRC_FILE_FOLDER = "src";
 	public static String IMAGE_STORE_ROOT_PATH = "/srv/partner.kamoska.cz/images";
 	public static final int ADVERT_CACHE_SIZE = 50;
 
 	public static final String LOGGER_NAME = "KAMOSKA_LOGGER";
-
 	public static final String MASTER_PASSWORD = "123radecek8";
-
-	static {
-
-		/*
-		try {
-			PropertiesConfiguration configuration = new PropertiesConfiguration("main-config.properties");
-			IMAGE_STORE_ROOT_PATH = configuration.getString("IMAGE_STORE_ROOT_PATH", "/srv/partner.kamoska.cz/images");
-		} catch (ConfigurationException e) {
-			logger.error("Can not load configuration. ", e);
-		}
-	*/
-	}
 
 	public static final int PARTNER_CONNECTION_TIMEOUT = 5000;
 
@@ -46,9 +25,20 @@ public class MainConfig {
 	public static final int HTTP_PORT = 80;
 	public static final int HTTPS_PORT = 443;
 
-	public static final String FAKTUROID_DOMAIN = "fakturoid.cz";
-	public static final String FAKTUROID_API_URL = "https://partnerkamoska.fakturoid.cz/api/v1/";
-//	public static final String FAKTUROID_API_URL = "http://seznam.cz";
+	/* MUZI.CZ */
+	/*
+	public static final String FAKTUROID_ACCOUNT_NAME = "muzicz";
+	public static final String FAKTUROID_API_URL = "https://app.fakturoid.cz/api/v2/accounts/"+ FAKTUROID_ACCOUNT_NAME +"/";
+	public static final String FAKTUROID_LOGIN_EMAIL = "sticha@muzi.cz";
+	public static final String FAKTUROID_API_TOKEN = "b7669bbb2d3899a4993d09947a36b691537b2a48";
+	*/
+
+	/*KAMOSKA.CZ*/
+
+	public static final String FAKTUROID_ACCOUNT_NAME = "partnerkamoska";
+//	public static final String FAKTUROID_API_URL = "https://partnerkamoska.fakturoid.cz/api/v1/";
+	public static final String FAKTUROID_API_URL = "https://app.fakturoid.cz/api/v2/accounts/"+ FAKTUROID_ACCOUNT_NAME +"/";
+	public static final String FAKTUROID_LOGIN_EMAIL = "partner@kamoska.cz";
 	public static final String FAKTUROID_API_TOKEN = "a44432585a05b2d162d703a9044ebaa88ef3412f";
 
 

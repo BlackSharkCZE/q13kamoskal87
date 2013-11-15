@@ -15,9 +15,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>AirtoyLib</groupId>
+			<groupId>net.airtoy.utils</groupId>
 			<artifactId>AirtoyLib</artifactId>
-			<version>1.7.1</version>
+			<version>1.7.2</version>
 		</dependency>
 
 

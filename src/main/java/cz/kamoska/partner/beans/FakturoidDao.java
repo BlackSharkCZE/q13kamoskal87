@@ -35,6 +35,8 @@ import java.util.Calendar;
 @Stateless
 public class FakturoidDao {
 
+	private static final String USER_AGENT = MainConfig.FAKTUROID_ACCOUNT_NAME + " (" + MainConfig.FAKTUROID_LOGIN_EMAIL + ")";
+
 	@Inject
 	@Kamoska
 	private org.slf4j.Logger logger;
@@ -57,7 +59,7 @@ public class FakturoidDao {
 			logger.info("Call URL: " + url);
 			get.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), get));
 			get.setHeader("Content-type", "application/json");
-			get.setHeader("User-Agent", "partnerkamoska (partner@kamoska.cz)");
+			get.setHeader("User-Agent", USER_AGENT);
 		} catch (Exception e) {
 			logger.error("Can not read Invoice from URL " + url, e);
 			if (get != null) {
@@ -115,7 +117,7 @@ public class FakturoidDao {
 				put.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), put));
 				put.setHeader("Content-type", "application/json");
 				put.setEntity(new StringEntity(serializedData));
-				put.setHeader("User-Agent", "partnerkamoska (partner@kamoska.cz)");
+				put.setHeader("User-Agent", USER_AGENT);
 			} catch (Exception e) {
 				logger.error("Can not update Subject entity by PUT", e);
 					put.abort();
@@ -178,7 +180,7 @@ public class FakturoidDao {
 				post.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), post));
 				post.setHeader("Content-type", "application/json");
 				post.setEntity(new StringEntity(serializedData));
-				post.setHeader("User-Agent", "partnerkamoska (partner@kamoska.cz)");
+				post.setHeader("User-Agent", USER_AGENT);
 			} catch (Exception e) {
 				logger.error("Can not add Subject entity to POST",e);
 				if (post != null) {
@@ -245,7 +247,7 @@ public class FakturoidDao {
 				post.addHeader(new BasicScheme().authenticate(customHttpClient.getCredentials(), post));
 				post.setHeader("Content-type", "application/json");
 				post.setEntity(new StringEntity(serializedData));
-				post.setHeader("User-Agent", "partnerkamoska (partner@kamoska.cz)");
+				post.setHeader("User-Agent", USER_AGENT);
 			} catch (Exception e) {
 				logger.error("Can not add Invoice entity to POST", e);
 				if (post != null) {

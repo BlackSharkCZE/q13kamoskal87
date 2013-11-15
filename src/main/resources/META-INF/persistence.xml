@@ -5,6 +5,7 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <!--<jta-data-source>jdbc/jozin_local</jta-data-source>-->
         <jta-data-source>jdbc/kamoska</jta-data-source>
+        <!--jta-data-source>jdbc/muzi</jta-data-source-->
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="eclipselink.cache.size.default" value="0"/>
